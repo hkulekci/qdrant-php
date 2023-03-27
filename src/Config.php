@@ -13,7 +13,7 @@ class Config
     protected string $host;
 
     protected string $port;
-    protected string $apiKey;
+    protected ?string $apiKey = null;
 
     public function __construct($host, $port = 6333)
     {
@@ -35,6 +35,6 @@ class Config
 
     public function getApiKey(): string
     {
-        return $this->apiKey;
+        return $this->apiKey ?? '';
     }
 }
