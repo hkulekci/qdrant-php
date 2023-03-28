@@ -25,6 +25,20 @@ class Client implements ClientInterface
         ]);
     }
 
+    private function prepareHeaders(): array
+    {
+        $headers = [
+            'content-type' => 'application/json',
+            'accept' => 'application/json',
+        ];
+
+        if ($this->config->getApiKey()) {
+            $headers['api-key'] = $this->config->getApiKey();
+        }
+
+        return $headers;
+    }
+
     /**
      * @throws GuzzleException
      * @throws JsonException
@@ -33,11 +47,7 @@ class Client implements ClientInterface
     public function execute(string $method, string $path, array $options = []): Response
     {
         $data = [
-            'headers' => [
-                'content-type' => 'application/json',
-                'accept' => 'application/json',
-                'api-key' => $this->config->getApiKey(),
-            ]
+            'headers' => $this->prepareHeaders()
         ];
         if (($method === 'POST' || $method === 'PUT' || $method === 'PATCH') && $options) {
             $data['json'] = $options;

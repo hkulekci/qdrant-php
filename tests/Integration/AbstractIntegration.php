@@ -24,7 +24,7 @@ abstract class AbstractIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $config = (new Config('http://localhost'));
+        $config = (new Config('http://127.0.0.1'));
 
         $this->client = new Client($config);
     }
