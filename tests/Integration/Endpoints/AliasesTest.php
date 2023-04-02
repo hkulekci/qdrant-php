@@ -8,6 +8,7 @@
 
 namespace Qdrant\Tests\Integration\Endpoints;
 
+use Qdrant\Endpoints\Aliases;
 use Qdrant\Endpoints\Collections;
 use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\Request\AliasActions;
@@ -32,11 +33,11 @@ class AliasesTest extends AbstractIntegration
     public function testCollectionEmptyAliases(): void
     {
         $collections = (new Collections($this->client));
+        $aliases = new Aliases($this->client);
         $response = $collections->create('sample-collection', self::sampleCollectionOption());
         $this->assertEquals('ok', $response['status']);
 
-        $aliases = $collections->aliases();
-        $response = $aliases->allAliases();
+        $response = $aliases->all();
         $this->assertEquals('ok', $response['status']);
         $this->assertEmpty($response['result']['aliases']);
     }
@@ -81,7 +82,7 @@ class AliasesTest extends AbstractIntegration
         $this->assertEquals('ok', $response['status']);
         $this->assertEquals(true, $response['result']);
 
-        $response = $aliases->allAliases();
+        $response = (new Aliases($this->client))->all();
         $this->assertEquals('ok', $response['status']);
         $this->assertEmpty($response['result']['aliases']);
     }

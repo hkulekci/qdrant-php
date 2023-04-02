@@ -1,8 +1,6 @@
 <?php
 /**
- * Cluster
- *
- * https://qdrant.github.io/qdrant/redoc/#tag/cluster/operation/cluster_status
+ * Snapshots
  *
  * @since     Mar 2023
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>

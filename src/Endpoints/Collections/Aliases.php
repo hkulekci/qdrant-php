@@ -32,14 +32,6 @@ class Aliases extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function allAliases(): Response
-    {
-        return $this->client->execute($this->createRequest('GET', '/aliases'));
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
     public function aliases(): Response
     {
         return $this->client->execute(
