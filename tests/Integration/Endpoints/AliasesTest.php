@@ -69,7 +69,7 @@ class AliasesTest extends AbstractIntegration
         $response = $collections->create('sample-collection', self::sampleCollectionOption());
         $this->assertEquals('ok', $response['status']);
 
-        $aliases = $collections->aliases('sample-collection');
+        $aliases = $collections->aliases();
         $aliasActions = new AliasActions();
         $aliasActions->add('sample-alias', 'sample-collection');
         $response = $aliases->actions($aliasActions);

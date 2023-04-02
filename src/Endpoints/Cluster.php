@@ -33,10 +33,10 @@ class Cluster extends AbstractEndpoint
      *
      * @throws InvalidArgumentException
      */
-    public function recover(array $params): Response
+    public function recover(): Response
     {
         return $this->client->execute(
-            $this->createRequest('POST', '/cluster/recover', $params)
+            $this->createRequest('POST', '/cluster/recover')
         );
     }
 

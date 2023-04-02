@@ -32,10 +32,10 @@ class Snapshots extends AbstractEndpoint
      *
      * @throws InvalidArgumentException
      */
-    public function create(array $params): Response
+    public function create(): Response
     {
         return $this->client->execute(
-            $this->createRequest('POST', '/snapshots', $params)
+            $this->createRequest('POST', '/snapshots')
         );
     }
 
