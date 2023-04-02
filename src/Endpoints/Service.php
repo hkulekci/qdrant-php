@@ -9,6 +9,7 @@
 namespace Qdrant\Endpoints;
 
 use Qdrant\Exception\InvalidArgumentException;
+use Qdrant\Models\Request\ServiceLock;
 use Qdrant\Response;
 
 class Service extends AbstractEndpoint
@@ -45,10 +46,10 @@ class Service extends AbstractEndpoint
      *
      * @throws InvalidArgumentException
      */
-    public function setLocks(array $body): Response
+    public function setLocks(ServiceLock $body): Response
     {
         return $this->client->execute(
-            $this->createRequest('POST', '/locks', $body)
+            $this->createRequest('POST', '/locks', $body->toArray())
         );
     }
 

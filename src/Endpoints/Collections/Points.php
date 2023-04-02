@@ -12,10 +12,10 @@ namespace Qdrant\Endpoints\Collections;
 
 use Qdrant\Endpoints\AbstractEndpoint;
 use Qdrant\Endpoints\Collections\Points\Payload;
-use Qdrant\Endpoints\Collections\Points\Search;
 use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\PointsStruct;
 use Qdrant\Models\Request\PointsBatch;
+use Qdrant\Models\Request\SearchRequest;
 use Qdrant\Response;
 
 class Points extends AbstractEndpoint
@@ -28,9 +28,15 @@ class Points extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function search(...$args): Response
+    public function search(SearchRequest $searchParams): Response
     {
-        return (new Search($this->client))->setCollectionName($this->collectionName)(...$args);
+        return $this->client->execute(
+            $this->createRequest(
+                'POST',
+                'collections/' . $this->collectionName . '/points/search',
+                $searchParams->toArray()
+            )
+        );
     }
 
     /**
