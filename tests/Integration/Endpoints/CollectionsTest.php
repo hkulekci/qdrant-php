@@ -50,8 +50,22 @@ class CollectionsTest extends AbstractIntegration
     public function testCollections(): void
     {
         $collections = new Collections($this->client);
-        $response = $collections->get();
+        $response = $collections->list();
         $this->assertEquals('ok', $response['status']);
+    }
+
+    public function testCollectionsCluster(): void
+    {
+        $collections = new Collections($this->client);
+
+        $response = $collections->create('sample-collection', self::sampleCollectionOption());
+        $this->assertEquals('ok', $response['status']);
+
+        $response = $collections->cluster('sample-collection');
+        $this->assertEquals('ok', $response['status']);
+        $this->assertArrayHasKey('peer_id', $response['result']);
+        $this->assertArrayHasKey('shard_count', $response['result']);
+        $this->assertArrayHasKey('local_shards', $response['result']);
     }
 
     /**

@@ -2,20 +2,17 @@
 
 [![Test Application](https://github.com/hkulekci/qdrant-php/actions/workflows/test.yaml/badge.svg)](https://github.com/hkulekci/qdrant-php/actions/workflows/test.yaml) [![codecov](https://codecov.io/github/hkulekci/qdrant-php/branch/main/graph/badge.svg?token=5K8FAI0C9B)](https://codecov.io/github/hkulekci/qdrant-php)
 
-
-
 Qdrant is a vector similarity engine & vector database. It deploys as an API service providing search for the nearest 
 high-dimensional vectors. With Qdrant, embeddings or neural network encoders can be turned into full-fledged 
 applications for matching, searching, recommending, and much more!
 
 This library is a PHP Client for Qdrant.
 
-An example to create a collection : 
+An example to create a collection :
 
 ```php
-<?php
-use Qdrant\Client;
 use Qdrant\Endpoints\Collections;
+use Qdrant\Http\GuzzleClient;
 use Qdrant\Models\Request\CreateCollection;
 use Qdrant\Models\Request\VectorParams;
 
@@ -24,7 +21,7 @@ include_once 'config.php';
 
 $config = new \Qdrant\Config(QDRANT_HOST);
 $config->setApiKey(QDRANT_API_KEY);
-$client = new Client($config);
+$client = new GuzzleClient($config);
 
 $collections = new Collections($client);
 
@@ -33,10 +30,25 @@ $createCollection->addVector(new VectorParams(1024, VectorParams::DISTANCE_COSIN
 $collections->create('images', $createCollection);
 ```
 
-Some links to read : 
+So now, we can insert a point : 
 
-- https://dylancastillo.co/ai-search-engine-fastapi-qdrant-chatgpt/#prerequisites
-- https://qdrant.tech/articles/qa-with-cohere-and-qdrant/
-- https://github.com/qdrant/qdrant_client
-- https://github.com/dylanjcastillo/ai-search-fastapi-qdrant-chatgpt
-- https://pypi.org/project/sentence-transformers/
+```php
+use Qdrant\Models\PointsStruct;
+use Qdrant\Models\PointStruct;
+use Qdrant\Models\VectorStruct;
+
+$points = new PointsStruct();
+$points->addPoint(
+    new PointStruct(
+        (int) $imageId,
+        new VectorStruct($data['embeddings'][0], 'image'),
+        [
+            'id' => 1,
+            'meta' => 'Meta data'
+        ]
+    )
+);
+$client->collections('startups')->points()
+    ->upsert($points);
+```
+

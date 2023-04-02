@@ -17,9 +17,11 @@ class Search extends AbstractEndpoint
     public function __invoke(SearchRequest $searchParams): Response
     {
         return $this->client->execute(
-            'POST',
-            'collections/' . $this->collectionName . '/points/search',
-            $searchParams->toArray()
+            $this->createRequest(
+                'POST',
+                'collections/' . $this->collectionName . '/points/search',
+                $searchParams->toArray()
+            )
         );
     }
 }

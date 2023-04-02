@@ -18,9 +18,15 @@ class Snapshots extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function create(array $options): Response
+    public function create(array $params): Response
     {
-        return $this->client->execute('POST', '/collections/' . $this->getCollectionName() . '/snapshots', $options);
+        return $this->client->execute(
+            $this->createRequest(
+                'POST',
+                '/collections/' . $this->getCollectionName() . '/snapshots',
+                $params
+            )
+        );
     }
 
     /**
@@ -28,7 +34,12 @@ class Snapshots extends AbstractEndpoint
      */
     public function delete(string $name): Response
     {
-        return $this->client->execute('DELETE', '/collections/' . $this->getCollectionName() . '/snapshots/' . $name);
+        return $this->client->execute(
+            $this->createRequest(
+                'DELETE',
+                '/collections/' . $this->getCollectionName() . '/snapshots/' . $name
+            )
+        );
     }
 
     /**
@@ -36,7 +47,9 @@ class Snapshots extends AbstractEndpoint
      */
     public function list(): Response
     {
-        return $this->client->execute('GET', '/collections/' . $this->getCollectionName() . '/snapshots');
+        return $this->client->execute(
+            $this->createRequest('GET', '/collections/' . $this->getCollectionName() . '/snapshots')
+        );
     }
 
     /**
@@ -44,6 +57,11 @@ class Snapshots extends AbstractEndpoint
      */
     public function get(string $name): Response
     {
-        return $this->client->execute('GET', '/collections/' . $this->getCollectionName() . '/snapshots/' . $name);
+        return $this->client->execute(
+            $this->createRequest(
+                'GET',
+                '/collections/' . $this->getCollectionName() . '/snapshots/' . $name
+            )
+        );
     }
 }

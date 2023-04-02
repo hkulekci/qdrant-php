@@ -37,9 +37,11 @@ class Points extends AbstractEndpoint
             $body['filter'] = $filter;
         }
         return $this->client->execute(
-            'POST',
-            '/collections/' . $this->getCollectionName() . '/points/scroll',
-            $body
+            $this->createRequest(
+                'POST',
+                '/collections/' . $this->getCollectionName() . '/points/scroll',
+                $body
+            )
         );
     }
 
@@ -49,11 +51,13 @@ class Points extends AbstractEndpoint
     public function delete(array $points): Response
     {
         return $this->client->execute(
-            'POST',
-            '/collections/' . $this->getCollectionName() . '/points/delete',
-            [
-                'points' => $points,
-            ]
+            $this->createRequest(
+                'POST',
+                '/collections/' . $this->getCollectionName() . '/points/delete',
+                [
+                    'points' => $points,
+                ]
+            )
         );
     }
 
@@ -63,11 +67,13 @@ class Points extends AbstractEndpoint
     public function deleteByFilter(array $filter): Response
     {
         return $this->client->execute(
-            'POST',
-            '/collections/' . $this->getCollectionName() . '/points/delete',
-            [
-                'filter' => $filter,
-            ]
+            $this->createRequest(
+                'POST',
+                '/collections/' . $this->getCollectionName() . '/points/delete',
+                [
+                    'filter' => $filter,
+                ]
+            )
         );
     }
 
@@ -77,11 +83,13 @@ class Points extends AbstractEndpoint
     public function ids(array $ids): Response
     {
         return $this->client->execute(
-            'POST',
-            '/collections/' . $this->getCollectionName() . '/points',
-            [
-                'ids' => $ids,
-            ]
+            $this->createRequest(
+                'POST',
+                '/collections/' . $this->getCollectionName() . '/points',
+                [
+                    'ids' => $ids,
+                ]
+            )
         );
     }
 
@@ -90,7 +98,9 @@ class Points extends AbstractEndpoint
      */
     public function id(int $id): Response
     {
-        return $this->client->execute('GET', '/collections/' . $this->getCollectionName() . '/points/' . $id);
+        return $this->client->execute(
+            $this->createRequest('GET', '/collections/' . $this->getCollectionName() . '/points/' . $id)
+        );
     }
 
     /**
@@ -108,9 +118,11 @@ class Points extends AbstractEndpoint
 
         //TODO: we can put here filter object instead of array
         return $this->client->execute(
-            'POST',
-            '/collections/' . $this->getCollectionName() . '/points/count',
-            $body
+            $this->createRequest(
+                'POST',
+                '/collections/' . $this->getCollectionName() . '/points/count',
+                $body
+            )
         );
     }
 
@@ -120,11 +132,13 @@ class Points extends AbstractEndpoint
     public function upsert(PointsStruct $points): Response
     {
         return $this->client->execute(
-            'PUT',
-            '/collections/' . $this->getCollectionName() . '/points',
-            [
-                'points' => $points->toArray(),
-            ]
+            $this->createRequest(
+                'PUT',
+                '/collections/' . $this->getCollectionName() . '/points',
+                [
+                    'points' => $points->toArray(),
+                ]
+            )
         );
     }
 
@@ -134,11 +148,13 @@ class Points extends AbstractEndpoint
     public function batch(PointsBatch $batchPoint): Response
     {
         return $this->client->execute(
-            'PUT',
-            '/collections/' . $this->getCollectionName() . '/points',
-            [
-                'batch' => $batchPoint->toArray(),
-            ]
+            $this->createRequest(
+                'PUT',
+                '/collections/' . $this->getCollectionName() . '/points',
+                [
+                    'batch' => $batchPoint->toArray(),
+                ]
+            )
         );
     }
 }

@@ -6,27 +6,26 @@
 
 namespace Qdrant\Tests\Integration;
 
-use OpenAI;
 use PHPUnit\Framework\TestCase;
-use Qdrant\Client;
 use Qdrant\Config;
 use Qdrant\Endpoints\Collections;
 use Qdrant\Exception\InvalidArgumentException;
+use Qdrant\Http\GuzzleClient;
+use Qdrant\Http\HttpClientInterface;
 use Qdrant\Models\Request\CreateCollection;
 use Qdrant\Models\Request\VectorParams;
+use Qdrant\Qdrant;
 
 abstract class AbstractIntegration extends TestCase
 {
-    protected Client $client;
-
+    protected HttpClientInterface $client;
     private ?Collections $collections = null;
 
     protected function setUp(): void
     {
         parent::setUp();
         $config = (new Config('http://127.0.0.1'));
-
-        $this->client = new Client($config);
+        $this->client = new GuzzleClient($config);
     }
 
     /**

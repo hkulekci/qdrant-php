@@ -8,16 +8,18 @@
 
 namespace Qdrant\Endpoints;
 
-use Qdrant\ClientInterface;
+use GuzzleHttp\Psr7\HttpFactory;
+use Psr\Http\Message\RequestInterface;
 use Qdrant\Exception\InvalidArgumentException;
+use Qdrant\Http\HttpClientInterface;
 
 abstract class AbstractEndpoint
 {
-    protected ClientInterface $client;
+    protected HttpClientInterface $client;
 
     protected ?string $collectionName = null;
 
-    public function __construct(ClientInterface $client)
+    public function __construct(HttpClientInterface $client)
     {
         $this->client = $client;
     }
@@ -39,5 +41,25 @@ abstract class AbstractEndpoint
             throw new InvalidArgumentException('You need to specify the collection name');
         }
         return $this->collectionName;
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    protected function createRequest(string $method, string $uri, array $body = []): RequestInterface
+    {
+        $httpFactory = new HttpFactory();
+        $request = $httpFactory->createRequest($method, $uri);
+        if ($body) {
+            try {
+                $request = $request->withBody(
+                    $httpFactory->createStream(json_encode($body, JSON_THROW_ON_ERROR))
+                );
+            } catch (\JsonException $e) {
+                throw new InvalidArgumentException('Json parse error!');
+            }
+        }
+
+        return $request;
     }
 }

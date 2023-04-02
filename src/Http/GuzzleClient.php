@@ -3,40 +3,42 @@
  * @since     Mar 2023
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
-namespace Qdrant;
+namespace Qdrant\Http;
 
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
-use Qdrant\Endpoints\Collections;
+use Psr\Http\Client\ClientExceptionInterface;
+use Psr\Http\Message\RequestInterface;
+use Qdrant\Config;
 use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Exception\ServerException;
+use Qdrant\Response;
 
-class Client implements ClientInterface
+class GuzzleClient implements HttpClientInterface
 {
     protected Config $config;
-    protected \GuzzleHttp\Client $client;
+    protected Client $client;
 
     public function __construct(Config $config)
     {
         $this->config = $config;
-        $this->client = new \GuzzleHttp\Client([
+        $this->client = new Client([
             'base_uri' => $this->config->getDomain()
         ]);
     }
 
-    private function prepareHeaders(): array
+    private function prepareHeaders(RequestInterface $request): RequestInterface
     {
-        $headers = [
-            'content-type' => 'application/json',
-            'accept' => 'application/json',
-        ];
+        $request = $request->withHeader('content-type', 'application/json')
+            ->withHeader('accept', 'application/json');
 
         if ($this->config->getApiKey()) {
-            $headers['api-key'] = $this->config->getApiKey();
+            $request = $request->withHeader('api-key', $this->config->getApiKey());
         }
 
-        return $headers;
+        return $request;
     }
 
     /**
@@ -44,17 +46,11 @@ class Client implements ClientInterface
      * @throws JsonException
      * @throws ServerException|InvalidArgumentException
      */
-    public function execute(string $method, string $path, array $options = []): Response
+    public function execute(RequestInterface $request): Response
     {
-        $data = [
-            'headers' => $this->prepareHeaders()
-        ];
-        if (($method === 'POST' || $method === 'PUT' || $method === 'PATCH') && $options) {
-            $data['json'] = $options;
-        }
-
+        $request = $this->prepareHeaders($request);
         try {
-            $res = $this->client->request($method, $path, $data);
+            $res = $this->client->sendRequest($request);
 
             return Response::buildFromHttpResponse($res);
         } catch (ClientException $e) {
@@ -65,10 +61,5 @@ class Client implements ClientInterface
                 throw new ServerException($e->getMessage());
             }
         }
-    }
-
-    public function collections(string $collectionName = null): Collections
-    {
-        return (new Collections($this))->setCollectionName($collectionName);
     }
 }

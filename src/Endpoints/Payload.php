@@ -19,11 +19,13 @@ class Payload extends AbstractEndpoint
     public function clear(array $points): Response
     {
         return $this->client->execute(
-            'POST',
-            '/collections/' . $this->getCollectionName() . '/points/payload/clear',
-            [
-                'points' => $points,
-            ]
+            $this->createRequest(
+                'POST',
+                '/collections/' . $this->getCollectionName() . '/points/payload/clear',
+                [
+                    'points' => $points,
+                ]
+            )
         );
     }
 
@@ -39,13 +41,15 @@ class Payload extends AbstractEndpoint
     public function delete(array $points, array $keys, array $filters): Response
     {
         return $this->client->execute(
-            'POST',
-            '/collections/' . $this->getCollectionName() . '/points/payload/delete',
-            [
-                'filters' => $filters,
-                'keys' => $keys,
-                'points' => $points,
-            ]
+            $this->createRequest(
+                'POST',
+                '/collections/' . $this->getCollectionName() . '/points/payload/delete',
+                [
+                    'filters' => $filters,
+                    'keys' => $keys,
+                    'points' => $points,
+                ]
+            )
         );
     }
 
@@ -55,12 +59,14 @@ class Payload extends AbstractEndpoint
     public function set(array $points, array $payload): Response
     {
         return $this->client->execute(
-            'POST',
-            '/collections/' . $this->getCollectionName() . '/points/payload',
-            [
-                'payload' => $payload,
-                'points' => $points,
-            ]
+            $this->createRequest(
+                'POST',
+                '/collections/' . $this->getCollectionName() . '/points/payload',
+                [
+                    'payload' => $payload,
+                    'points' => $points,
+                ]
+            )
         );
     }
 }

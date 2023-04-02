@@ -16,14 +16,24 @@ use Qdrant\Response;
 
 class Aliases extends AbstractEndpoint
 {
+    /**
+     * Update aliases of the collections
+     *
+     * @throws InvalidArgumentException
+     */
     public function actions(AliasActions $actions): Response
     {
-        return $this->client->execute('POST', '/collections/aliases', ['actions' => $actions->toArray()]);
+        return $this->client->execute(
+            $this->createRequest('POST', '/collections/aliases', ['actions' => $actions->toArray()])
+        );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function allAliases(): Response
     {
-        return $this->client->execute('GET', '/aliases');
+        return $this->client->execute($this->createRequest('GET', '/aliases'));
     }
 
     /**
@@ -31,6 +41,8 @@ class Aliases extends AbstractEndpoint
      */
     public function aliases(): Response
     {
-        return $this->client->execute('GET', '/collections/'.$this->getCollectionName().'/aliases');
+        return $this->client->execute(
+            $this->createRequest('GET', '/collections/'.$this->getCollectionName().'/aliases')
+        );
     }
 }
