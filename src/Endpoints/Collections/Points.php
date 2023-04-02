@@ -8,8 +8,11 @@
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
-namespace Qdrant\Endpoints;
+namespace Qdrant\Endpoints\Collections;
 
+use Qdrant\Endpoints\AbstractEndpoint;
+use Qdrant\Endpoints\Collections\Points\Payload;
+use Qdrant\Endpoints\Collections\Points\Search;
 use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\PointsStruct;
 use Qdrant\Models\Request\PointsBatch;
@@ -22,6 +25,9 @@ class Points extends AbstractEndpoint
         return (new Payload($this->client))->setCollectionName($this->collectionName);
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function search(...$args): Response
     {
         return (new Search($this->client))->setCollectionName($this->collectionName)(...$args);

@@ -6,14 +6,18 @@
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
-namespace Qdrant\Endpoints;
+namespace Qdrant\Endpoints\Collections\Points;
 
+use Qdrant\Endpoints\AbstractEndpoint;
+use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\Request\SearchRequest;
-use Qdrant\Models\VectorStruct;
 use Qdrant\Response;
 
 class Search extends AbstractEndpoint
 {
+    /**
+     * @throws InvalidArgumentException
+     */
     public function __invoke(SearchRequest $searchParams): Response
     {
         return $this->client->execute(

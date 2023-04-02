@@ -8,8 +8,9 @@
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
-namespace Qdrant\Endpoints;
+namespace Qdrant\Endpoints\Collections;
 
+use Qdrant\Endpoints\AbstractEndpoint;
 use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\Request\CreateIndex;
 use Qdrant\Response;

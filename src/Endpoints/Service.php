@@ -1,8 +1,6 @@
 <?php
 /**
- * Cluster
- *
- * https://qdrant.github.io/qdrant/redoc/#tag/cluster/operation/cluster_status
+ * Service
  *
  * @since     Mar 2023
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
@@ -13,31 +11,31 @@ namespace Qdrant\Endpoints;
 use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Response;
 
-class Snapshots extends AbstractEndpoint
+class Service extends AbstractEndpoint
 {
     /**
-     * # List of storage snapshots
-     * Get list of snapshots of the whole storage
+     * # Collect telemetry data
+     * Collect telemetry data including app info, system info, collections info, cluster info, configs and statistics
      *
      * @throws InvalidArgumentException
      */
-    public function get(): Response
+    public function telemetry(bool $anonymize): Response
     {
         return $this->client->execute(
-            $this->createRequest('GET', '/snapshots')
+            $this->createRequest('GET', '/telemetry')
         );
     }
 
     /**
-     * # Create storage snapshot
-     * Create new snapshot of the whole storage
+     * # Collect Prometheus metrics data
+     * Collect metrics data including app info, collections info, cluster info and statistics
      *
      * @throws InvalidArgumentException
      */
-    public function create(array $params): Response
+    public function metrics(bool $anonymize): Response
     {
         return $this->client->execute(
-            $this->createRequest('POST', '/snapshots', $params)
+            $this->createRequest('POST', '/metrics')
         );
     }
 
@@ -47,10 +45,10 @@ class Snapshots extends AbstractEndpoint
      *
      * @throws InvalidArgumentException
      */
-    public function delete(string $name): Response
+    public function setLocks(array $body): Response
     {
         return $this->client->execute(
-            $this->createRequest('DELETE', '/snapshots/' . $name)
+            $this->createRequest('POST', '/locks', $body)
         );
     }
 
@@ -60,10 +58,10 @@ class Snapshots extends AbstractEndpoint
      *
      * @throws InvalidArgumentException
      */
-    public function download(string $name): Response
+    public function getLocks(): Response
     {
         return $this->client->execute(
-            $this->createRequest('GET', '/snapshots/' . $name)
+            $this->createRequest('GET', '/locks')
         );
     }
 }
