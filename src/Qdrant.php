@@ -6,7 +6,10 @@
 namespace Qdrant;
 
 use Psr\Http\Message\RequestInterface;
+use Qdrant\Endpoints\Cluster;
 use Qdrant\Endpoints\Collections;
+use Qdrant\Endpoints\Service;
+use Qdrant\Endpoints\Snapshots;
 use Qdrant\Http\HttpClientInterface;
 
 class Qdrant implements ClientInterface
@@ -21,6 +24,21 @@ class Qdrant implements ClientInterface
     public function collections(string $collectionName = null): Collections
     {
         return (new Collections($this->client))->setCollectionName($collectionName);
+    }
+
+    public function snapshots(): Snapshots
+    {
+        return new Snapshots($this->client);
+    }
+
+    public function cluster(): Cluster
+    {
+        return new Cluster($this->client);
+    }
+
+    public function service(): Service
+    {
+        return new Service($this->client);
     }
 
     public function execute(RequestInterface $request): Response

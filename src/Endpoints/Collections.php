@@ -7,13 +7,16 @@
  * @since     Mar 2023
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
-
 namespace Qdrant\Endpoints;
 
+use Qdrant\Endpoints\Collections\Aliases;
+use Qdrant\Endpoints\Collections\Index;
+use Qdrant\Endpoints\Collections\Points;
+use Qdrant\Endpoints\Collections\Snapshots;
 use Qdrant\Exception\InvalidArgumentException;
-use Qdrant\Response;
 use Qdrant\Models\Request\CreateCollection;
 use Qdrant\Models\Request\UpdateCollection;
+use Qdrant\Response;
 
 class Collections extends AbstractEndpoint
 {
@@ -70,6 +73,19 @@ class Collections extends AbstractEndpoint
     }
 
     /**
+     * # Collection cluster info
+     * Get cluster information for a collection
+     *
+     * @throws InvalidArgumentException
+     */
+    public function updateCluster(string $name, array $params): Response
+    {
+        return $this->client->execute(
+            $this->createRequest('POST', '/collections/' . $name . '/cluster', $params)
+        );
+    }
+
+    /**
      * # Delete collection
      * Drop collection and all associated data
      *
@@ -103,5 +119,15 @@ class Collections extends AbstractEndpoint
     public function points(): Points
     {
         return (new Points($this->client))->setCollectionName($this->collectionName);
+    }
+
+    public function snapshots(): Snapshots
+    {
+        return (new Snapshots($this->client))->setCollectionName($this->collectionName);
+    }
+
+    public function index(): Index
+    {
+        return (new Index($this->client))->setCollectionName($this->collectionName);
     }
 }

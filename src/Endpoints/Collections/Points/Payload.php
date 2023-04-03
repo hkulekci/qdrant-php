@@ -6,8 +6,9 @@
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
-namespace Qdrant\Endpoints;
+namespace Qdrant\Endpoints\Collections\Points;
 
+use Qdrant\Endpoints\AbstractEndpoint;
 use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Response;
 

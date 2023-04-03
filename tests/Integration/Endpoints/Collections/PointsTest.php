@@ -3,8 +3,7 @@
  * @since     Mar 2023
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
-
-namespace Qdrant\Tests\Integration\Endpoints;
+namespace Qdrant\Tests\Integration\Endpoints\Collections;
 
 use Qdrant\Endpoints\Collections;
 use Qdrant\Exception\InvalidArgumentException;
@@ -12,9 +11,21 @@ use Qdrant\Models\PointsStruct;
 use Qdrant\Models\VectorStruct;
 use Qdrant\Tests\Integration\AbstractIntegration;
 
-
-class PointTest extends AbstractIntegration
+class PointsTest extends AbstractIntegration
 {
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function testCollectionIndex(): void
+    {
+        $collection = new Collections($this->client);
+        $this->createCollections('sample-collection');
+        $collection->setCollectionName('sample-collection');
+
+        $index = $collection->points();
+        $this->assertEquals('sample-collection', $index->getCollectionName());
+    }
+
     public static function basicPointDataProvider(): array
     {
         return [

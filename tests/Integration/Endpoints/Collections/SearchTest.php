@@ -4,14 +4,12 @@
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
-namespace Qdrant\Tests\Integration\Endpoints;
+namespace Qdrant\Tests\Integration\Endpoints\Collections;
 
 use Qdrant\Endpoints\Collections;
 use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\PointsStruct;
-use Qdrant\Models\Request\CreateCollection;
 use Qdrant\Models\Request\SearchRequest;
-use Qdrant\Models\Request\VectorParams;
 use Qdrant\Models\VectorStruct;
 use Qdrant\Tests\Integration\AbstractIntegration;
 
