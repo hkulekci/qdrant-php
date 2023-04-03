@@ -9,7 +9,6 @@
 namespace Qdrant\Endpoints;
 
 use Qdrant\Exception\InvalidArgumentException;
-use Qdrant\Models\Request\ServiceLock;
 use Qdrant\Response;
 
 class Aliases extends AbstractEndpoint
