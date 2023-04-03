@@ -6,7 +6,7 @@
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
-namespace Qdrant\Tests\Integration\Endpoints;
+namespace Qdrant\Tests\Integration\Endpoints\Collections;
 
 use Qdrant\Endpoints\Aliases;
 use Qdrant\Endpoints\Collections;

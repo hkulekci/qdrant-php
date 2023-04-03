@@ -4,7 +4,7 @@
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
-namespace Qdrant\Tests\Integration\Endpoints;
+namespace Qdrant\Tests\Integration\Endpoints\Collections\Points;
 
 use Qdrant\Endpoints\Collections;
 use Qdrant\Exception\InvalidArgumentException;

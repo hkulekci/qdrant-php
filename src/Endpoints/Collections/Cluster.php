@@ -12,7 +12,6 @@ namespace Qdrant\Endpoints\Collections;
 
 use Qdrant\Endpoints\AbstractEndpoint;
 use Qdrant\Exception\InvalidArgumentException;
-use Qdrant\Models\Request\UpdateCollection;
 use Qdrant\Response;
 
 class Cluster extends AbstractEndpoint
@@ -23,36 +22,22 @@ class Cluster extends AbstractEndpoint
      *
      * @throws InvalidArgumentException
      */
-    public function cluster(string $name): Response
+    public function cluster(): Response
     {
         return $this->client->execute(
-            $this->createRequest('GET', '/collections/' . $name . '/cluster')
+            $this->createRequest('GET', '/collections/' . $this->getCollectionName() . '/cluster')
         );
     }
 
     /**
-     * # Delete collection
-     * Drop collection and all associated data
+     * # Update collection cluster setup
      *
      * @throws InvalidArgumentException
      */
-    public function delete(string $name): Response
+    public function update(array $params): Response
     {
         return $this->client->execute(
-            $this->createRequest('DELETE', '/collections/' . $name)
-        );
-    }
-
-    /**
-     * # Update collection parameters
-     * Update parameters of the existing collection
-     *
-     * @throws InvalidArgumentException
-     */
-    public function update(string $name, UpdateCollection $params): Response
-    {
-        return $this->client->execute(
-            $this->createRequest('PATCH', '/collections/' . $name, $params->toArray())
+            $this->createRequest('POST', '/collections/' . $this->getCollectionName() . '/cluster', $params->toArray())
         );
     }
 }

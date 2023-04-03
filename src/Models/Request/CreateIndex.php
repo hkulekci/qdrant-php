@@ -12,7 +12,7 @@ class CreateIndex implements RequestModel
     protected string $fieldSchema;
     protected array $schemaParams = [];
 
-    public function __construct(string $fieldName, string $fieldSchema, array $schemaParams)
+    public function __construct(string $fieldName, string $fieldSchema, array $schemaParams = [])
     {
         $this->fieldName = $fieldName;
         $this->fieldSchema = $fieldSchema;
