@@ -30,6 +30,19 @@ class AliasesTest extends AbstractIntegration
     /**
      * @throws InvalidArgumentException
      */
+    public function testCollectionAliases(): void
+    {
+        $collection = new Collections($this->client);
+        $this->createCollections('sample-collection');
+        $collection->setCollectionName('sample-collection');
+
+        $aliases = $collection->aliases();
+        $this->assertEquals('sample-collection', $aliases->getCollectionName());
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
     public function testCollectionEmptyAliases(): void
     {
         $collections = (new Collections($this->client));

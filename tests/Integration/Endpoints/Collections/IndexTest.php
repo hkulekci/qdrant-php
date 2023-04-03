@@ -16,6 +16,19 @@ class IndexTest extends AbstractIntegration
     /**
      * @throws InvalidArgumentException
      */
+    public function testCollectionIndex(): void
+    {
+        $collection = new Collections($this->client);
+        $this->createCollections('sample-collection');
+        $collection->setCollectionName('sample-collection');
+
+        $index = $collection->index();
+        $this->assertEquals('sample-collection', $index->getCollectionName());
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
     public function testCollectionIndexCreate(): void
     {
         $collection = new Collections($this->client);
