@@ -9,7 +9,8 @@
         "psr/http-message": "^1.0",
         "psr/log": "^3.0",
         "guzzlehttp/guzzle": "^7.5",
-        "guzzlehttp/psr7": "^2.4@dev"
+        "guzzlehttp/psr7": "^2.4@dev",
+        "webmozart/assert": "^1.11"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.0",
