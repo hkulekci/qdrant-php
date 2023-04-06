@@ -21,7 +21,7 @@ class Cluster extends AbstractEndpoint
      *
      * @throws InvalidArgumentException
      */
-    public function cluster(): Response
+    public function info(): Response
     {
         return $this->client->execute(
             $this->createRequest('GET', '/collections/' . $this->getCollectionName() . '/cluster')
@@ -36,7 +36,7 @@ class Cluster extends AbstractEndpoint
     public function update(array $params): Response
     {
         return $this->client->execute(
-            $this->createRequest('POST', '/collections/' . $this->getCollectionName() . '/cluster', $params->toArray())
+            $this->createRequest('POST', '/collections/' . $this->getCollectionName() . '/cluster', $params)
         );
     }
 }
