@@ -61,7 +61,7 @@ class CollectionsTest extends AbstractIntegration
         $response = $collections->create('sample-collection', self::sampleCollectionOption());
         $this->assertEquals('ok', $response['status']);
 
-        $response = $collections->cluster('sample-collection');
+        $response = $collections->setCollectionName('sample-collection')->cluster()->info();
         $this->assertEquals('ok', $response['status']);
         $this->assertArrayHasKey('peer_id', $response['result']);
         $this->assertArrayHasKey('shard_count', $response['result']);

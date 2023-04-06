@@ -10,6 +10,7 @@
 namespace Qdrant\Endpoints;
 
 use Qdrant\Endpoints\Collections\Aliases;
+use Qdrant\Endpoints\Collections\Cluster;
 use Qdrant\Endpoints\Collections\Index;
 use Qdrant\Endpoints\Collections\Points;
 use Qdrant\Endpoints\Collections\Snapshots;
@@ -60,32 +61,6 @@ class Collections extends AbstractEndpoint
     }
 
     /**
-     * # Collection cluster info
-     * Get cluster information for a collection
-     *
-     * @throws InvalidArgumentException
-     */
-    public function cluster(string $name): Response
-    {
-        return $this->client->execute(
-            $this->createRequest('GET', '/collections/' . $name . '/cluster')
-        );
-    }
-
-    /**
-     * # Collection cluster info
-     * Get cluster information for a collection
-     *
-     * @throws InvalidArgumentException
-     */
-    public function updateCluster(string $name, array $params): Response
-    {
-        return $this->client->execute(
-            $this->createRequest('POST', '/collections/' . $name . '/cluster', $params)
-        );
-    }
-
-    /**
      * # Delete collection
      * Drop collection and all associated data
      *
@@ -129,5 +104,10 @@ class Collections extends AbstractEndpoint
     public function index(): Index
     {
         return (new Index($this->client))->setCollectionName($this->collectionName);
+    }
+
+    public function cluster(): Cluster
+    {
+        return (new Cluster($this->client))->setCollectionName($this->collectionName);
     }
 }
