@@ -52,3 +52,26 @@ $client->collections('startups')->points()
     ->upsert($points);
 ```
 
+Search with a filter :
+
+```php
+use Qdrant\Models\Filter\Condition\MatchString;
+use Qdrant\Models\Filter\Filter;
+use Qdrant\Models\Request\SearchRequest;
+use Qdrant\Models\VectorStruct;
+
+$searchRequest = (new SearchRequest(new VectorStruct($embedding, 'elev_pitch')))
+    ->setFilter(
+        (new Filter())->addMust(
+            new MatchString('name', 'Palm')
+        )
+    )
+    ->setLimit(10)
+    ->setParams([
+        'hnsw_ef' => 128,
+        'exact' => false,
+    ])
+    ->setWithPayload(true);
+
+$response = $client->collections('startups')->points()->search($searchRequest);
+```
