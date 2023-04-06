@@ -8,6 +8,8 @@ namespace Qdrant\Tests\Integration\Endpoints\Collections;
 
 use Qdrant\Endpoints\Collections;
 use Qdrant\Exception\InvalidArgumentException;
+use Qdrant\Models\Filter\Condition\MatchString;
+use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\PointsStruct;
 use Qdrant\Models\Request\SearchRequest;
 use Qdrant\Models\VectorStruct;
@@ -66,11 +68,11 @@ class SearchTest extends AbstractIntegration
 
         $searchRequest = (new SearchRequest($vector))
             ->setLimit(3)
-            ->setFilter([
-                'must' => [
-                    ['key' => 'image', 'match' => ['value' => 'sample image']]
-                ]
-            ])
+            ->setFilter(
+                (new Filter())->addMust(
+                    new MatchString('image', 'sample image')
+                )
+            )
             ->setParams([
                 'hnsw_ef' => 128,
                 'exact' => false,

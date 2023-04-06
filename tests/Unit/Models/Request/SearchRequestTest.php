@@ -7,6 +7,8 @@ namespace Qdrant\Tests\Unit\Models\Request;
 
 use PHPUnit\Framework\TestCase;
 use Qdrant\Exception\InvalidArgumentException;
+use Qdrant\Models\Filter\Condition\MatchString;
+use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\Request\SearchRequest;
 use Qdrant\Models\Request\VectorParams;
 use Qdrant\Models\VectorStruct;
@@ -131,11 +133,11 @@ class SearchRequestTest extends TestCase
     {
         $vector = new VectorStruct([0, 300, 1], 'image');
 
-        $searchRequest = (new SearchRequest($vector))->setFilter([
-            'must' => [
-                ['key' => 'image', 'match' => ['value' => 'sample image']]
-            ]
-        ]);
+        $searchRequest = (new SearchRequest($vector))->setFilter(
+            (new Filter())->addMust(
+                new MatchString('image', 'sample image')
+            )
+        );
 
         $this->assertEquals(
             [

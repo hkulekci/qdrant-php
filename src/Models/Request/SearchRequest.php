@@ -7,11 +7,12 @@
  */
 namespace Qdrant\Models\Request;
 
+use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\VectorStruct;
 
 class SearchRequest
 {
-    protected array $filter = [];
+    protected ?Filter $filter = null;
 
     protected array $params = [];
 
@@ -30,7 +31,7 @@ class SearchRequest
         $this->vector = $vector;
     }
 
-    public function setFilter(array $filter): static
+    public function setFilter(Filter $filter): static
     {
         $this->filter = $filter;
 
@@ -77,8 +78,8 @@ class SearchRequest
         $body = [
             'vector' => $this->vector->toSearch(),
         ];
-        if ($this->filter) {
-            $body['filter'] = $this->filter;
+        if ($this->filter !== null) {
+            $body['filter'] = $this->filter->toArray();
         }
         if ($this->params) {
             $body['params'] = $this->params;
