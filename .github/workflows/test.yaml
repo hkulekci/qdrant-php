@@ -19,8 +19,8 @@ jobs:
           - php-version: '8.1'
           - php-version: '8.2'
     services:
-      skytable:
-        image: qdrant/qdrant
+      qdrant:
+        image: qdrant/qdrant:v1.1.0
         ports:
           - 6333:6333
 
