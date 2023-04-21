@@ -44,7 +44,10 @@ class ClusterTest extends AbstractIntegration
                 "from_peer_id" => 0
             ]
         ]);
-        $this->assertNull($response['result']);
+
+        $this->assertArrayHasKey('status', $response);
+        $this->assertArrayHasKey('time', $response);
+        $this->assertEquals('Bad request: Distributed mode disabled', $response['status']['error']);
         $this->assertEquals('sample-collection', $cluster->getCollectionName());
     }
 
