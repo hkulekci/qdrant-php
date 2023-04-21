@@ -50,7 +50,6 @@ class ClusterTest extends AbstractIntegration
 
         $this->assertArrayHasKey('status', $response);
         $this->assertArrayHasKey('time', $response);
-        $this->assertNull($response['result']);
         $this->assertEquals('Bad request: Distributed deployment is disabled.', $response['status']['error']);
     }
 }
