@@ -9,9 +9,6 @@ namespace Qdrant\Tests\Unit\Domain;
 use PHPUnit\Framework\TestCase;
 use Qdrant\Domain\Assert;
 use Qdrant\Exception\InvalidArgumentException;
-use Qdrant\Models\PointsStruct;
-use Qdrant\Models\PointStruct;
-use Qdrant\Models\VectorStruct;
 
 class AssertTest extends TestCase
 {

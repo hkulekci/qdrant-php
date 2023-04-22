@@ -21,9 +21,9 @@ class Config
         $this->port = $port;
     }
 
-    public function getDomain()
+    public function getDomain(): string
     {
-        return $this->host . ':' . $this->port . '/';
+        return $this->host . ':' . $this->port;
     }
 
     public function setApiKey($apiKey): Config
