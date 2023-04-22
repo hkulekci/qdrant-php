@@ -8,6 +8,8 @@ namespace Qdrant\Tests\Integration\Endpoints\Collections\Points;
 
 use Qdrant\Endpoints\Collections;
 use Qdrant\Exception\InvalidArgumentException;
+use Qdrant\Models\Filter\Condition\MatchString;
+use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\PointsStruct;
 use Qdrant\Models\Request\CreateCollection;
 use Qdrant\Models\Request\VectorParams;
@@ -32,13 +34,20 @@ class PayloadTest extends AbstractIntegration
                 [
                     [
                         'id' => 1,
-                        'vector' => new VectorStruct([1, 3, 400], 'image'),
+                        'vector' => new VectorStruct([2, 3, 400], 'image'),
                         'payload' => [
                             'image' => 'other image'
                         ]
                     ],
                     [
                         'id' => 2,
+                        'vector' => new VectorStruct([1, 3, 300], 'image'),
+                        'payload' => [
+                            'image' => 'sample image'
+                        ]
+                    ],
+                    [
+                        'id' => 3,
                         'vector' => new VectorStruct([1, 3, 300], 'image'),
                         'payload' => [
                             'image' => 'sample image'
@@ -53,41 +62,125 @@ class PayloadTest extends AbstractIntegration
      * @throws InvalidArgumentException
      * @dataProvider basicPointDataProvider
      */
-    public function testUpsertPoint(array $points): void
+    public function testSetPayloadForPoint(array $pointsArray): void
     {
         $collections = new Collections($this->client);
 
         $response = $collections->create('sample-collection', self::sampleCollectionOption());
         $this->assertEquals('ok', $response['status'], 'Collection Could Not Created!');
-        $response = $collections->setCollectionName('sample-collection')->points()
-            ->upsert(PointsStruct::createFromArray($points));
+        $points = $collections->setCollectionName('sample-collection')->points();
+        $points->upsert(PointsStruct::createFromArray($pointsArray));
 
-        $this->assertEquals('ok', $response['status'], 'Point Could Not Inserted!');
+        $payload = $collections->setCollectionName('sample-collection')->points()->payload();
+        $response = $payload->set([2], ['foo' => 'bar', 'image' => 'sample image']);
+
+        $this->assertEquals('ok', $response['status']);
         $this->assertEquals('acknowledged', $response['result']['status']);
 
-        $response = $collections->setCollectionName('sample-collection')->points()->count();
-        $this->assertEquals(2, $response['result']['count'], 'Count Not Matched!');
+        $response = $points->id(2);
+        $this->assertArrayHasKey('result', $response);
+        $this->assertArrayHasKey('payload', $response['result']);
+        $this->assertArrayHasKey('foo', $response['result']['payload']);
+        $this->assertEquals('bar', $response['result']['payload']['foo']);
     }
 
     /**
      * @throws InvalidArgumentException
      * @dataProvider basicPointDataProvider
      */
-    public function testDeletePoint(array $points): void
+    public function testDeletePayloadForPoint(array $pointsArray): void
     {
         $collections = new Collections($this->client);
 
         $response = $collections->create('sample-collection', self::sampleCollectionOption());
         $this->assertEquals('ok', $response['status'], 'Collection Could Not Created!');
-        $response = $collections->setCollectionName('sample-collection')->points()
-            ->upsert(PointsStruct::createFromArray($points));
+        $points = $collections->setCollectionName('sample-collection')->points();
+        $points->upsert(PointsStruct::createFromArray($pointsArray));
 
-        $this->assertEquals('ok', $response['status'], 'Point Could Not Inserted!');
-        $this->assertEquals('acknowledged', $response['result']['status']);
+        $payload = $collections->setCollectionName('sample-collection')->points()->payload();
+        $payload->delete([2], ['image']);
 
-        $response = $collections->setCollectionName('sample-collection')
-            ->points()->delete([1, 3, 400]);
-        $this->assertEquals('acknowledged', $response['result']['status'], 'Point Could Not Deleted!');
+        $response = $points->id(2);
+        $this->assertArrayHasKey('result', $response);
+        $this->assertArrayHasKey('payload', $response['result']);
+        $this->assertEmpty($response['result']['payload']);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @dataProvider basicPointDataProvider
+     */
+    public function testDeleteOnlyOneKeyFromPayloadForPoint(array $pointsArray): void
+    {
+        $collections = new Collections($this->client);
+
+        $response = $collections->create('sample-collection', self::sampleCollectionOption());
+        $this->assertEquals('ok', $response['status'], 'Collection Could Not Created!');
+        $points = $collections->setCollectionName('sample-collection')->points();
+        $points->upsert(PointsStruct::createFromArray($pointsArray));
+
+        $payload = $collections->setCollectionName('sample-collection')->points()->payload();
+        $payload->set([2], ['foo' => 'bar', 'image' => 'sample image']);
+
+        $payload = $collections->setCollectionName('sample-collection')->points()->payload();
+        $payload->delete([2], ['image']);
+
+        $response = $points->id(2);
+        $this->assertArrayHasKey('result', $response);
+        $this->assertArrayHasKey('payload', $response['result']);
+        $this->assertArrayHasKey('foo', $response['result']['payload']);
+        $this->assertEquals('bar', $response['result']['payload']['foo']);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @dataProvider basicPointDataProvider
+     */
+    public function testDeletePayloadWithFilterForPoint(array $pointsArray): void
+    {
+        $collections = new Collections($this->client);
+
+        $response = $collections->create('sample-collection', self::sampleCollectionOption());
+        $this->assertEquals('ok', $response['status'], 'Collection Could Not Created!');
+        $points = $collections->setCollectionName('sample-collection')->points();
+        $points->upsert(PointsStruct::createFromArray($pointsArray));
+
+        $payload = $collections->setCollectionName('sample-collection')->points()->payload();
+        $payload->set([2], ['foo' => 'bar', 'image' => 'sample image']);
+
+        $payload = $collections->setCollectionName('sample-collection')->points()->payload();
+        $payload->delete([2], ['image'], (new Filter())->addMust(new MatchString('foo', 'bar')));
+
+        $response = $points->id(2);
+        $this->assertArrayHasKey('result', $response);
+        $this->assertArrayHasKey('payload', $response['result']);
+        $this->assertArrayNotHasKey('image', $response['result']['payload']);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @dataProvider basicPointDataProvider
+     */
+    public function testClearPayloadForPoint(array $pointsArray): void
+    {
+        $collections = new Collections($this->client);
+
+        $response = $collections->create('sample-collection', self::sampleCollectionOption());
+        $this->assertEquals('ok', $response['status'], 'Collection Could Not Created!');
+        $points = $collections->setCollectionName('sample-collection')->points();
+        $points->upsert(PointsStruct::createFromArray($pointsArray));
+
+        $payload = $collections->setCollectionName('sample-collection')->points()->payload();
+        $payload->set([2], ['foo' => 'bar', 'image' => 'sample image']);
+
+        $payload = $collections->setCollectionName('sample-collection')->points()->payload();
+        $payload->clear([2]);
+
+        $response = $points->id(2);
+        $this->assertArrayHasKey('result', $response);
+        $this->assertArrayHasKey('payload', $response['result']);
+        $this->assertArrayNotHasKey('image', $response['result']['payload']);
+        $this->assertArrayNotHasKey('foo', $response['result']['payload']);
     }
 
     protected function tearDown(): void
