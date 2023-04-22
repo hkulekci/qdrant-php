@@ -12,6 +12,7 @@ namespace Qdrant\Endpoints\Collections;
 use Qdrant\Endpoints\AbstractEndpoint;
 use Qdrant\Endpoints\Collections\Points\Payload;
 use Qdrant\Exception\InvalidArgumentException;
+use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\PointsStruct;
 use Qdrant\Models\Request\PointsBatch;
 use Qdrant\Models\Request\SearchRequest;
@@ -41,11 +42,11 @@ class Points extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function scroll(array $filter = []): Response
+    public function scroll(Filter $filter = null): Response
     {
         $body = [];
         if ($filter) {
-            $body['filter'] = $filter;
+            $body['filter'] = $filter->toArray();
         }
         return $this->client->execute(
             $this->createRequest(
@@ -75,14 +76,14 @@ class Points extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function deleteByFilter(array $filter): Response
+    public function deleteByFilter(Filter $filter): Response
     {
         return $this->client->execute(
             $this->createRequest(
                 'POST',
                 '/collections/' . $this->getCollectionName() . '/points/delete',
                 [
-                    'filter' => $filter,
+                    'filter' => $filter->toArray(),
                 ]
             )
         );
@@ -91,7 +92,7 @@ class Points extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function ids(array $ids): Response
+    public function ids(array $ids, $withPayload = false, $withVector = true): Response
     {
         return $this->client->execute(
             $this->createRequest(
@@ -99,6 +100,8 @@ class Points extends AbstractEndpoint
                 '/collections/' . $this->getCollectionName() . '/points',
                 [
                     'ids' => $ids,
+                    'with_payload' => $withPayload,
+                    'with_vector' => $withVector,
                 ]
             )
         );
@@ -117,17 +120,16 @@ class Points extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function count(array $filter = [], $exact = false): Response
+    public function count(Filter $filter = null, $exact = false): Response
     {
         $body = [
             'exact' => $exact,
         ];
 
         if ($filter) {
-            $body['filter'] = $filter;
+            $body['filter'] = $filter->toArray();
         }
 
-        //TODO: we can put here filter object instead of array
         return $this->client->execute(
             $this->createRequest(
                 'POST',

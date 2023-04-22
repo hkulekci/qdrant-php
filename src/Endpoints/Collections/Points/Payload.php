@@ -10,6 +10,7 @@ namespace Qdrant\Endpoints\Collections\Points;
 
 use Qdrant\Endpoints\AbstractEndpoint;
 use Qdrant\Exception\InvalidArgumentException;
+use Qdrant\Models\Filter\Filter;
 use Qdrant\Response;
 
 class Payload extends AbstractEndpoint
@@ -35,21 +36,25 @@ class Payload extends AbstractEndpoint
      *
      * @param array $points
      * @param array $keys
-     * @param array $filters
+     * @param Filter|null $filter
      * @return Response
      * @throws InvalidArgumentException
      */
-    public function delete(array $points, array $keys, array $filters): Response
+    public function delete(array $points, array $keys, Filter $filter = null): Response
     {
+        $data = [
+            'points' => $points,
+            'keys' => $keys
+        ];
+        if ($filter) {
+            $data['filters'] = $filter->toArray();
+        }
+
         return $this->client->execute(
             $this->createRequest(
                 'POST',
                 '/collections/' . $this->getCollectionName() . '/points/payload/delete',
-                [
-                    'filters' => $filters,
-                    'keys' => $keys,
-                    'points' => $points,
-                ]
+                $data
             )
         );
     }

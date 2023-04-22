@@ -80,16 +80,16 @@ class CreateCollection implements RequestModel
                 $data['vectors'][$name] = $vector->toArray();
             }
         }
-        if ($this->shardNumber) {
+        if ($this->shardNumber !== null) {
             $data['shard_number'] = $this->shardNumber;
         }
-        if ($this->replicationFactor) {
+        if ($this->replicationFactor !== null) {
             $data['replication_factor'] = $this->replicationFactor;
         }
-        if ($this->writeConsistencyFactor) {
+        if ($this->writeConsistencyFactor !== null) {
             $data['write_consistency_factor'] = $this->writeConsistencyFactor;
         }
-        if ($this->onDiskPayload) {
+        if ($this->onDiskPayload !== null) {
             $data['on_disk_payload'] = $this->onDiskPayload;
         }
         if ($this->initFrom !== null) {

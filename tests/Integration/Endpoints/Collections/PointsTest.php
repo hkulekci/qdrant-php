@@ -7,6 +7,8 @@ namespace Qdrant\Tests\Integration\Endpoints\Collections;
 
 use Qdrant\Endpoints\Collections;
 use Qdrant\Exception\InvalidArgumentException;
+use Qdrant\Models\Filter\Condition\MatchString;
+use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\PointsStruct;
 use Qdrant\Models\VectorStruct;
 use Qdrant\Tests\Integration\AbstractIntegration;
@@ -110,11 +112,8 @@ class PointsTest extends AbstractIntegration
             ->upsert(PointsStruct::createFromArray($points));
         $this->assertEquals('ok', $response['status']);
 
-        $response = $this->getCollections('sample-collection')->points()->scroll([
-            'must' => [
-                ['key' => 'image', 'match' => ['value' => 'sample image']]
-            ]
-        ]);
+        $filter = (new Filter())->addMust(new MatchString('image', 'sample image'));
+        $response = $this->getCollections('sample-collection')->points()->scroll($filter);
         $this->assertCount(1, $response['result']['points']);
         $this->assertEquals(2, $response['result']['points'][0]['id']);
     }
@@ -129,11 +128,8 @@ class PointsTest extends AbstractIntegration
             ->upsert(PointsStruct::createFromArray($points));
         $this->assertEquals('ok', $response['status']);
 
-        $response = $this->getCollections('sample-collection')->points()->deleteByFilter([
-            'must' => [
-                ['key' => 'image', 'match' => ['value' => 'sample image']]
-            ]
-        ]);
+        $filter = (new Filter())->addMust(new MatchString('image', 'sample image'));
+        $response = $this->getCollections('sample-collection')->points()->deleteByFilter($filter);
         $this->assertEquals('ok', $response['status']);
 
         $response = $this->getCollections('sample-collection')->points()->count();

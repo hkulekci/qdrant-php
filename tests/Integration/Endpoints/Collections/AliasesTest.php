@@ -76,6 +76,35 @@ class AliasesTest extends AbstractIntegration
     /**
      * @throws InvalidArgumentException
      */
+    public function testCollectionCreateAliasesWithChecking(): void
+    {
+        $collections = (new Collections($this->client));
+        $response = $collections->create('sample-collection', self::sampleCollectionOption());
+        $this->assertEquals('ok', $response['status']);
+
+        $collections->setCollectionName('sample-collection');
+        $aliases = $collections->aliases();
+        $aliasActions = new AliasActions();
+        $aliasActions->add('sample-alias', 'sample-collection');
+        $response = $aliases->actions($aliasActions);
+        $this->assertEquals('ok', $response['status']);
+        $this->assertEquals(true, $response['result']);
+
+        $aliasesObj = new Collections\Aliases($this->client);
+        $aliasesObj->setCollectionName('sample-collection');
+        $response = $aliasesObj->aliases();
+
+        $this->assertEquals('ok', $response['status']);
+        $this->assertArrayHasKey('aliases', $response['result']);
+        $this->assertNotEmpty($response['result']['aliases']);
+
+        $this->assertEquals('sample-alias', $response['result']['aliases'][0]['alias_name']);
+        $this->assertEquals('sample-collection', $response['result']['aliases'][0]['collection_name']);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
     public function testCollectionCreateAndDeleteAliases(): void
     {
         $collections = (new Collections($this->client));

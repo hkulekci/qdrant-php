@@ -16,7 +16,8 @@
         "phpunit/phpunit": "^10.0",
         "mockery/mockery": "^1.5",
         "openai-php/client": "^0.3.5",
-        "hkulekci/cohere": "dev-main"
+        "hkulekci/cohere": "dev-main",
+        "phpunit/php-code-coverage": "^10.1@dev"
     },
     "autoload": {
         "psr-4": {
@@ -35,6 +36,7 @@
         }
     ],
     "scripts": {
-        "test": "vendor/bin/phpunit --display-warnings --display-deprecations"
+        "test": "vendor/bin/phpunit --display-warnings --display-deprecations",
+        "coverage": "vendor/bin/phpunit --display-warnings --display-deprecations --coverage-html coverage/"
     }
 }
