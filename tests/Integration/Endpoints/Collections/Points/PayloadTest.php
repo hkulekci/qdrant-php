@@ -66,7 +66,7 @@ class PayloadTest extends AbstractIntegration
     {
         $collections = new Collections($this->client);
 
-        $response = $collections->create('sample-collection', self::sampleCollectionOption());
+        $response = $collections->setCollectionName('sample-collection')->create(self::sampleCollectionOption());
         $this->assertEquals('ok', $response['status'], 'Collection Could Not Created!');
         $points = $collections->setCollectionName('sample-collection')->points();
         $points->upsert(PointsStruct::createFromArray($pointsArray));
@@ -92,7 +92,7 @@ class PayloadTest extends AbstractIntegration
     {
         $collections = new Collections($this->client);
 
-        $response = $collections->create('sample-collection', self::sampleCollectionOption());
+        $response = $collections->setCollectionName('sample-collection')->create(self::sampleCollectionOption());
         $this->assertEquals('ok', $response['status'], 'Collection Could Not Created!');
         $points = $collections->setCollectionName('sample-collection')->points();
         $points->upsert(PointsStruct::createFromArray($pointsArray));
@@ -114,7 +114,7 @@ class PayloadTest extends AbstractIntegration
     {
         $collections = new Collections($this->client);
 
-        $response = $collections->create('sample-collection', self::sampleCollectionOption());
+        $response = $collections->setCollectionName('sample-collection')->create(self::sampleCollectionOption());
         $this->assertEquals('ok', $response['status'], 'Collection Could Not Created!');
         $points = $collections->setCollectionName('sample-collection')->points();
         $points->upsert(PointsStruct::createFromArray($pointsArray));
@@ -140,7 +140,7 @@ class PayloadTest extends AbstractIntegration
     {
         $collections = new Collections($this->client);
 
-        $response = $collections->create('sample-collection', self::sampleCollectionOption());
+        $response = $collections->setCollectionName('sample-collection')->create(self::sampleCollectionOption());
         $this->assertEquals('ok', $response['status'], 'Collection Could Not Created!');
         $points = $collections->setCollectionName('sample-collection')->points();
         $points->upsert(PointsStruct::createFromArray($pointsArray));
@@ -165,7 +165,7 @@ class PayloadTest extends AbstractIntegration
     {
         $collections = new Collections($this->client);
 
-        $response = $collections->create('sample-collection', self::sampleCollectionOption());
+        $response = $collections->setCollectionName('sample-collection')->create(self::sampleCollectionOption());
         $this->assertEquals('ok', $response['status'], 'Collection Could Not Created!');
         $points = $collections->setCollectionName('sample-collection')->points();
         $points->upsert(PointsStruct::createFromArray($pointsArray));
@@ -188,6 +188,6 @@ class PayloadTest extends AbstractIntegration
         parent::tearDown();
         $collections = new Collections($this->client);
 
-        $collections->delete('sample-collection');
+        $collections->setCollectionName('sample-collection')->delete();
     }
 }

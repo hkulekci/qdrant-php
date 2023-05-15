@@ -62,12 +62,12 @@ class Payload extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function set(array $points, array $payload): Response
+    public function set(array $points, array $payload, array $params = []): Response
     {
         return $this->client->execute(
             $this->createRequest(
                 'POST',
-                '/collections/' . $this->getCollectionName() . '/points/payload',
+                '/collections/' . $this->getCollectionName() . '/points/payload' . $this->queryBuild($params),
                 [
                     'payload' => $payload,
                     'points' => $points,

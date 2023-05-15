@@ -60,12 +60,12 @@ class Points extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function delete(array $points): Response
+    public function delete(array $points, array $queryParams = []): Response
     {
         return $this->client->execute(
             $this->createRequest(
                 'POST',
-                '/collections/' . $this->getCollectionName() . '/points/delete',
+                '/collections/' . $this->getCollectionName() . '/points/delete' . $this->queryBuild($queryParams),
                 [
                     'points' => $points,
                 ]
@@ -92,12 +92,12 @@ class Points extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function ids(array $ids, $withPayload = false, $withVector = true): Response
+    public function ids(array $ids, $withPayload = false, $withVector = true, array $queryParams = []): Response
     {
         return $this->client->execute(
             $this->createRequest(
                 'POST',
-                '/collections/' . $this->getCollectionName() . '/points',
+                '/collections/' . $this->getCollectionName() . '/points' . $this->queryBuild($queryParams),
                 [
                     'ids' => $ids,
                     'with_payload' => $withPayload,
@@ -110,10 +110,13 @@ class Points extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function id(int $id): Response
+    public function id(int $id, array $queryParams = []): Response
     {
         return $this->client->execute(
-            $this->createRequest('GET', '/collections/' . $this->getCollectionName() . '/points/' . $id)
+            $this->createRequest(
+                'GET',
+                '/collections/' . $this->getCollectionName() . '/points/' . $id . $this->queryBuild($queryParams)
+            )
         );
     }
 
@@ -142,12 +145,12 @@ class Points extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function upsert(PointsStruct $points): Response
+    public function upsert(PointsStruct $points, array $queryParams = []): Response
     {
         return $this->client->execute(
             $this->createRequest(
                 'PUT',
-                '/collections/' . $this->getCollectionName() . '/points',
+                '/collections/' . $this->getCollectionName() . '/points' . $this->queryBuild($queryParams),
                 [
                     'points' => $points->toArray(),
                 ]

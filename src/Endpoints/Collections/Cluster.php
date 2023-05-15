@@ -33,10 +33,13 @@ class Cluster extends AbstractEndpoint
      *
      * @throws InvalidArgumentException
      */
-    public function update(array $params): Response
+    public function update(array $params, array $queryParams = []): Response
     {
         return $this->client->execute(
-            $this->createRequest('POST', '/collections/' . $this->getCollectionName() . '/cluster', $params)
+            $this->createRequest(
+                'POST',
+                '/collections/' . $this->getCollectionName() . '/cluster' . $this->queryBuild($queryParams),
+                $params)
         );
     }
 }

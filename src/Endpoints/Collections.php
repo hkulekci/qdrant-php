@@ -40,10 +40,14 @@ class Collections extends AbstractEndpoint
      *
      * @throws InvalidArgumentException
      */
-    public function create(string $name, CreateCollection $params): Response
+    public function create(CreateCollection $params, array $queryParams = []): Response
     {
         return $this->client->execute(
-            $this->createRequest('PUT', '/collections/' . $name, $params->toArray())
+            $this->createRequest(
+                'PUT',
+                '/collections/' . $this->getCollectionName() . $this->queryBuild($queryParams),
+                $params->toArray()
+            )
         );
     }
 
@@ -53,10 +57,10 @@ class Collections extends AbstractEndpoint
      *
      * @throws InvalidArgumentException
      */
-    public function info(string $name): Response
+    public function info(): Response
     {
         return $this->client->execute(
-            $this->createRequest('GET', '/collections/' . $name)
+            $this->createRequest('GET', '/collections/' . $this->getCollectionName())
         );
     }
 
@@ -66,10 +70,13 @@ class Collections extends AbstractEndpoint
      *
      * @throws InvalidArgumentException
      */
-    public function delete(string $name): Response
+    public function delete(array $queryParams = []): Response
     {
         return $this->client->execute(
-            $this->createRequest('DELETE', '/collections/' . $name)
+            $this->createRequest(
+                'DELETE',
+                '/collections/' . $this->getCollectionName() . $this->queryBuild($queryParams)
+            )
         );
     }
 
@@ -79,10 +86,14 @@ class Collections extends AbstractEndpoint
      *
      * @throws InvalidArgumentException
      */
-    public function update(string $name, UpdateCollection $params): Response
+    public function update(UpdateCollection $params, array $queryParams = []): Response
     {
         return $this->client->execute(
-            $this->createRequest('PATCH', '/collections/' . $name, $params->toArray())
+            $this->createRequest(
+                'PATCH',
+                '/collections/' . $this->getCollectionName() . $this->queryBuild($queryParams),
+                $params->toArray()
+            )
         );
     }
 

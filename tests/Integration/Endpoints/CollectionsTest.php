@@ -58,7 +58,8 @@ class CollectionsTest extends AbstractIntegration
     {
         $collections = new Collections($this->client);
 
-        $response = $collections->create('sample-collection', self::sampleCollectionOption());
+        $response = $collections->setCollectionName('sample-collection')
+            ->create(self::sampleCollectionOption());
         $this->assertEquals('ok', $response['status']);
 
         $response = $collections->setCollectionName('sample-collection')->cluster()->info();
@@ -74,11 +75,12 @@ class CollectionsTest extends AbstractIntegration
     public function testCreateCollection(): void
     {
         $collections = new Collections($this->client);
+        $collections->setCollectionName('sample-collection');
 
-        $response = $collections->create('sample-collection', self::sampleCollectionOption());
+        $response = $collections->create(self::sampleCollectionOption());
         $this->assertEquals('ok', $response['status']);
 
-        $response = $collections->info('sample-collection');
+        $response = $collections->info();
         $this->assertEquals('green', $response['result']['status']);
     }
 
@@ -88,11 +90,12 @@ class CollectionsTest extends AbstractIntegration
     public function testCreateCollectionWithoutParameters(): void
     {
         $collections = new Collections($this->client);
+        $collections->setCollectionName('sample-collection');
 
-        $response = $collections->create('sample-collection', self::sampleCollectionOption());
+        $response = $collections->create(self::sampleCollectionOption());
         $this->assertEquals('ok', $response['status']);
 
-        $response = $collections->info('sample-collection');
+        $response = $collections->info();
         $this->assertEquals('green', $response['result']['status']);
     }
 
@@ -102,11 +105,12 @@ class CollectionsTest extends AbstractIntegration
     public function testCreateMultiVectorCollection(): void
     {
         $collections = new Collections($this->client);
+        $collections->setCollectionName('sample-collection');
 
-        $response = $collections->create('sample-collection', self::multiVectorCollectionOption());
+        $response = $collections->create(self::multiVectorCollectionOption());
         $this->assertEquals('ok', $response['status']);
 
-        $response = $collections->info('sample-collection');
+        $response = $collections->info();
         $this->assertEquals('green', $response['result']['status']);
     }
 
@@ -116,15 +120,15 @@ class CollectionsTest extends AbstractIntegration
     public function testUpdateCollection(): void
     {
         $collections = new Collections($this->client);
+        $collections->setCollectionName('sample-collection');
 
-        $response = $collections->create('sample-collection', self::sampleCollectionOption());
+        $response = $collections->create(self::sampleCollectionOption());
         $this->assertEquals('ok', $response['status']);
 
-        $response = $collections->info('sample-collection');
+        $response = $collections->info();
         $this->assertEquals('green', $response['result']['status']);
 
         $response = $collections->update(
-            'sample-collection',
             (new UpdateCollection())->addOptimizersConfigDiff(
                 (new OptimizersConfigDiff())
                     ->setIndexingThreshold(10000)
@@ -139,14 +143,16 @@ class CollectionsTest extends AbstractIntegration
     public function testCreateCollectionFromAnotherCollection(): void
     {
         $collections = new Collections($this->client);
+        $collections->setCollectionName('sample-collection');
 
-        $response = $collections->create('sample-collection', self::sampleCollectionOption());
+        $response = $collections->create(self::sampleCollectionOption());
         $this->assertEquals('ok', $response['status']);
 
-        $response = $collections->info('sample-collection');
+        $response = $collections->info();
         $this->assertEquals('green', $response['result']['status']);
 
-        $response = $collections->create('other-collection', self::otherCollectionOption());
+        $collections->setCollectionName('other-collection');
+        $response = $collections->create(self::otherCollectionOption());
         $this->assertEquals('ok', $response['status']);
     }
 
@@ -154,8 +160,7 @@ class CollectionsTest extends AbstractIntegration
     {
         parent::tearDown();
         $collections = new Collections($this->client);
-
-        $collections->delete('sample-collection');
-        $collections->delete('other-collection');
+        $collections->setCollectionName('sample-collection')->delete();
+        $collections->setCollectionName('other-collection')->delete();
     }
 }

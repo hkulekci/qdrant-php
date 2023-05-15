@@ -46,8 +46,9 @@ class AliasesTest extends AbstractIntegration
     public function testCollectionEmptyAliases(): void
     {
         $collections = (new Collections($this->client));
+        $collections->setCollectionName('sample-collection');
         $aliases = new Aliases($this->client);
-        $response = $collections->create('sample-collection', self::sampleCollectionOption());
+        $response = $collections->create(self::sampleCollectionOption());
         $this->assertEquals('ok', $response['status']);
 
         $response = $aliases->all();
@@ -61,7 +62,8 @@ class AliasesTest extends AbstractIntegration
     public function testCollectionCreateAliases(): void
     {
         $collections = (new Collections($this->client));
-        $response = $collections->create('sample-collection', self::sampleCollectionOption());
+        $collections->setCollectionName('sample-collection');
+        $response = $collections->create( self::sampleCollectionOption());
         $this->assertEquals('ok', $response['status']);
 
         $collections->setCollectionName('sample-collection');
@@ -79,7 +81,8 @@ class AliasesTest extends AbstractIntegration
     public function testCollectionCreateAliasesWithChecking(): void
     {
         $collections = (new Collections($this->client));
-        $response = $collections->create('sample-collection', self::sampleCollectionOption());
+        $collections->setCollectionName('sample-collection');
+        $response = $collections->create(self::sampleCollectionOption());
         $this->assertEquals('ok', $response['status']);
 
         $collections->setCollectionName('sample-collection');
@@ -108,7 +111,8 @@ class AliasesTest extends AbstractIntegration
     public function testCollectionCreateAndDeleteAliases(): void
     {
         $collections = (new Collections($this->client));
-        $response = $collections->create('sample-collection', self::sampleCollectionOption());
+        $collections->setCollectionName('sample-collection');
+        $response = $collections->create(self::sampleCollectionOption());
         $this->assertEquals('ok', $response['status']);
 
         $aliases = $collections->aliases();
@@ -133,6 +137,7 @@ class AliasesTest extends AbstractIntegration
     {
         parent::tearDown();
         $collections = new Collections($this->client);
-        $collections->delete('sample-collection');
+        $collections->setCollectionName('sample-collection');
+        $collections->delete();
     }
 }
