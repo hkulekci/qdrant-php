@@ -53,6 +53,6 @@ class ClusterTest extends AbstractIntegration
     {
         parent::tearDown();
 
-        $this->getCollections('sample-collection')->delete('sample-collection');
+        $this->getCollections('sample-collection')->delete();
     }
 }

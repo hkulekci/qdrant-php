@@ -5,7 +5,7 @@
  * @since     Mar 2023
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
-namespace Qdrant\Integration\Endpoints;
+namespace Qdrant\Tests\Integration\Endpoints;
 
 use Qdrant\Endpoints\Collections;
 use Qdrant\Exception\InvalidArgumentException;
