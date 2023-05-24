@@ -45,10 +45,10 @@ class Cluster extends AbstractEndpoint
      *
      * @throws InvalidArgumentException
      */
-    public function removePeer(int $peerId, bool $force = null): Response
+    public function removePeer(int $peerId, array $queryParams = []): Response
     {
         return $this->client->execute(
-            $this->createRequest('DELETE', '/cluster/peer/' . $peerId)
+            $this->createRequest('DELETE', '/cluster/peer/' . $peerId . $this->queryBuild($queryParams))
         );
     }
 }

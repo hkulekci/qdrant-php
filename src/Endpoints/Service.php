@@ -21,8 +21,9 @@ class Service extends AbstractEndpoint
      */
     public function telemetry(bool $anonymize): Response
     {
+
         return $this->client->execute(
-            $this->createRequest('GET', '/telemetry')
+            $this->createRequest('GET', '/telemetry' . ($anonymize ? '?anonymize=true' : ''))
         );
     }
 
@@ -35,7 +36,7 @@ class Service extends AbstractEndpoint
     public function metrics(bool $anonymize): Response
     {
         return $this->client->execute(
-            $this->createRequest('POST', '/metrics')
+            $this->createRequest('POST', '/metrics' . ($anonymize ? '?anonymize=true' : ''))
         );
     }
 

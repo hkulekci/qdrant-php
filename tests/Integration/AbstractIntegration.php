@@ -40,7 +40,7 @@ abstract class AbstractIntegration extends TestCase
     protected function createCollections($name): void
     {
         $this->collections = new Collections($this->client);
-        $response = $this->collections->create($name, self::sampleCollectionOption());
+        $response = $this->collections->setCollectionName($name)->create(self::sampleCollectionOption());
         $this->assertEquals('ok', $response['status']);
     }
 

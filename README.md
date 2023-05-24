@@ -34,7 +34,7 @@ $client = new Qdrant(new GuzzleClient($config));
 
 $createCollection = new CreateCollection();
 $createCollection->addVector(new VectorParams(1024, VectorParams::DISTANCE_COSINE), 'image');
-$collections->create('images', $createCollection);
+$response = $client->collections('images')->create($createCollection);
 ```
 
 So now, we can insert a point : 
@@ -55,8 +55,7 @@ $points->addPoint(
         ]
     )
 );
-$client->collections('startups')->points()
-    ->upsert($points);
+$client->collections('images')->points()->upsert($points);
 ```
 
 Search with a filter :
@@ -80,5 +79,5 @@ $searchRequest = (new SearchRequest(new VectorStruct($embedding, 'elev_pitch')))
     ])
     ->setWithPayload(true);
 
-$response = $client->collections('startups')->points()->search($searchRequest);
+$response = $client->collections('images')->points()->search($searchRequest);
 ```

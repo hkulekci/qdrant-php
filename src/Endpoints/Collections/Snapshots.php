@@ -18,12 +18,12 @@ class Snapshots extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function create(array $params): Response
+    public function create(array $params, array $queryParams = []): Response
     {
         return $this->client->execute(
             $this->createRequest(
                 'POST',
-                '/collections/' . $this->getCollectionName() . '/snapshots',
+                '/collections/' . $this->getCollectionName() . '/snapshots' . $this->queryBuild($queryParams),
                 $params
             )
         );
@@ -32,12 +32,12 @@ class Snapshots extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function delete(string $snapshotName): Response
+    public function delete(string $snapshotName, array $queryParams = []): Response
     {
         return $this->client->execute(
             $this->createRequest(
                 'DELETE',
-                '/collections/' . $this->getCollectionName() . '/snapshots/' . $snapshotName
+                '/collections/' . $this->getCollectionName() . '/snapshots/' . $snapshotName . $this->queryBuild($queryParams)
             )
         );
     }

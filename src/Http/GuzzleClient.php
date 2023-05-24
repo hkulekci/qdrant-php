@@ -9,6 +9,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
+use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Message\RequestInterface;
 use Qdrant\Config;
 use Qdrant\Exception\InvalidArgumentException;
@@ -24,7 +25,8 @@ class GuzzleClient implements HttpClientInterface
     {
         $this->config = $config;
         $this->client = new Client([
-            'base_uri' => $this->config->getDomain()
+            'base_uri' => $this->config->getDomain(),
+            'http_errors' => true,
         ]);
     }
 
@@ -41,9 +43,12 @@ class GuzzleClient implements HttpClientInterface
     }
 
     /**
-     * @throws GuzzleException
+     * @param RequestInterface $request
+     * @return Response
+     * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws ServerException|InvalidArgumentException
+     * @throws ServerException
+     * @throws ClientExceptionInterface
      */
     public function execute(RequestInterface $request): Response
     {
@@ -51,7 +56,7 @@ class GuzzleClient implements HttpClientInterface
         try {
             $res = $this->client->sendRequest($request);
 
-            return Response::buildFromHttpResponse($res);
+            return new Response($res);
         } catch (ClientException $e) {
             $statusCode = $e->getResponse()->getStatusCode();
             if ($statusCode >= 400 && $statusCode < 500) {

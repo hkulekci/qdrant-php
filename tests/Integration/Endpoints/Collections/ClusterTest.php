@@ -33,6 +33,9 @@ class ClusterTest extends AbstractIntegration
      */
     public function testClusterUpdate(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Bad request: Distributed mode disabled');
+
         $cluster = new Collections\Cluster($this->client);
         $this->createCollections('sample-collection');
         $cluster->setCollectionName('sample-collection');
@@ -44,17 +47,12 @@ class ClusterTest extends AbstractIntegration
                 "from_peer_id" => 0
             ]
         ]);
-
-        $this->assertArrayHasKey('status', $response);
-        $this->assertArrayHasKey('time', $response);
-        $this->assertEquals('Bad request: Distributed mode disabled', $response['status']['error']);
-        $this->assertEquals('sample-collection', $cluster->getCollectionName());
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
 
-        $this->getCollections('sample-collection')->delete('sample-collection');
+        $this->getCollections('sample-collection')->delete();
     }
 }

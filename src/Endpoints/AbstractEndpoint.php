@@ -8,6 +8,7 @@
 namespace Qdrant\Endpoints;
 
 use GuzzleHttp\Psr7\HttpFactory;
+use GuzzleHttp\Psr7\Query;
 use Psr\Http\Message\RequestInterface;
 use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Http\HttpClientInterface;
@@ -40,6 +41,14 @@ abstract class AbstractEndpoint
             throw new InvalidArgumentException('You need to specify the collection name');
         }
         return $this->collectionName;
+    }
+
+    protected function queryBuild(array $params): string
+    {
+        if ($params) {
+            return '?' . Query::build($params);
+        }
+        return '';
     }
 
     /**

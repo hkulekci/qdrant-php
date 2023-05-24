@@ -52,14 +52,13 @@ class IndexTest extends AbstractIntegration
         $this->createCollections('sample-collection');
         $collection->setCollectionName('sample-collection');
 
-        $index = $collection->index();
-        $response = $index->create(new CreateIndex('image', 'keyword'));
+        $response = $collection->index()->create(new CreateIndex('image', 'keyword'));
 
         $this->assertArrayHasKey('result', $response);
         $this->assertEquals('acknowledged', $response['result']['status']);
         $this->assertEquals('ok', $response['status']);
 
-        $response = $index->delete('image');
+        $response = $collection->index()->delete('image');
         $this->assertArrayHasKey('result', $response);
         $this->assertEquals('acknowledged', $response['result']['status']);
         $this->assertEquals('ok', $response['status']);
@@ -70,6 +69,6 @@ class IndexTest extends AbstractIntegration
         parent::tearDown();
         $collections = new Collections($this->client);
 
-        $collections->delete('sample-collection');
+        $collections->setCollectionName('sample-collection')->delete();
     }
 }

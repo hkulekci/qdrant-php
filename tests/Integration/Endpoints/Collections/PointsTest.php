@@ -65,6 +65,23 @@ class PointsTest extends AbstractIntegration
         $this->assertEquals(2, $response['result']['count']);
     }
 
+    public function testUpsertPointWithWrongSize(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->createCollections('sample-collection');
+        $points = [
+            [
+                'id' => 2,
+                'vector' => new VectorStruct([500, 1, 3, 300, 400], 'image'),
+                'payload' => [
+                    'image' => 'sample image'
+                ]
+            ]
+        ];
+        $this->getCollections('sample-collection')->points()
+            ->upsert(PointsStruct::createFromArray($points), ['wait' => 'true']);
+    }
+
     /**
      * @dataProvider basicPointDataProvider
      */
@@ -140,6 +157,6 @@ class PointsTest extends AbstractIntegration
     {
         parent::tearDown();
 
-        $this->getCollections('sample-collection')->delete('sample-collection');
+        $this->getCollections('sample-collection')->delete();
     }
 }

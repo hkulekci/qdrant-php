@@ -21,12 +21,12 @@ class Index extends AbstractEndpoint
      *
      * @throws InvalidArgumentException
      */
-    public function create(CreateIndex $params): Response
+    public function create(CreateIndex $params, array $queryParams = []): Response
     {
         return $this->client->execute(
             $this->createRequest(
                 'PUT',
-                '/collections/' . $this->getCollectionName() . '/index',
+                '/collections/' . $this->getCollectionName() . '/index' . $this->queryBuild($queryParams),
                 $params->toArray()
             )
         );
@@ -37,12 +37,12 @@ class Index extends AbstractEndpoint
      *
      * @throws InvalidArgumentException
      */
-    public function delete(string $fieldName): Response
+    public function delete(string $fieldName, array $queryParams = []): Response
     {
         return $this->client->execute(
             $this->createRequest(
                 'DELETE',
-                '/collections/' . $this->getCollectionName() . '/index/' . $fieldName,
+                '/collections/' . $this->getCollectionName() . '/index/' . $fieldName . $this->queryBuild($queryParams),
             )
         );
     }

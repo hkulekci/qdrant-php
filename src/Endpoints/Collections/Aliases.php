@@ -21,10 +21,14 @@ class Aliases extends AbstractEndpoint
      *
      * @throws InvalidArgumentException
      */
-    public function actions(AliasActions $actions): Response
+    public function actions(AliasActions $actions, array $queryParams = []): Response
     {
         return $this->client->execute(
-            $this->createRequest('POST', '/collections/aliases', ['actions' => $actions->toArray()])
+            $this->createRequest(
+                'POST',
+                '/collections/aliases' . $this->queryBuild($queryParams),
+                ['actions' => $actions->toArray()]
+            )
         );
     }
 

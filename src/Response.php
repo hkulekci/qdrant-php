@@ -8,15 +8,34 @@ namespace Qdrant;
 
 use ArrayAccess;
 use Exception;
+use JsonException;
 use Psr\Http\Message\ResponseInterface;
+use Qdrant\Exception\InvalidArgumentException;
+use Qdrant\Exception\ServerException;
 
 class Response implements ArrayAccess
 {
     protected array $raw;
 
-    public function __construct($raw)
+    protected ResponseInterface $response;
+
+    /**
+     * @throws ServerException
+     * @throws InvalidArgumentException
+     * @throws JsonException
+     */
+    public function __construct(ResponseInterface $response)
     {
-        $this->raw = $raw;
+        $this->response = $response;
+        $this->raw = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
+
+        if ($this->response->getStatusCode() >= 400 && $this->response->getStatusCode() < 500) {
+            throw (new InvalidArgumentException($this->raw['status']['error'] ?? 'Invalid argument exception'))->setResponse($this);
+        }
+
+        if ($this->response->getStatusCode() >= 500 && $this->response->getStatusCode() < 500) {
+            throw (new ServerException())->setResponse($this);
+        }
     }
 
     public function __toArray(): array
@@ -48,12 +67,5 @@ class Response implements ArrayAccess
     public function offsetUnset(mixed $offset): void
     {
         throw new Exception('You can not change the response');
-    }
-
-    public static function buildFromHttpResponse(ResponseInterface $response): Response
-    {
-        $raw = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
-
-        return new Response($raw);
     }
 }

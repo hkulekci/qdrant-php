@@ -88,6 +88,6 @@ class SearchTest extends AbstractIntegration
         parent::tearDown();
         $collections = new Collections($this->client);
 
-        $collections->delete('sample-collection');
+        $collections->setCollectionName('sample-collection')->delete();
     }
 }
