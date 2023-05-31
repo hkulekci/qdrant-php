@@ -22,7 +22,7 @@ class VectorStruct
         if ($this->name) {
             return [
                 'name' => $this->name,
-                 'vector' => $this->vector,
+                'vector' => $this->vector,
             ];
         }
         return $this->vector;

@@ -46,7 +46,7 @@ class ClusterTest extends AbstractIntegration
     public function testClusterRemovePeer(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Bad request: Distributed deployment is disabled.');
+        $this->expectExceptionMessage('Bad request: Distributed mode disabled.');
         $cluster = new Cluster($this->client);
         $response = $cluster->removePeer(1);
     }
