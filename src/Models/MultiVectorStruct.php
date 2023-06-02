@@ -50,4 +50,9 @@ class MultiVectorStruct implements VectorStructInterface
     {
         return $this->vectors;
     }
+
+    public function count()
+    {
+        return count($this->vectors);
+    }
 }
