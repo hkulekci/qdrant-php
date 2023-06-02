@@ -8,7 +8,7 @@ namespace Qdrant\Models;
 
 use Qdrant\Models\Traits\ProtectedPropertyAccessor;
 
-class VectorStruct
+class VectorStruct implements VectorStructInterface
 {
     use ProtectedPropertyAccessor;
 
@@ -26,7 +26,12 @@ class VectorStruct
         return $this->name !== null;
     }
 
-    public function toSearch(): array
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function toSearchArray(string $name = null): array
     {
         if ($this->isNamed()) {
             return [

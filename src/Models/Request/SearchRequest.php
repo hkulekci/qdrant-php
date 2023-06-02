@@ -9,7 +9,7 @@ namespace Qdrant\Models\Request;
 
 use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\Traits\ProtectedPropertyAccessor;
-use Qdrant\Models\VectorStruct;
+use Qdrant\Models\VectorStructInterface;
 
 class SearchRequest
 {
@@ -19,7 +19,7 @@ class SearchRequest
 
     protected array $params = [];
 
-    protected VectorStruct $vector;
+    protected VectorStructInterface $vector;
 
     protected ?int $limit = null;
 
@@ -31,9 +31,18 @@ class SearchRequest
 
     protected ?float $scoreThreshold = null;
 
-    public function __construct(VectorStruct $vector)
+    protected ?string $name = null;
+
+    public function __construct(VectorStructInterface $vector)
     {
         $this->vector = $vector;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
     }
 
     public function setFilter(Filter $filter): static
@@ -88,8 +97,9 @@ class SearchRequest
     public function toArray(): array
     {
         $body = [
-            'vector' => $this->vector->toSearch(),
+            'vector' => $this->vector->toSearchArray($this->name ?? $this->vector->getName()),
         ];
+
         if ($this->filter !== null && $this->filter->toArray()) {
             $body['filter'] = $this->filter->toArray();
         }

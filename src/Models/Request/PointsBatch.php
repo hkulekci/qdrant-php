@@ -14,15 +14,11 @@ use Qdrant\Models\VectorStruct;
 
 class PointsBatch implements RequestModel
 {
-    protected array $batchPoints;
+    protected array $points;
 
     public function __construct()
     {
-        $this->batchPoints = [
-            'ids' => [],
-            'payloads' => [],
-            'vectors' => [],
-        ];
+        $this->points = [];
     }
 
     public function addPoint(PointStruct $point): void
@@ -64,6 +60,6 @@ class PointsBatch implements RequestModel
 
         $this->batchPoints['vectors'] = $vectors;
 
-        return $this->batchPoints;
+        return array_map(fn($point) => $point->toArray(), $this->points);
     }
 }
