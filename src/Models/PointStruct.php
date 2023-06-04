@@ -32,7 +32,7 @@ class PointStruct
         }
         $vector = $pointArray['vector'];
         if (is_array($pointArray['vector'])) {
-            $vector = new VectorStruct($pointArray['vector']);
+            $vector = new VectorStruct($pointArray['vector'], $pointArray['name'] ?? null);
         }
 
         return new PointStruct($pointArray['id'], $vector, $pointArray['payload'] ?? null);

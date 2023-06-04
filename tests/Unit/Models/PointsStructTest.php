@@ -53,4 +53,40 @@ class PointsStructTest extends TestCase
             $points->toArray()
         );
     }
+
+    public function testPointsStructWithNamedVectors(): void
+    {
+        $points = PointsStruct::createFromArray([
+            [
+                'id' => 1,
+                'vector' => [
+                    'image' => [1, 2, 3]
+                ],
+            ],
+            [
+                'id' => 1,
+                'vector' => [
+                    'image' => [3, 4, 5]
+                ],
+            ]
+        ]);
+
+        $this->assertEquals(
+            [
+                [
+                    'id' => 1,
+                    'vector' => [
+                        'image' => [1, 2, 3]
+                    ],
+                ],
+                [
+                    'id' => 1,
+                    'vector' => [
+                        'image' => [3, 4, 5]
+                    ],
+                ]
+            ],
+            $points->toArray()
+        );
+    }
 }

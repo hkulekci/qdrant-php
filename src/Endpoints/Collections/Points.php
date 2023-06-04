@@ -162,14 +162,14 @@ class Points extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function batch(PointsBatch $batchPoint): Response
+    public function batch(PointsStruct $points, array $queryParams = []): Response
     {
         return $this->client->execute(
             $this->createRequest(
                 'PUT',
-                '/collections/' . $this->getCollectionName() . '/points',
+                '/collections/' . $this->getCollectionName() . '/points' . $this->queryBuild($queryParams),
                 [
-                    'batch' => $batchPoint->toArray(),
+                    'points' => $points->toArray(),
                 ]
             )
         );

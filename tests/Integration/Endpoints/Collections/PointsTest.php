@@ -153,6 +153,42 @@ class PointsTest extends AbstractIntegration
         $this->assertEquals(1, $response['result']['count']);
     }
 
+    public function testBatchUploadPoints(): void
+    {
+        $this->createCollections('sample-collection');
+        $points = PointsStruct::createFromArray([
+            [
+                'id' => 1,
+                'vector' => [
+                    'image' => [1, 2, 3]
+                ],
+            ],
+            [
+                'id' => 2,
+                'vector' => [
+                    'image' => [3, 4, 5]
+                ],
+            ],
+            [
+                'id' => 3,
+                'vector' => [
+                    'image' => [3, 4, 5]
+                ],
+            ],
+            [
+                'id' => 4,
+                'vector' => [
+                    'image' => [3, 4, 5]
+                ],
+            ]
+        ]);
+
+        $this->getCollections('sample-collection')->points()->batch($points, ['wait' => 'true']);
+
+        $response = $this->getCollections('sample-collection')->points()->count();
+        $this->assertEquals(4, $response['result']['count']);
+    }
+
     protected function tearDown(): void
     {
         parent::tearDown();
