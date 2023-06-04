@@ -24,6 +24,8 @@ class Nested implements ConditionInterface
 
     public function toArray(): array
     {
-        return $this->container;
+        return [
+            'nested' => $this->container
+        ];
     }
 }
