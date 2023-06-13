@@ -8,8 +8,10 @@ namespace Qdrant\Tests\Integration\Endpoints\Collections\Points;
 
 use Qdrant\Endpoints\Collections;
 use Qdrant\Exception\InvalidArgumentException;
+use Qdrant\Models\Filter\Condition\MatchBool;
 use Qdrant\Models\Filter\Condition\MatchString;
 use Qdrant\Models\Filter\Filter;
+use Qdrant\Models\Filter\Nested;
 use Qdrant\Models\PointsStruct;
 use Qdrant\Models\Request\CreateCollection;
 use Qdrant\Models\Request\VectorParams;
@@ -57,6 +59,7 @@ class PayloadTest extends AbstractIntegration
             ]
         ];
     }
+
 
     /**
      * @throws InvalidArgumentException
@@ -156,6 +159,71 @@ class PayloadTest extends AbstractIntegration
         $this->assertArrayHasKey('payload', $response['result']);
         $this->assertArrayNotHasKey('image', $response['result']['payload']);
     }
+
+    public static function nestedPointDataProvider(): array
+    {
+        return [
+            [
+                [
+                    [
+                        'id' => 1,
+                        'vector' => new VectorStruct([2, 3, 400], 'image'),
+                        'payload' => [
+                            'dinosaur' => 't-rex',
+                            'diet' => [
+                                ['food' => 'leaves', 'likes' => false],
+                                ['food' => 'meat', 'likes' => true],
+                            ]
+                        ]
+                    ],
+                    [
+                        'id' => 2,
+                        'vector' => new VectorStruct([1, 3, 300], 'image'),
+                        'payload' => [
+                            'dinosaur' => 'diplodocus',
+                            'diet' => [
+                                ['food' => 'leaves', 'likes' => true],
+                                ['food' => 'meat', 'likes' => false],
+                            ]
+                        ]
+                    ],
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @dataProvider nestedPointDataProvider
+     */
+    public function testNestedFilterForPoint(array $pointsArray): void
+    {
+        $collections = new Collections($this->client);
+
+        $response = $collections->setCollectionName('sample-collection')->create(self::sampleCollectionOption());
+        $this->assertEquals('ok', $response['status'], 'Collection Could Not Created!');
+        $points = $collections->setCollectionName('sample-collection')->points();
+        $points->upsert(PointsStruct::createFromArray($pointsArray));
+
+        $response = $points->scroll(
+            (new Filter())->addMust(
+                (new Nested(
+                    'diet',
+                    (new Filter())->addMust(
+                        new MatchString('food', 'meat')
+                    )->addMust(
+                        new MatchBool('likes', false)
+                    )
+                ))
+            )
+        );
+
+        $this->assertArrayHasKey('result', $response);
+        $this->assertArrayHasKey('points', $response['result']);
+        $this->assertCount(1, $response['result']['points']);
+        $this->assertEquals(2, $response['result']['points'][0]['id']);
+    }
+
 
     /**
      * @throws InvalidArgumentException

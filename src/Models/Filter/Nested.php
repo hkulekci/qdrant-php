@@ -1,6 +1,6 @@
 <?php
 /**
- * @since     Apr 2023
+ * @since     Jun 2023
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -12,14 +12,12 @@ class Nested implements ConditionInterface
 {
     protected array $container = [];
 
-    public function addFilter(string $key, Filter $filter): Nested
+    public function __construct(string $key, Filter $filter)
     {
-        $this->container[] = [
+        $this->container = [
             'key' => $key,
             'filter' => $filter->toArray()
         ];
-
-        return $this;
     }
 
     public function toArray(): array
