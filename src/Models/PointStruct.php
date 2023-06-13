@@ -51,4 +51,28 @@ class PointStruct
 
         return $point;
     }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getPayload(): ?array
+    {
+        return $this->payload;
+    }
+
+    /**
+     * @return VectorStruct
+     */
+    public function getVector(): VectorStruct
+    {
+        return $this->vector;
+    }
 }

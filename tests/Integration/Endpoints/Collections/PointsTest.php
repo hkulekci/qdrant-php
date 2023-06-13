@@ -10,6 +10,10 @@ use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\Filter\Condition\MatchString;
 use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\PointsStruct;
+use Qdrant\Models\PointStruct;
+use Qdrant\Models\Request\CreateCollection;
+use Qdrant\Models\Request\PointsBatch;
+use Qdrant\Models\Request\VectorParams;
 use Qdrant\Models\VectorStruct;
 use Qdrant\Tests\Integration\AbstractIntegration;
 
@@ -156,34 +160,67 @@ class PointsTest extends AbstractIntegration
     public function testBatchUploadPoints(): void
     {
         $this->createCollections('sample-collection');
-        $points = PointsStruct::createFromArray([
-            [
-                'id' => 1,
-                'vector' => [
-                    'image' => [1, 2, 3]
-                ],
-            ],
-            [
-                'id' => 2,
-                'vector' => [
-                    'image' => [3, 4, 5]
-                ],
-            ],
-            [
-                'id' => 3,
-                'vector' => [
-                    'image' => [3, 4, 5]
-                ],
-            ],
-            [
-                'id' => 4,
-                'vector' => [
-                    'image' => [3, 4, 5]
-                ],
-            ]
-        ]);
 
-        $this->getCollections('sample-collection')->points()->batch($points, ['wait' => 'true']);
+        $batch = new PointsBatch();
+        $batch->addPoint(PointStruct::createFromArray([
+            'id' => 1,
+            'vector' => new VectorStruct([1, 2, 3], 'image'),
+            'payload' => ['color' => 'red']
+        ]));
+        $batch->addPoint(PointStruct::createFromArray([
+            'id' => 2,
+            'vector' => new VectorStruct([3, 4, 5], 'image'),
+            'payload' => ['color' => 'red']
+        ]));
+        $batch->addPoint(PointStruct::createFromArray([
+            'id' => 3,
+            'vector' => new VectorStruct([6, 7, 8], 'image'),
+            'payload' => ['color' => 'red']
+        ]));
+        $batch->addPoint(PointStruct::createFromArray([
+            'id' => 4,
+            'vector' => new VectorStruct([7, 8, 9], 'image'),
+            'payload' => ['color' => 'red']
+        ]));
+
+        $this->getCollections('sample-collection')->points()->batch($batch, ['wait' => 'true']);
+
+        $response = $this->getCollections('sample-collection')->points()->count();
+        $this->assertEquals(4, $response['result']['count']);
+    }
+
+
+    public function testBatchUploadPointsWithoutName(): void
+    {
+        $this->createCollections(
+            'sample-collection',
+            (new CreateCollection())
+                ->addVector(new VectorParams(3, VectorParams::DISTANCE_COSINE))
+        );
+
+        $batch = new PointsBatch();
+        $batch->addPoint(PointStruct::createFromArray([
+            'id' => 1,
+            'vector' => new VectorStruct([1, 2, 3]),
+            'payload' => ['color' => 'red']
+        ]));
+        $batch->addPoint(PointStruct::createFromArray([
+            'id' => 2,
+            'vector' => new VectorStruct([3, 4, 5]),
+            'payload' => ['color' => 'red']
+        ]));
+        $batch->addPoint(PointStruct::createFromArray([
+            'id' => 3,
+            'vector' => new VectorStruct([6, 7, 8]),
+            'payload' => ['color' => 'red']
+        ]));
+        $batch->addPoint(PointStruct::createFromArray([
+            'id' => 4,
+            'vector' => new VectorStruct([7, 8, 9]),
+            'payload' => ['color' => 'red']
+        ]));
+
+        $this->getCollections('sample-collection')->points()->batch($batch, ['wait' => 'true']);
 
         $response = $this->getCollections('sample-collection')->points()->count();
         $this->assertEquals(4, $response['result']['count']);

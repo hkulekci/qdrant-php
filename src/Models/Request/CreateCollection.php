@@ -26,9 +26,9 @@ class CreateCollection implements RequestModel
     public function addVector(VectorParams $vectorParams, string $name = null): CreateCollection
     {
         if ($name !== null) {
-            $this->vectors[$name] = $vectorParams;
+            $this->vectors[$name] = $vectorParams->toArray();
         } else {
-            $this->vectors[] = $vectorParams;
+            $this->vectors = $vectorParams->toArray();
         }
 
         return $this;
@@ -75,10 +75,7 @@ class CreateCollection implements RequestModel
     {
         $data = [];
         if ($this->vectors) {
-            $data['vectors'] = [];
-            foreach ($this->vectors as $name => $vector) {
-                $data['vectors'][$name] = $vector->toArray();
-            }
+            $data['vectors'] = $this->vectors;
         }
         if ($this->shardNumber !== null) {
             $data['shard_number'] = $this->shardNumber;

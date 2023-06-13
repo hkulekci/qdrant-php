@@ -160,16 +160,18 @@ class Points extends AbstractEndpoint
     }
 
     /**
+     * https://qdrant.github.io/qdrant/redoc/index.html#tag/points/operation/upsert_points
+     *
      * @throws InvalidArgumentException
      */
-    public function batch(PointsStruct $points, array $queryParams = []): Response
+    public function batch(PointsBatch $points, array $queryParams = []): Response
     {
         return $this->client->execute(
             $this->createRequest(
                 'PUT',
                 '/collections/' . $this->getCollectionName() . '/points' . $this->queryBuild($queryParams),
                 [
-                    'points' => $points->toArray(),
+                    'batch' => $points->toArray(),
                 ]
             )
         );
