@@ -15,6 +15,7 @@ use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\PointsStruct;
 use Qdrant\Models\Request\PointsBatch;
+use Qdrant\Models\Request\RecommendRequest;
 use Qdrant\Models\Request\SearchRequest;
 use Qdrant\Response;
 
@@ -170,6 +171,20 @@ class Points extends AbstractEndpoint
                 [
                     'batch' => $batchPoint->toArray(),
                 ]
+            )
+        );
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function recommend(RecommendRequest $recommendParams): Response
+    {
+        return $this->client->execute(
+            $this->createRequest(
+                'POST',
+                'collections/' . $this->collectionName . '/points/recommend',
+                $recommendParams->toArray()
             )
         );
     }
