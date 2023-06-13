@@ -2,3 +2,6 @@ vendor/
 .phpunit.result.cache
 .phpunit.cache
 coverage
+/qdrant_storage
+/composer.lock
+/.idea
