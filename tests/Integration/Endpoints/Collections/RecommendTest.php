@@ -1,7 +1,7 @@
 <?php
 /**
- * @since     Mar 2023
- * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
+ * @since     Jun 2023
+ * @author    Greg Priday <greg@siteorigin.com>
  */
 
 namespace Qdrant\Tests\Integration\Endpoints\Collections;

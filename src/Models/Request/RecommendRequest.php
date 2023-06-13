@@ -1,4 +1,10 @@
 <?php
+/**
+ * RecommendRequest
+ *
+ * @since     Jun 2023
+ * @author    Greg Priday <greg@siteorigin.com>
+ */
 namespace Qdrant\Models\Request;
 
 use Qdrant\Models\Filter\Filter;
