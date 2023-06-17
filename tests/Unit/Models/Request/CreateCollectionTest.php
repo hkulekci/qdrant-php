@@ -39,10 +39,8 @@ class CreateCollectionTest extends TestCase
         $this->assertEquals(
             [
                 'vectors' => [
-                    [
-                        'size' => '1024',
-                        'distance' => 'Cosine'
-                    ]
+                    'size' => '1024',
+                    'distance' => 'Cosine'
                 ]
             ],
             $collection->toArray()
@@ -58,10 +56,8 @@ class CreateCollectionTest extends TestCase
         $this->assertEquals(
             [
                 'vectors' => [
-                    [
-                        'size' => '1024',
-                        'distance' => 'Cosine'
-                    ]
+                    'size' => '1024',
+                    'distance' => 'Cosine'
                 ],
                 'shard_number' => 1
             ],
@@ -78,10 +74,8 @@ class CreateCollectionTest extends TestCase
         $this->assertEquals(
             [
                 'vectors' => [
-                    [
-                        'size' => '1024',
-                        'distance' => 'Cosine'
-                    ]
+                    'size' => '1024',
+                    'distance' => 'Cosine'
                 ],
                 'replication_factor' => 1
             ],
@@ -100,10 +94,8 @@ class CreateCollectionTest extends TestCase
         $this->assertEquals(
             [
                 'vectors' => [
-                    [
-                        'size' => '1024',
-                        'distance' => 'Cosine'
-                    ]
+                    'size' => '1024',
+                    'distance' => 'Cosine'
                 ],
                 'shard_number' => 1,
                 'replication_factor' => 0,
@@ -122,10 +114,8 @@ class CreateCollectionTest extends TestCase
         $this->assertEquals(
             [
                 'vectors' => [
-                    [
-                        'size' => '1024',
-                        'distance' => 'Cosine'
-                    ]
+                    'size' => '1024',
+                    'distance' => 'Cosine'
                 ],
                 'write_consistency_factor' => 3
             ],
@@ -142,10 +132,8 @@ class CreateCollectionTest extends TestCase
         $this->assertEquals(
             [
                 'vectors' => [
-                    [
-                        'size' => '1024',
-                        'distance' => 'Cosine'
-                    ]
+                    'size' => '1024',
+                    'distance' => 'Cosine'
                 ],
                 'on_disk_payload' => false
             ],

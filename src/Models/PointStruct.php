@@ -32,7 +32,7 @@ class PointStruct
         }
         $vector = $pointArray['vector'];
         if (is_array($pointArray['vector'])) {
-            $vector = new VectorStruct($pointArray['vector']);
+            $vector = new VectorStruct($pointArray['vector'], $pointArray['name'] ?? null);
         }
 
         return new PointStruct($pointArray['id'], $vector, $pointArray['payload'] ?? null);
@@ -50,5 +50,29 @@ class PointStruct
         }
 
         return $point;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getPayload(): ?array
+    {
+        return $this->payload;
+    }
+
+    /**
+     * @return VectorStruct
+     */
+    public function getVector(): VectorStruct
+    {
+        return $this->vector;
     }
 }

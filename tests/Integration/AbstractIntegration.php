@@ -37,16 +37,17 @@ abstract class AbstractIntegration extends TestCase
             ->addVector(new VectorParams(3, VectorParams::DISTANCE_COSINE), 'image');
     }
 
-    protected function createCollections($name): void
+    protected function createCollections($name, CreateCollection $withConfiguration = null): void
     {
         $this->collections = new Collections($this->client);
-        $response = $this->collections->setCollectionName($name)->create(self::sampleCollectionOption());
+        $response = $this->collections->setCollectionName($name)
+            ->create($withConfiguration ?: self::sampleCollectionOption());
         $this->assertEquals('ok', $response['status']);
     }
 
     public function getCollections(string $collectionsName): Collections
     {
-        $this->assertNotNull($this->collections);
+        $this->assertNotNull($this->collections, 'The collection did not created!');
         $this->collections->setCollectionName($collectionsName);
 
         return $this->collections;
