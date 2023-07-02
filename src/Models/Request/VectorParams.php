@@ -19,7 +19,7 @@ class VectorParams implements RequestModel
     protected int $size;
 
     /**
-     * @var string [Cosine, Dot]
+     * @var string [Cosine, Euclid, Dot]
      */
     protected string $distance;
 
