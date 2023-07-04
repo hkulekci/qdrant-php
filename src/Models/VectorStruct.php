@@ -6,8 +6,12 @@
 
 namespace Qdrant\Models;
 
+use Qdrant\Models\Traits\StructProtectedPropertyAccessor;
+
 class VectorStruct
 {
+    use StructProtectedPropertyAccessor;
+
     protected array $vector;
     protected ?string $name;
 

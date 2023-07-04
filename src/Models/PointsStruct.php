@@ -6,8 +6,12 @@
 
 namespace Qdrant\Models;
 
+use Qdrant\Models\Traits\StructProtectedPropertyAccessor;
+
 class PointsStruct
 {
+    use StructProtectedPropertyAccessor;
+
     protected array $points = [];
 
     public function addPoint(PointStruct $pointStruct): void

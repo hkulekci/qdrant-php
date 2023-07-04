@@ -9,9 +9,12 @@
 namespace Qdrant\Models;
 
 use Qdrant\Exception\InvalidArgumentException;
+use Qdrant\Models\Traits\StructProtectedPropertyAccessor;
 
 class PointStruct
 {
+    use StructProtectedPropertyAccessor;
+
     // TODO: we need a solution for point with uuid
     protected int $id;
     protected ?array $payload = null;
