@@ -26,9 +26,9 @@ class SearchRequest
 
     protected bool|array|null $withPayload = null;
 
-    public function __construct(VectorStruct $vector)
-    private ?float $scoreThreshold = null;
+    protected ?float $scoreThreshold = null;
 
+    public function __construct(VectorStruct $vector)
     {
         $this->vector = $vector;
     }

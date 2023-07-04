@@ -17,7 +17,7 @@ class RecommendRequest
     protected ?string $using = null;
     protected ?int $limit = null;
     protected ?int $offset = null;
-    private ?float $scoreThreshold = null;
+    protected ?float $scoreThreshold = null;
 
     public function __construct(array $positive, array $negative = [])
     {
