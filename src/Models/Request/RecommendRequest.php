@@ -16,6 +16,8 @@ class RecommendRequest
     protected array $negative;
     protected ?string $using = null;
     protected ?int $limit = null;
+    protected ?int $offset = null;
+    private ?float $scoreThreshold = null;
 
     public function __construct(array $positive, array $negative = [])
     {
@@ -26,6 +28,13 @@ class RecommendRequest
     public function setFilter(Filter $filter): static
     {
         $this->filter = $filter;
+
+        return $this;
+    }
+
+    public function setScoreThreshold(float $scoreThreshold): static
+    {
+        $this->scoreThreshold = $scoreThreshold;
 
         return $this;
     }
@@ -44,6 +53,13 @@ class RecommendRequest
         return $this;
     }
 
+    public function setOffset(int $offset): static
+    {
+        $this->offset = $offset;
+
+        return $this;
+    }
+
     public function toArray(): array
     {
         $body = [
@@ -54,11 +70,17 @@ class RecommendRequest
         if ($this->filter !== null) {
             $body['filter'] = $this->filter->toArray();
         }
+        if($this->scoreThreshold) {
+            $body['score_threshold'] = $this->scoreThreshold;
+        }
         if ($this->using) {
             $body['using'] = $this->using;
         }
         if ($this->limit) {
             $body['limit'] = $this->limit;
+        }
+        if ($this->offset) {
+            $body['offset'] = $this->offset;
         }
 
         return $body;
