@@ -6,7 +6,7 @@
 
 namespace Qdrant\Models;
 
-class VectorStruct
+class VectorStruct implements VectorStructInterface
 {
     protected array $vector;
     protected ?string $name;
@@ -22,7 +22,12 @@ class VectorStruct
         return $this->name !== null;
     }
 
-    public function toSearch(): array
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function toSearchArray(string $name = null): array
     {
         if ($this->isNamed()) {
             return [

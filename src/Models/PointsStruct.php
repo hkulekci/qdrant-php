@@ -42,4 +42,9 @@ class PointsStruct
 
         return $points;
     }
+
+    public function count(): int
+    {
+        return count($this->points);
+    }
 }
