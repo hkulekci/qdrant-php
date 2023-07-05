@@ -16,7 +16,7 @@ class ProtectedPropertyAccessorTest extends TestCase
             protected $exampleProperty = "value";
         };
 
-        $this->assertEquals("value", $mock->exampleProperty);
+        $this->assertEquals("value", $mock->getExampleProperty());
     }
 
     public function testAccessNonExistentProperty()
@@ -28,18 +28,21 @@ class ProtectedPropertyAccessorTest extends TestCase
             use ProtectedPropertyAccessor;
         };
 
-        $unused = $mock->nonExistentProperty;
+        $unused = $mock->getNonExistentProperty();
     }
 
     public function testAccessPublicProperty()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Access to property 'publicProperty' is not allowed");
+
         $mock = new class {
             use ProtectedPropertyAccessor;
 
             public $publicProperty = "publicValue";
         };
 
-        $this->assertEquals("publicValue", $mock->publicProperty);
+        $unused = $mock->getPublicProperty();
     }
 
     public function testAccessPrivateProperty()
@@ -53,7 +56,6 @@ class ProtectedPropertyAccessorTest extends TestCase
             private $privateProperty = "privateValue";
         };
 
-        $private = $mock->privateProperty;
+        $unused = $mock->getPrivateProperty();
     }
-
 }
