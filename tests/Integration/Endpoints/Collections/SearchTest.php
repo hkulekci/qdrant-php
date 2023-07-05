@@ -83,6 +83,50 @@ class SearchTest extends AbstractIntegration
         $this->assertEquals('ok', $response['status']);
     }
 
+    public function testSearchWithThreshold(): void
+    {
+        // Upsert points
+        $points = PointsStruct::createFromArray([
+            // This is a point that'll match the search query
+            ['id' => 2, 'vector' => new VectorStruct([0.1, 0.3, 0.2], 'image')],
+            // This will be the opposite of the search query, so should be filtered
+            ['id' => 3, 'vector' => new VectorStruct([-0.1, -0.3, -0.2], 'image')],
+        ]);
+        $this->getCollections('sample-collection')->points()->upsert($points);
+
+        // Create search request without score threshold
+        $vector = new VectorStruct([0.1, 0.3, 0.2], 'image');
+        $searchRequestWithoutThreshold = (new SearchRequest($vector))
+            ->setLimit(3)
+            ->setParams(['hnsw_ef' => 128, 'exact' => false]);
+
+        // Create search request with score threshold
+        $searchRequestWithThreshold = clone $searchRequestWithoutThreshold;
+        $searchRequestWithThreshold->setScoreThreshold(0.5);
+
+        // Perform search without score threshold
+        $responseWithoutThreshold = $this->getCollections('sample-collection')
+            ->points()
+            ->search($searchRequestWithoutThreshold);
+
+        // Perform search with score threshold
+        $responseWithThreshold = $this->getCollections('sample-collection')
+            ->points()
+            ->search($searchRequestWithThreshold);
+
+        // Check that we got a response in both cases
+        $this->assertEquals('ok', $responseWithoutThreshold['status']);
+        $this->assertEquals('ok', $responseWithThreshold['status']);
+
+        // Assert that the result count is higher or the same when no score threshold is used
+        $this->assertGreaterThanOrEqual(
+            count($responseWithThreshold['result']),
+            count($responseWithoutThreshold['result']),
+            'The result count should be higher or the same when no score threshold is used'
+        );
+    }
+
+
     protected function tearDown(): void
     {
         parent::tearDown();
