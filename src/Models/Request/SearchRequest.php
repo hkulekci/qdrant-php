@@ -78,7 +78,7 @@ class SearchRequest
         $body = [
             'vector' => $this->vector->toSearch(),
         ];
-        if ($this->filter !== null) {
+        if ($this->filter !== null && $this->filter->toArray()) {
             $body['filter'] = $this->filter->toArray();
         }
         if ($this->params) {

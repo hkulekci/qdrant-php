@@ -65,7 +65,6 @@ class SearchTest extends AbstractIntegration
      */
     public function testSearchPoint(VectorStruct $vector): void
     {
-
         $searchRequest = (new SearchRequest($vector))
             ->setLimit(3)
             ->setFilter(
@@ -81,6 +80,26 @@ class SearchTest extends AbstractIntegration
         $response = $this->getCollections('sample-collection')->points()->search($searchRequest);
 
         $this->assertEquals('ok', $response['status']);
+        $this->assertCount(1, $response['result']);
+    }
+
+    /**
+     * @dataProvider searchQueryProvider
+     */
+    public function testSearchPointEmptyFilter(VectorStruct $vector): void
+    {
+        $searchRequest = (new SearchRequest($vector))
+            ->setLimit(3)
+            ->setFilter(new Filter())
+            ->setParams([
+                'hnsw_ef' => 128,
+                'exact' => false,
+            ]);
+
+        $response = $this->getCollections('sample-collection')->points()->search($searchRequest);
+
+        $this->assertEquals('ok', $response['status']);
+        $this->assertCount(2, $response['result']);
     }
 
     protected function tearDown(): void
