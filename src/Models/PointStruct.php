@@ -18,9 +18,9 @@ class PointStruct
     // TODO: we need a solution for point with uuid
     protected int|string $id;
     protected ?array $payload = null;
-    protected VectorStruct $vector;
+    protected VectorStructInterface $vector;
 
-    public function __construct(int|string $id, VectorStruct $vector, array $payload = null)
+    public function __construct(int|string $id, VectorStructInterface $vector, array $payload = null)
     {
         $this->id = $id;
         $this->vector = $vector;
@@ -33,9 +33,17 @@ class PointStruct
         if (count(array_intersect_key(array_flip($required), $pointArray)) !== count($required)) {
             throw new InvalidArgumentException('Missing point keys');
         }
+
         $vector = $pointArray['vector'];
-        if (is_array($pointArray['vector'])) {
-            $vector = new VectorStruct($pointArray['vector'], $pointArray['name'] ?? null);
+
+        // Check if it's an array and convert it to a VectorStruct
+        if (is_array($vector)) {
+            $vector = new VectorStruct($vector, $pointArray['name'] ?? null);
+        }
+
+        // Check if it's already a VectorStruct or MultiVectorStruct
+        if (!($vector instanceof VectorStructInterface)) {
+            throw new InvalidArgumentException('Invalid vector type');
         }
 
         return new PointStruct($pointArray['id'], $vector, $pointArray['payload'] ?? null);
