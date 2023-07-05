@@ -10,7 +10,7 @@ use ReflectionProperty;
  *
  * Allows access to protected properties through the magic __get method.
  */
-trait StructProtectedPropertyAccessor
+trait ProtectedPropertyAccessor
 {
     /**
      * Magic method to implement generic getter functionality for protected properties.

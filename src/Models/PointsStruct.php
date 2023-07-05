@@ -6,11 +6,11 @@
 
 namespace Qdrant\Models;
 
-use Qdrant\Models\Traits\StructProtectedPropertyAccessor;
+use Qdrant\Models\Traits\ProtectedPropertyAccessor;
 
 class PointsStruct
 {
-    use StructProtectedPropertyAccessor;
+    use ProtectedPropertyAccessor;
 
     protected array $points = [];
 

@@ -8,9 +8,12 @@
 namespace Qdrant\Models\Request;
 
 use Qdrant\Models\Filter\Filter;
+use Qdrant\Models\Traits\ProtectedPropertyAccessor;
 
 class RecommendRequest
 {
+    use ProtectedPropertyAccessor;
+
     protected ?Filter $filter = null;
     protected array $positive;
     protected array $negative;
