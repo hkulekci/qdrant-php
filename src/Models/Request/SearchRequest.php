@@ -29,6 +29,8 @@ class SearchRequest
 
     protected bool|array|null $withPayload = null;
 
+    protected ?float $scoreThreshold = null;
+
     public function __construct(VectorStruct $vector)
     {
         $this->vector = $vector;
@@ -37,6 +39,13 @@ class SearchRequest
     public function setFilter(Filter $filter): static
     {
         $this->filter = $filter;
+
+        return $this;
+    }
+
+    public function setScoreThreshold(float $scoreThreshold): static
+    {
+        $this->scoreThreshold = $scoreThreshold;
 
         return $this;
     }
@@ -83,6 +92,9 @@ class SearchRequest
         ];
         if ($this->filter !== null) {
             $body['filter'] = $this->filter->toArray();
+        }
+        if($this->scoreThreshold) {
+            $body['score_threshold'] = $this->scoreThreshold;
         }
         if ($this->params) {
             $body['params'] = $this->params;

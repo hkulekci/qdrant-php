@@ -79,6 +79,51 @@ class RecommendTest extends AbstractIntegration
         $this->assertEquals('ok', $response['status']);
     }
 
+    public function testRecommendWithThreshold(): void
+    {
+        // Upsert points
+        $points = PointsStruct::createFromArray([
+            // These points should match the recommend query
+            ['id' => 4, 'vector' => new VectorStruct([0.2, 0.4, 0.5], 'image')],
+            ['id' => 5, 'vector' => new VectorStruct([0.3, 0.5, 0.6], 'image')],
+            ['id' => 6, 'vector' => new VectorStruct([0.21, 0.41, 0.51], 'image')],
+        ]);
+        $this->getCollections('sample-collection')->points()->upsert($points);
+
+        // Create recommend request without score threshold
+        $positiveIds = [6];
+        $recommendRequestWithoutThreshold = (new RecommendRequest($positiveIds))
+            ->setLimit(3)
+            ->setUsing('image')
+            ->setFilter((new Filter())->addMust(new MatchString('image', 'sample image')));
+
+        // Create recommend request with score threshold
+        $recommendRequestWithThreshold = clone $recommendRequestWithoutThreshold;
+        $recommendRequestWithThreshold->setScoreThreshold(0.9);
+
+        // Perform recommend without score threshold
+        $responseWithoutThreshold = $this->getCollections('sample-collection')
+            ->points()
+            ->recommend($recommendRequestWithoutThreshold);
+
+        // Perform recommend with score threshold
+        $responseWithThreshold = $this->getCollections('sample-collection')
+            ->points()
+            ->recommend($recommendRequestWithThreshold);
+
+        // Check that we got a response in both cases
+        $this->assertEquals('ok', $responseWithoutThreshold['status']);
+        $this->assertEquals('ok', $responseWithThreshold['status']);
+
+        // Assert that the result count is higher or the same when no score threshold is used
+        $this->assertGreaterThan(
+            count($responseWithThreshold['result']),
+            count($responseWithoutThreshold['result']),
+            'The result count should be higher or the same when no score threshold is used'
+        );
+    }
+
+
     protected function tearDown(): void
     {
         parent::tearDown();
