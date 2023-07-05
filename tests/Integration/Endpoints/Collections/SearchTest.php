@@ -119,7 +119,7 @@ class SearchTest extends AbstractIntegration
         $this->assertEquals('ok', $responseWithThreshold['status']);
 
         // Assert that the result count is higher or the same when no score threshold is used
-        $this->assertGreaterThanOrEqual(
+        $this->assertGreaterThan(
             count($responseWithThreshold['result']),
             count($responseWithoutThreshold['result']),
             'The result count should be higher or the same when no score threshold is used'
