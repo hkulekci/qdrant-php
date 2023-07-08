@@ -32,6 +32,20 @@ class ServiceTest extends AbstractIntegration
     /**
      * @throws InvalidArgumentException
      */
+    public function testServiceMetrics(): void
+    {
+        $service = new Service($this->client);
+        $response = $service->metrics(false);
+
+        $this->assertStringContainsString('app_info', $response['content']);
+        $this->assertStringContainsString('cluster_enabled', $response['content']);
+        $this->assertStringContainsString('collections_total', $response['content']);
+        $this->assertStringContainsString('rest_responses_', $response['content']);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
     public function testServiceGetLocks(): void
     {
         $service = new Service($this->client);

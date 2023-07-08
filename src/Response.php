@@ -27,7 +27,14 @@ class Response implements ArrayAccess
     public function __construct(ResponseInterface $response)
     {
         $this->response = $response;
-        $this->raw = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
+
+        if ($response->getHeaderLine('content-type') === 'application/json') {
+            $this->raw = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
+        } else {
+            $this->raw = [
+                'content' => $response->getBody()->getContents()
+            ];
+        }
 
         if ($this->response->getStatusCode() >= 400 && $this->response->getStatusCode() < 500) {
             throw (new InvalidArgumentException($this->raw['status']['error'] ?? 'Invalid argument exception'))->setResponse($this);

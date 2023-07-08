@@ -36,7 +36,7 @@ class Service extends AbstractEndpoint
     public function metrics(bool $anonymize): Response
     {
         return $this->client->execute(
-            $this->createRequest('POST', '/metrics' . ($anonymize ? '?anonymize=true' : ''))
+            $this->createRequest('GET', '/metrics' . ($anonymize ? '?anonymize=true' : ''))
         );
     }
 
