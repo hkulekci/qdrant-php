@@ -28,7 +28,7 @@ class Response implements ArrayAccess
     {
         $this->response = $response;
 
-        if ($response->getHeader('content-type') === 'application/json') {
+        if ($response->getHeaderLine('content-type') === 'application/json') {
             $this->raw = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
         } else {
             $this->raw = [
