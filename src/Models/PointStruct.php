@@ -16,11 +16,11 @@ class PointStruct
     use ProtectedPropertyAccessor;
 
     // TODO: we need a solution for point with uuid
-    protected int $id;
+    protected int|string $id;
     protected ?array $payload = null;
     protected VectorStruct $vector;
 
-    public function __construct(int $id, VectorStruct $vector, array $payload = null)
+    public function __construct(int|string $id, VectorStruct $vector, array $payload = null)
     {
         $this->id = $id;
         $this->vector = $vector;
@@ -58,7 +58,7 @@ class PointStruct
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): int|string
     {
         return $this->id;
     }
