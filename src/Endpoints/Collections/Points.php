@@ -111,7 +111,7 @@ class Points extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function id(int $id, array $queryParams = []): Response
+    public function id(int|string $id, array $queryParams = []): Response
     {
         return $this->client->execute(
             $this->createRequest(
