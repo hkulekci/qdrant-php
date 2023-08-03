@@ -26,6 +26,19 @@ class PointStructTest extends TestCase
         );
     }
 
+    public function testPointStructWithUUid(): void
+    {
+        $point = new PointStruct('550e8400-e29b-41d4-a716-446655440000', new VectorStruct([1, 2, 3]));
+
+        $this->assertEquals(
+            [
+                'id' => '550e8400-e29b-41d4-a716-446655440000',
+                'vector' => [1, 2, 3]
+            ],
+            $point->toArray()
+        );
+    }
+
     public function testPointStructWithArray(): void
     {
         $points = PointStruct::createFromArray([
