@@ -58,8 +58,23 @@ class PointStructTest extends TestCase
     public function testPointStructWithMissingFields(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Missing point keys');
         $points = PointStruct::createFromArray([
             'id' => 1,
+        ]);
+    }
+
+    public function testPointStructWithWrongObject(): void
+    {
+        $class = new class {
+            public int $id = 1;
+            public array $vector = [1, 2, 3];
+        };
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid vector type');
+        $points = PointStruct::createFromArray([
+            'id' => 1,
+            'vector' => $class
         ]);
     }
 }
