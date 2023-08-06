@@ -8,18 +8,26 @@
 
 namespace Qdrant\Models\Request;
 
+use Qdrant\Models\MultiVectorStruct;
+use Qdrant\Models\VectorStruct;
+use Qdrant\Models\VectorStructInterface;
+
 class Point implements RequestModel
 {
     protected string $id;
-    protected array $vector;
+    protected VectorStructInterface $vector;
 
     /**
      * @var array|null Payload values (optional)
      */
     protected ?array $payload = null;
 
-    public function __construct(string $id, array $vector, array $payload = null)
+    public function __construct(string $id, VectorStructInterface|array $vector, array $payload = null)
     {
+        if(is_array($vector)) {
+            $vector = new VectorStruct($vector);
+        }
+
         $this->id = $id;
         $this->vector = $vector;
         $this->payload = $payload;
@@ -29,7 +37,7 @@ class Point implements RequestModel
     {
         $data = [
             'id' => $this->id,
-            'vector' => $this->vector,
+            'vector' => $this->vector->toArray(),
         ];
 
         if ($this->payload) {

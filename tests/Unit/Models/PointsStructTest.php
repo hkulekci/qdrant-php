@@ -55,6 +55,37 @@ class PointsStructTest extends TestCase
         );
     }
 
+    public function testAddPointsMethodOfPointsStruct(): void
+    {
+        $points = new PointsStruct();
+        $points->addPoints(
+            [
+                new PointStruct(
+                    '550e8400-e29b-41d4-a716-446655440000',
+                    new VectorStruct([1, 2, 3])
+                ),
+                new PointStruct(
+                    '550e8400-e29b-41d4-a716-446655440001',
+                    new VectorStruct([1, 2, 4])
+                )
+            ]
+        );
+
+        $this->assertEquals(
+            [
+                [
+                    'id' => '550e8400-e29b-41d4-a716-446655440000',
+                    'vector' => [1, 2, 3]
+                ],
+                [
+                    'id' => '550e8400-e29b-41d4-a716-446655440001',
+                    'vector' => [1, 2, 4]
+                ]
+            ],
+            $points->toArray()
+        );
+    }
+
     public function testPointsStructWithArray(): void
     {
         $points = PointsStruct::createFromArray([
@@ -109,5 +140,7 @@ class PointsStructTest extends TestCase
             ],
             $points->toArray()
         );
+
+        $this->assertEquals(2, $points->count());
     }
 }

@@ -34,7 +34,8 @@ abstract class AbstractIntegration extends TestCase
     private static function sampleCollectionOption(): CreateCollection
     {
         return (new CreateCollection())
-            ->addVector(new VectorParams(3, VectorParams::DISTANCE_COSINE), 'image');
+            ->addVector(new VectorParams(3, VectorParams::DISTANCE_COSINE), 'image')
+            ->addVector(new VectorParams(3, VectorParams::DISTANCE_COSINE), 'text');
     }
 
     protected function createCollections($name, CreateCollection $withConfiguration = null): void
