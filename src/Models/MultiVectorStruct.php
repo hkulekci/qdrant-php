@@ -2,7 +2,7 @@
 
 namespace Qdrant\Models;
 
-use InvalidArgumentException;
+use Qdrant\Exception\InvalidArgumentException;
 
 class MultiVectorStruct implements VectorStructInterface
 {
@@ -51,7 +51,7 @@ class MultiVectorStruct implements VectorStructInterface
         return $this->vectors;
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->vectors);
     }

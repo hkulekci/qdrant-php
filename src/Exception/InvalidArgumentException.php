@@ -10,7 +10,7 @@ namespace Qdrant\Exception;
 
 use Qdrant\Response;
 
-class InvalidArgumentException extends \Exception
+class InvalidArgumentException extends \InvalidArgumentException
 {
     protected Response $response;
 

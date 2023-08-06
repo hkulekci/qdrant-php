@@ -15,7 +15,6 @@ class PointStruct
 {
     use ProtectedPropertyAccessor;
 
-    // TODO: we need a solution for point with uuid
     protected int|string $id;
     protected ?array $payload = null;
     protected VectorStructInterface $vector;
@@ -63,26 +62,17 @@ class PointStruct
         return $point;
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int|string
     {
         return $this->id;
     }
 
-    /**
-     * @return array|null
-     */
     public function getPayload(): ?array
     {
         return $this->payload;
     }
 
-    /**
-     * @return VectorStruct
-     */
-    public function getVector(): VectorStruct
+    public function getVector(): VectorStructInterface
     {
         return $this->vector;
     }
