@@ -21,7 +21,7 @@ class VectorStruct implements VectorStructInterface
         $this->name = $name;
     }
 
-    private function isNamed(): bool
+    public function isNamed(): bool
     {
         return $this->name !== null;
     }
