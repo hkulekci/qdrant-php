@@ -46,4 +46,11 @@ class VectorStructTest extends TestCase
             $vector->toSearchArray()
         );
     }
+
+    public function testGetNameWithNullValue(): void
+    {
+        $vector = new VectorStruct([1, 2, 3]);
+
+        $this->assertNull($vector->getName());
+    }
 }

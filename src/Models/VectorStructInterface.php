@@ -9,7 +9,7 @@ interface VectorStructInterface
      *
      * @return string
      */
-    public function getName(): string;
+    public function getName(): ?string;
 
     /**
      * Convert this vector to a search array.

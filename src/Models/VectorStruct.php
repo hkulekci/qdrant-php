@@ -26,7 +26,7 @@ class VectorStruct implements VectorStructInterface
         return $this->name !== null;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }

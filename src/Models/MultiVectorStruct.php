@@ -20,7 +20,7 @@ class MultiVectorStruct implements VectorStructInterface
         $this->vectors[$name] = $vector;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         if(empty($this->vectors)) {
             throw new InvalidArgumentException("No vectors added yet");
