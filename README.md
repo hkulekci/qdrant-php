@@ -58,6 +58,14 @@ $points->addPoint(
 $client->collections('images')->points()->upsert($points);
 ```
 
+While upsert data, if you want to wait for upsert to actually happen, you can use query paramaters:
+
+```
+$client->collections('images')->points()->upsert($points, ['wait' => 'true']);
+```
+
+You can check for more parameters : https://qdrant.github.io/qdrant/redoc/index.html#tag/points/operation/upsert_points
+
 Search with a filter :
 
 ```php
