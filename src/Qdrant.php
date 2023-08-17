@@ -6,6 +6,7 @@
 namespace Qdrant;
 
 use Psr\Http\Message\RequestInterface;
+use Qdrant\Endpoints\AbstractEndpoint;
 use Qdrant\Endpoints\Cluster;
 use Qdrant\Endpoints\Collections;
 use Qdrant\Endpoints\Service;
@@ -45,4 +46,19 @@ class Qdrant implements ClientInterface
     {
         return $this->client->execute($request);
     }
+
+    /**
+     * Sends a raw request directly to the Qdrant API, providing flexibility for executing non-standard or newly introduced endpoints.
+     *
+     * @param string $method The HTTP method to use (e.g., 'GET', 'POST').
+     * @param string $uri The API endpoint URI.
+     * @param array $body (Optional) The request body, typically used for 'POST' or 'PUT' methods.
+     * @return Response The response from the Qdrant API.
+     */
+    public function executeRaw(string $method, string $uri, array $body = []): Response
+    {
+        $request = AbstractEndpoint::createRequest($method, $uri, $body);
+        return $this->client->execute($request);
+    }
+
 }

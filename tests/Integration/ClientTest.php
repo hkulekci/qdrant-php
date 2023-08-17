@@ -49,4 +49,13 @@ class ClientTest extends AbstractIntegration
         $this->assertInstanceOf(Collections::class, $collections);
         $this->assertEquals('sample-collection', $collections->getCollectionName());
     }
+
+    public function testClientExecuteRaw(): void
+    {
+        $config = (new Config('http://127.0.0.1'));
+        $client = new Qdrant(new GuzzleClient($config));
+
+        $response = $client->executeRaw('GET', '/');
+        $this->assertEquals('qdrant - vector search engine', $response['title']);
+    }
 }

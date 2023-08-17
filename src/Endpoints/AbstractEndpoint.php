@@ -54,7 +54,7 @@ abstract class AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    protected function createRequest(string $method, string $uri, array $body = []): RequestInterface
+    public static function createRequest(string $method, string $uri, array $body = []): RequestInterface
     {
         $httpFactory = new HttpFactory();
         $request = $httpFactory->createRequest($method, $uri);
