@@ -43,11 +43,14 @@ class Points extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function scroll(Filter $filter = null): Response
+    public function scroll(Filter $filter = null, int $limit = null): Response
     {
         $body = [];
         if ($filter) {
             $body['filter'] = $filter->toArray();
+        }
+        if ($limit) {
+            $body['limit'] = $limit;
         }
         return $this->client->execute(
             $this->createRequest(
