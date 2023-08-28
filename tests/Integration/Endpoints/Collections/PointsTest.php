@@ -13,6 +13,7 @@ use Qdrant\Models\PointsStruct;
 use Qdrant\Models\PointStruct;
 use Qdrant\Models\Request\CreateCollection;
 use Qdrant\Models\Request\PointsBatch;
+use Qdrant\Models\Request\ScrollRequest;
 use Qdrant\Models\Request\VectorParams;
 use Qdrant\Models\VectorStruct;
 use Qdrant\Tests\Integration\AbstractIntegration;
@@ -135,6 +136,18 @@ class PointsTest extends AbstractIntegration
 
         $filter = (new Filter())->addMust(new MatchString('image', 'sample image'));
         $response = $this->getCollections('sample-collection')->points()->scroll($filter);
+        $this->assertCount(1, $response['result']['points']);
+        $this->assertEquals(2, $response['result']['points'][0]['id']);
+
+        $request = (new ScrollRequest())
+            ->setLimit(1)
+            ->setFilter($filter)
+            ->setWithPayload(true)
+            ->setWithVector(true)
+            ->setOffset(2);
+
+        $response = $this->getCollections('sample-collection')->points()->scroll($request);
+
         $this->assertCount(1, $response['result']['points']);
         $this->assertEquals(2, $response['result']['points'][0]['id']);
     }
