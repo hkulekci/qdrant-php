@@ -7,6 +7,7 @@
  * @since     Mar 2023
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
+
 namespace Qdrant\Endpoints\Collections;
 
 use Qdrant\Endpoints\AbstractEndpoint;
@@ -16,6 +17,7 @@ use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\PointsStruct;
 use Qdrant\Models\Request\PointsBatch;
 use Qdrant\Models\Request\RecommendRequest;
+use Qdrant\Models\Request\ScrollRequest;
 use Qdrant\Models\Request\SearchRequest;
 use Qdrant\Response;
 
@@ -43,16 +45,18 @@ class Points extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function scroll(Filter $filter = null): Response
+    public function scroll(Filter|ScrollRequest $scrollParams = null, array $queryParams = []): Response
     {
         $body = [];
-        if ($filter) {
-            $body['filter'] = $filter->toArray();
+        if ($scrollParams instanceof Filter) {
+            $body['filter'] = $scrollParams->toArray();
+        } elseif ($scrollParams instanceof ScrollRequest) {
+            $body = $scrollParams->toArray();
         }
         return $this->client->execute(
             $this->createRequest(
                 'POST',
-                '/collections/' . $this->getCollectionName() . '/points/scroll',
+                '/collections/' . $this->getCollectionName() . '/points/scroll' . $this->queryBuild($queryParams),
                 $body
             )
         );
@@ -100,9 +104,9 @@ class Points extends AbstractEndpoint
                 'POST',
                 '/collections/' . $this->getCollectionName() . '/points' . $this->queryBuild($queryParams),
                 [
-                    'ids' => $ids,
+                    'ids'          => $ids,
                     'with_payload' => $withPayload,
-                    'with_vector' => $withVector,
+                    'with_vector'  => $withVector,
                 ]
             )
         );
