@@ -12,7 +12,10 @@ use Qdrant\Response;
 
 class ServerException extends \Exception
 {
-    protected Response $response;
+    /**
+     * @var Response
+     */
+    protected $response;
 
     /**
      * @return Response

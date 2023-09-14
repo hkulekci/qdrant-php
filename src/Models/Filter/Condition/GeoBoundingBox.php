@@ -11,7 +11,11 @@ use Qdrant\Domain\Assert;
 class GeoBoundingBox extends AbstractCondition implements ConditionInterface
 {
     protected const CONDITIONS = ['bottom_right', 'top_left'];
-    protected array $boundingBox;
+
+    /**
+     * @var array
+     */
+    protected $boundingBox;
 
     public function __construct(string $key, array $boundingBox)
     {

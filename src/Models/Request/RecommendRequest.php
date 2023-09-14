@@ -14,13 +14,40 @@ class RecommendRequest
 {
     use ProtectedPropertyAccessor;
 
-    protected ?Filter $filter = null;
-    protected array $positive;
-    protected array $negative;
-    protected ?string $using = null;
-    protected ?int $limit = null;
-    protected ?int $offset = null;
-    protected ?float $scoreThreshold = null;
+    /**
+     * @var Filter|null
+     */
+    protected $filter = null;
+
+    /**
+     * @var array
+     */
+    protected $positive;
+
+    /**
+     * @var array
+     */
+    protected $negative;
+
+    /**
+     * @var string|null
+     */
+    protected $using = null;
+
+    /**
+     * @var int|null
+     */
+    protected $limit = null;
+
+    /**
+     * @var int|null
+     */
+    protected $offset = null;
+
+    /**
+     * @var float|null
+     */
+    protected $scoreThreshold = null;
 
     public function __construct(array $positive, array $negative = [])
     {
@@ -28,35 +55,35 @@ class RecommendRequest
         $this->negative = $negative;
     }
 
-    public function setFilter(Filter $filter): static
+    public function setFilter(Filter $filter)
     {
         $this->filter = $filter;
 
         return $this;
     }
 
-    public function setScoreThreshold(float $scoreThreshold): static
+    public function setScoreThreshold(float $scoreThreshold)
     {
         $this->scoreThreshold = $scoreThreshold;
 
         return $this;
     }
 
-    public function setUsing(string $using): static
+    public function setUsing(string $using)
     {
         $this->using = $using;
 
         return $this;
     }
 
-    public function setLimit(int $limit): static
+    public function setLimit(int $limit)
     {
         $this->limit = $limit;
 
         return $this;
     }
 
-    public function setOffset(int $offset): static
+    public function setOffset(int $offset)
     {
         $this->offset = $offset;
 

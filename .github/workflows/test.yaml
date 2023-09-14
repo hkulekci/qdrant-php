@@ -25,38 +25,30 @@ jobs:
           - 6333:6333
 
     steps:
-      -   name: Checkout project
-          uses: actions/checkout@v2
+      - name: Checkout project
+        uses: actions/checkout@v2
 
-      -   name: Install and configure PHP
-          uses: shivammathur/setup-php@v2
-          with:
-            php-version: ${{ matrix.php-version }}
-            tools: 'composer'
+      - name: Install and configure PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: 'composer'
 
-      -   name: Get composer cache directory
-          id: composer-cache-dir
-          run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Get composer cache directory
+        id: composer-cache-dir
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
-      -   name: Cache dependencies
-          uses: actions/cache@v2
-          id: composer-cache
-          with:
-            path: ${{ steps.composer-cache-dir.outputs.dir }}
-            key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
-            restore-keys: |
-              ${{ runner.os }}-composer-
-      -   name: Install dependencies
-          run: |
-            composer validate --strict
-            composer install --no-interaction --prefer-dist
-      -   name: Run tests
-          run: vendor/bin/phpunit --coverage-clover=coverage.xml
-
-      -   name: Upload coverage to Codecov
-          uses: codecov/codecov-action@v3
-          with:
-            token: ${{ secrets.CODECOV_TOKEN }}
-            files: ./coverage.xml
-            flags: unittests
-            verbose: true
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        id: composer-cache
+        with:
+          path: ${{ steps.composer-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+      - name: Install dependencies
+        run: |
+          composer validate --strict
+          composer install --no-interaction --prefer-dist
+      - name: Run tests
+        run: vendor/bin/phpunit

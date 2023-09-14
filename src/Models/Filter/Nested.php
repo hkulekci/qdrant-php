@@ -10,7 +10,10 @@ use Qdrant\Models\Filter\Condition\ConditionInterface;
 
 class Nested implements ConditionInterface
 {
-    protected array $container = [];
+    /**
+     * @var array
+     */
+    protected $container = [];
 
     public function __construct(string $key, Filter $filter)
     {

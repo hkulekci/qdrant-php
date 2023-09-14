@@ -43,9 +43,11 @@ class Points extends AbstractEndpoint
     }
 
     /**
-     * @throws InvalidArgumentException
+     * @param Filter|ScrollRequest $scrollParams
+     * @param array $queryParams
+     * @return Response
      */
-    public function scroll(Filter|ScrollRequest $scrollParams = null, array $queryParams = []): Response
+    public function scroll($scrollParams, array $queryParams = []): Response
     {
         $body = [];
         if ($scrollParams instanceof Filter) {
@@ -113,9 +115,11 @@ class Points extends AbstractEndpoint
     }
 
     /**
-     * @throws InvalidArgumentException
+     * @param int|string $id
+     * @param array $queryParams
+     * @return Response
      */
-    public function id(int|string $id, array $queryParams = []): Response
+    public function id($id, array $queryParams = []): Response
     {
         return $this->client->execute(
             $this->createRequest(

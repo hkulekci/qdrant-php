@@ -15,16 +15,22 @@ use Qdrant\Http\HttpClientInterface;
 
 abstract class AbstractEndpoint
 {
-    protected HttpClientInterface $client;
+    /**
+     * @var HttpClientInterface
+     */
+    protected $client;
 
-    protected ?string $collectionName = null;
+    /**
+     * @var string|null
+     */
+    protected $collectionName = null;
 
     public function __construct(HttpClientInterface $client)
     {
         $this->client = $client;
     }
 
-    public function setCollectionName(?string $collectionName): static
+    public function setCollectionName(?string $collectionName)
     {
         $this->collectionName = $collectionName;
 
@@ -61,7 +67,7 @@ abstract class AbstractEndpoint
         if ($body) {
             try {
                 $request = $request->withBody(
-                    $httpFactory->createStream(json_encode($body, JSON_THROW_ON_ERROR))
+                    $httpFactory->createStream(json_encode($body, 4194304))
                 );
             } catch (\JsonException $e) {
                 throw new InvalidArgumentException('Json parse error!');

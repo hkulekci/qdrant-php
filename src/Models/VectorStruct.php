@@ -12,8 +12,15 @@ class VectorStruct implements VectorStructInterface
 {
     use ProtectedPropertyAccessor;
 
-    protected array $vector;
-    protected ?string $name;
+    /**
+     * @var array
+     */
+    protected $vector;
+
+    /**
+     * @var string|null
+     */
+    protected $name;
 
     public function __construct(array $vector, string $name = null)
     {

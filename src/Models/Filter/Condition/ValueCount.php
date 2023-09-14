@@ -12,7 +12,10 @@ class ValueCount extends AbstractCondition implements ConditionInterface
 {
     protected const CONDITIONS = ['gt', 'gte', 'lt', 'lte'];
 
-    protected array $valueCount;
+    /**
+     * @var array
+     */
+    protected $valueCount;
 
     public function __construct(string $key, array $valueCount)
     {

@@ -16,12 +16,15 @@ class VectorParams implements RequestModel
     public const DISTANCE_EUCLID = 'Euclid';
     public const DISTANCE_DOT = 'Dot';
 
-    protected int $size;
+    /**
+     * @var int
+     */
+    protected $size;
 
     /**
      * @var string [Cosine, Euclid, Dot]
      */
-    protected string $distance;
+    protected $distance;
 
     /**
      * @throws InvalidArgumentException

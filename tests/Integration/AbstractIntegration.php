@@ -18,8 +18,15 @@ use Qdrant\Qdrant;
 
 abstract class AbstractIntegration extends TestCase
 {
-    protected HttpClientInterface $client;
-    private ?Collections $collections = null;
+    /**
+     * @var HttpClientInterface|GuzzleClient
+     */
+    protected $client;
+
+    /**
+     * @var Collections|null
+     */
+    private $collections = null;
 
     protected function setUp(): void
     {

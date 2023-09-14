@@ -18,8 +18,15 @@ use Qdrant\Response;
 
 class GuzzleClient implements HttpClientInterface
 {
-    protected Config $config;
-    protected Client $client;
+    /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
+     * @var Client
+     */
+    protected $client;
 
     public function __construct(Config $config)
     {

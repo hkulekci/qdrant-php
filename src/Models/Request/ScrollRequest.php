@@ -10,45 +10,64 @@ class ScrollRequest implements RequestModel
 
     use ProtectedPropertyAccessor;
 
-    protected ?Filter $filter = null;
+    /**
+     * @var Filter|null
+     */
+    protected $filter = null;
 
-    protected ?int $limit = null;
+    /**
+     * @var int|null
+     */
+    protected $limit = null;
 
-    protected int|string|null $offset = null;
+    /**
+     * @var int|string|null
+     */
+    protected $offset = null;
 
-    protected bool|array|null $withVector = null;
+    /**
+     * @var bool|array|null
+     */
+    protected $withVector = null;
 
-    protected bool|array|null $withPayload = null;
+    /**
+     * @var bool|array|null
+     */
+    protected $withPayload = null;
 
-    public function setFilter(Filter $filter): static
+    public function setFilter(Filter $filter)
     {
         $this->filter = $filter;
 
         return $this;
     }
 
-    public function setLimit(int $limit): static
+    public function setLimit(int $limit)
     {
         $this->limit = $limit;
 
         return $this;
     }
 
-    public function setOffset(int|string $offset): static
+    /**
+     * @param int|string $offset
+     * @return $this
+     */
+    public function setOffset($offset)
     {
         $this->offset = $offset;
 
         return $this;
     }
 
-    public function setWithPayload($withPayload): static
+    public function setWithPayload($withPayload)
     {
         $this->withPayload = $withPayload;
 
         return $this;
     }
 
-    public function setWithVector($withVector): static
+    public function setWithVector($withVector)
     {
         $this->withVector = $withVector;
 

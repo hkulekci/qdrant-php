@@ -14,15 +14,22 @@ use Qdrant\Models\VectorStructInterface;
 
 class Point implements RequestModel
 {
-    protected string $id;
-    protected VectorStructInterface $vector;
+    /**
+     * @var string
+     */
+    protected $id;
+
+    /**
+     * @var VectorStructInterface
+     */
+    protected $vector;
 
     /**
      * @var array|null Payload values (optional)
      */
-    protected ?array $payload = null;
+    protected $payload = null;
 
-    public function __construct(string $id, VectorStructInterface|array $vector, array $payload = null)
+    public function __construct(string $id, $vector, array $payload = null)
     {
         if(is_array($vector)) {
             $vector = new VectorStruct($vector);

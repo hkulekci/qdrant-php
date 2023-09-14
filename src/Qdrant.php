@@ -14,7 +14,10 @@ use Qdrant\Http\HttpClientInterface;
 
 class Qdrant implements ClientInterface
 {
-    private HttpClientInterface $client;
+    /**
+     * @var HttpClientInterface
+     */
+    private $client;
 
     public function __construct(HttpClientInterface $client)
     {

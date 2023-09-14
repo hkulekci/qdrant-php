@@ -20,7 +20,7 @@ class MultiVectorSearchTest extends AbstractIntegration
     /**
      * @throws InvalidArgumentException
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

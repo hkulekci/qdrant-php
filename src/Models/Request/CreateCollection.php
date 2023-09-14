@@ -11,17 +11,34 @@ namespace Qdrant\Models\Request;
 class CreateCollection implements RequestModel
 {
     /**
-     * @var VectorParams|VectorParams[]
+     * @var array
      */
-    protected array $vectors;
-    protected ?int $shardNumber = null;
-    protected ?int $replicationFactor = null;
+    protected $vectors;
 
-    protected ?int $writeConsistencyFactor = null;
+    /**
+     * @var int|null
+     */
+    protected $shardNumber = null;
 
-    protected ?bool $onDiskPayload = null;
+    /**
+     * @var int|null
+     */
+    protected $replicationFactor = null;
 
-    protected ?InitFrom $initFrom = null;
+    /**
+     * @var int|null
+     */
+    protected $writeConsistencyFactor = null;
+
+    /**
+     * @var bool|null
+     */
+    protected $onDiskPayload = null;
+
+    /**
+     * @var InitFrom|null
+     */
+    protected $initFrom = null;
 
     public function addVector(VectorParams $vectorParams, string $name = null): CreateCollection
     {

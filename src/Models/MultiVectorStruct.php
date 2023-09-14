@@ -6,7 +6,10 @@ use Qdrant\Exception\InvalidArgumentException;
 
 class MultiVectorStruct implements VectorStructInterface
 {
-    protected array $vectors = [];
+    /**
+     * @var array
+     */
+    protected $vectors = [];
 
     public function __construct(array $vectors = [])
     {
@@ -23,7 +26,7 @@ class MultiVectorStruct implements VectorStructInterface
     public function getName(): ?string
     {
         if(empty($this->vectors)) {
-            throw new InvalidArgumentException("No vectors added yet");
+            throw new InvalidArgumentException('No vectors added yet');
         }
 
         return array_key_first($this->vectors);
@@ -33,7 +36,7 @@ class MultiVectorStruct implements VectorStructInterface
     {
         // Throw an error if no name is given
         if ($name === null) {
-            throw new InvalidArgumentException("Must provide a name to search");
+            throw new InvalidArgumentException('Must provide a name to search');
         }
 
         if(!isset($this->vectors[$name])) {

@@ -13,12 +13,12 @@ class CollectionParamsDiff implements RequestModel
     /**
      * @var int Number of replicas for each shard
      */
-    protected int $replicationFactor;
+    protected $replicationFactor;
 
     /**
      * @var int Minimal number successful responses from replicas to consider operation successful
      */
-    protected int $writeConsistencyFactor;
+    protected $writeConsistencyFactor;
 
     public function toArray(): array
     {

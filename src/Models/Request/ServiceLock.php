@@ -8,8 +8,15 @@ namespace Qdrant\Models\Request;
 
 class ServiceLock implements RequestModel
 {
-    protected ?string $errorMessage;
-    protected bool $write;
+    /**
+     * @var string|null
+     */
+    protected $errorMessage;
+
+    /**
+     * @var bool
+     */
+    protected $write;
 
     public function __construct(bool $write, string $errorMessage = null)
     {

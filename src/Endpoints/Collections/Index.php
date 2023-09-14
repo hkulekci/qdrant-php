@@ -42,7 +42,7 @@ class Index extends AbstractEndpoint
         return $this->client->execute(
             $this->createRequest(
                 'DELETE',
-                '/collections/' . $this->getCollectionName() . '/index/' . $fieldName . $this->queryBuild($queryParams),
+                '/collections/' . $this->getCollectionName() . '/index/' . $fieldName . $this->queryBuild($queryParams)
             )
         );
     }

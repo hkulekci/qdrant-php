@@ -12,7 +12,11 @@ use Qdrant\Exception\InvalidArgumentException;
 class Range extends AbstractCondition implements ConditionInterface
 {
     protected const CONDITIONS = ['gt', 'gte', 'lt', 'lte'];
-    protected array $ranges;
+
+    /**
+     * @var array
+     */
+    protected $ranges;
 
     public function __construct(string $key, array $ranges)
     {

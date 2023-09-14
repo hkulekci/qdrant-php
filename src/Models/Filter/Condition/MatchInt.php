@@ -8,7 +8,10 @@ namespace Qdrant\Models\Filter\Condition;
 
 class MatchInt extends AbstractCondition implements ConditionInterface
 {
-    protected int $value;
+    /**
+     * @var int
+     */
+    protected $value;
 
     public function __construct(string $key, int $value)
     {

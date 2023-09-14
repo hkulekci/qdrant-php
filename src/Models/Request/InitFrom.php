@@ -10,7 +10,10 @@ namespace Qdrant\Models\Request;
 
 class InitFrom implements RequestModel
 {
-    protected string $collection;
+    /**
+     * @var string
+     */
+    protected $collection;
 
     public function __construct(string $collection)
     {

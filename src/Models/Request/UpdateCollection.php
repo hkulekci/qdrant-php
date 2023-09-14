@@ -10,9 +10,15 @@ namespace Qdrant\Models\Request;
 
 class UpdateCollection implements RequestModel
 {
-    protected ?OptimizersConfigDiff $optimizersConfig = null;
+    /**
+     * @var OptimizersConfigDiff|null
+     */
+    protected $optimizersConfig = null;
 
-    protected ?CollectionParamsDiff $collectionParamsDiff = null;
+    /**
+     * @var CollectionParamsDiff|null
+     */
+    protected $collectionParamsDiff = null;
 
     public function addOptimizersConfigDiff(OptimizersConfigDiff $optimizersConfig): UpdateCollection
     {

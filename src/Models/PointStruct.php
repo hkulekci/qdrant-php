@@ -15,11 +15,22 @@ class PointStruct
 {
     use ProtectedPropertyAccessor;
 
-    protected int|string $id;
-    protected ?array $payload = null;
-    protected VectorStructInterface $vector;
+    /**
+     * @var int|string
+     */
+    protected $id;
 
-    public function __construct(int|string $id, VectorStructInterface $vector, array $payload = null)
+    /**
+     * @var array|null
+     */
+    protected $payload = null;
+
+    /**
+     * @var VectorStructInterface
+     */
+    protected $vector;
+
+    public function __construct($id, VectorStructInterface $vector, array $payload = null)
     {
         $this->id = $id;
         $this->vector = $vector;
@@ -62,7 +73,7 @@ class PointStruct
         return $point;
     }
 
-    public function getId(): int|string
+    public function getId()
     {
         return $this->id;
     }

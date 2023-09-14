@@ -10,9 +10,20 @@ use Qdrant\Models\Filter\Condition\ConditionInterface;
 
 class Filter implements ConditionInterface
 {
-    protected array $must = [];
-    protected array $must_not = [];
-    protected array $should = [];
+    /**
+     * @var array
+     */
+    protected $must = [];
+
+    /**
+     * @var array
+     */
+    protected $must_not = [];
+
+    /**
+     * @var array
+     */
+    protected $should = [];
 
     public function addMust(ConditionInterface $condition): Filter
     {

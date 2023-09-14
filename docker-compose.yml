@@ -1,0 +1,12 @@
+services:
+  php:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        - "USER_UID=${UID:-1000}"
+        - "USER_GID=${GID:-1000}"
+        - "CURRENT_ENVIRONMENT=${CURRENT_ENVIRONMENT:-development}"
+    entrypoint: [ "tail", "-f", "/dev/null" ]
+    volumes:
+      - ./:/app

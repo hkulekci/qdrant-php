@@ -15,79 +15,106 @@ class SearchRequest
 {
     use ProtectedPropertyAccessor;
 
-    protected ?Filter $filter = null;
+    /**
+     * @var Filter|null
+     */
+    protected $filter = null;
 
-    protected array $params = [];
+    /**
+     * @var array
+     */
+    protected $params = [];
 
-    protected VectorStructInterface $vector;
+    /**
+     * @var VectorStructInterface
+     */
+    protected $vector;
 
-    protected ?int $limit = null;
+    /**
+     * @var int|null
+     */
+    protected $limit = null;
 
-    protected ?int $offset = null;
+    /**
+     * @var int|null
+     */
+    protected $offset = null;
 
-    protected bool|array|null $withVector = null;
+    /**
+     * @var bool|array|null
+     */
+    protected $withVector = null;
 
-    protected bool|array|null $withPayload = null;
+    /**
+     * @var bool|array|null
+     */
+    protected $withPayload = null;
 
-    protected ?float $scoreThreshold = null;
+    /**
+     * @var float|null
+     */
+    protected $scoreThreshold = null;
 
-    protected ?string $name = null;
+    /**
+     * @var string|null
+     */
+    protected $name = null;
 
     public function __construct(VectorStructInterface $vector)
     {
         $this->vector = $vector;
     }
 
-    public function setName(string $name): static
+    public function setName(string $name)
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function setFilter(Filter $filter): static
+    public function setFilter(Filter $filter)
     {
         $this->filter = $filter;
 
         return $this;
     }
 
-    public function setScoreThreshold(float $scoreThreshold): static
+    public function setScoreThreshold(float $scoreThreshold)
     {
         $this->scoreThreshold = $scoreThreshold;
 
         return $this;
     }
 
-    public function setParams(array $params): static
+    public function setParams(array $params)
     {
         $this->params = $params;
 
         return $this;
     }
 
-    public function setLimit(int $limit): static
+    public function setLimit(int $limit)
     {
         $this->limit = $limit;
 
         return $this;
     }
 
-    public function setOffset(int $offset): static
+    public function setOffset(int $offset)
     {
         $this->offset = $offset;
 
         return $this;
     }
 
-    public function setWithPayload($withPayload): static
+    public function setWithPayload($withPayload)
     {
         $this->withPayload = $withPayload;
 
         return $this;
     }
 
-    public function setWithVector($withVector): static
+    public function setWithVector($withVector)
     {
         $this->withVector = $withVector;
 

@@ -10,7 +10,10 @@ namespace Qdrant\Models\Request;
 
 class AliasActions
 {
-    protected array $actions;
+    /**
+     * @var array
+     */
+    protected $actions;
 
     public function add(string $alias, string $collection): void
     {

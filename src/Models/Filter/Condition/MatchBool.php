@@ -8,7 +8,10 @@ namespace Qdrant\Models\Filter\Condition;
 
 class MatchBool extends AbstractCondition implements ConditionInterface
 {
-    protected bool $value;
+    /**
+     * @var bool
+     */
+    protected $value;
 
     public function __construct(string $key, bool $value)
     {

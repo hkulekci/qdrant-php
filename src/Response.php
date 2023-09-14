@@ -15,9 +15,15 @@ use Qdrant\Exception\ServerException;
 
 class Response implements ArrayAccess
 {
-    protected array $raw;
+    /**
+     * @var array
+     */
+    protected $raw;
 
-    protected ResponseInterface $response;
+    /**
+     * @var ResponseInterface
+     */
+    protected $response;
 
     /**
      * @throws ServerException
@@ -29,7 +35,7 @@ class Response implements ArrayAccess
         $this->response = $response;
 
         if ($response->getHeaderLine('content-type') === 'application/json') {
-            $this->raw = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
+            $this->raw = json_decode($response->getBody()->getContents(), true, 512, 4194304);
         } else {
             $this->raw = [
                 'content' => $response->getBody()->getContents()
@@ -50,12 +56,12 @@ class Response implements ArrayAccess
         return $this->raw;
     }
 
-    public function offsetExists(mixed $offset): bool
+    public function offsetExists($offset): bool
     {
         return isset($this->raw[$offset]);
     }
 
-    public function offsetGet(mixed $offset): mixed
+    public function offsetGet($offset)
     {
         return $this->raw[$offset];
     }
@@ -63,7 +69,7 @@ class Response implements ArrayAccess
     /**
      * @throws Exception
      */
-    public function offsetSet(mixed $offset, mixed $value): void
+    public function offsetSet($offset, $value): void
     {
         throw new Exception('You can not change the response');
     }
@@ -71,7 +77,7 @@ class Response implements ArrayAccess
     /**
      * @throws Exception
      */
-    public function offsetUnset(mixed $offset): void
+    public function offsetUnset($offset): void
     {
         throw new Exception('You can not change the response');
     }

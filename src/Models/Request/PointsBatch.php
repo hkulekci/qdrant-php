@@ -14,7 +14,10 @@ use Qdrant\Models\VectorStruct;
 
 class PointsBatch implements RequestModel
 {
-    protected array $batchPoints;
+    /**
+     * @var array
+     */
+    protected $batchPoints;
 
     public function __construct()
     {

@@ -41,10 +41,10 @@ class ClusterTest extends AbstractIntegration
         $cluster->setCollectionName('sample-collection');
 
         $response = $cluster->update([
-            "move_shard" => [
-                "shard_id" => 0,
-                "to_peer_id" => 0,
-                "from_peer_id" => 0
+            'move_shard' => [
+                'shard_id' => 0,
+                'to_peer_id' => 0,
+                'from_peer_id' => 0
             ]
         ]);
     }

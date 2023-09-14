@@ -12,7 +12,11 @@ use Qdrant\Exception\InvalidArgumentException;
 class GeoRadius extends AbstractCondition implements ConditionInterface
 {
     protected const CONDITIONS = ['center', 'radius'];
-    protected array $radius;
+
+    /**
+     * @var array
+     */
+    protected $radius;
 
     public function __construct(string $key, array $radius)
     {

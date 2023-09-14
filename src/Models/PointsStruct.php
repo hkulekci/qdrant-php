@@ -12,7 +12,10 @@ class PointsStruct
 {
     use ProtectedPropertyAccessor;
 
-    protected array $points = [];
+    /**
+     * @var array
+     */
+    protected $points = [];
 
     public function addPoint(PointStruct $pointStruct): void
     {

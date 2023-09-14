@@ -67,8 +67,8 @@ class PointStructTest extends TestCase
     public function testPointStructWithWrongObject(): void
     {
         $class = new class {
-            public int $id = 1;
-            public array $vector = [1, 2, 3];
+            public $id = 1;
+            public $vector = [1, 2, 3];
         };
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid vector type');

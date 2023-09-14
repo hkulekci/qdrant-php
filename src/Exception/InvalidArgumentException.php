@@ -12,7 +12,10 @@ use Qdrant\Response;
 
 class InvalidArgumentException extends \InvalidArgumentException
 {
-    protected Response $response;
+    /**
+     * @var Response
+     */
+    protected $response;
 
     /**
      * @return Response

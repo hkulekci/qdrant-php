@@ -10,10 +10,20 @@ namespace Qdrant;
 
 class Config
 {
-    protected string $host;
+    /**
+     * @var string
+     */
+    protected $host;
 
-    protected string $port;
-    protected ?string $apiKey = null;
+    /**
+     * @var string
+     */
+    protected $port;
+
+    /**
+     * @var string|null
+     */
+    protected $apiKey = null;
 
     public function __construct($host, $port = 6333)
     {

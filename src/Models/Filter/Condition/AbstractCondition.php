@@ -8,7 +8,10 @@ namespace Qdrant\Models\Filter\Condition;
 
 class AbstractCondition
 {
-    protected string $key;
+    /**
+     * @var string
+     */
+    protected $key;
 
     public function __construct(string $key)
     {

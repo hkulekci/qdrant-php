@@ -8,7 +8,10 @@ namespace Qdrant\Models\Filter\Condition;
 
 class HasId implements ConditionInterface
 {
-    protected array $ids;
+    /**
+     * @var array
+     */
+    protected $ids;
 
     public function __construct(array $ids)
     {
