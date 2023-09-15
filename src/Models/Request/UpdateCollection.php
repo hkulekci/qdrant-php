@@ -11,6 +11,11 @@ namespace Qdrant\Models\Request;
 class UpdateCollection implements RequestModel
 {
     /**
+     * @var array
+     */
+    protected $vectors;
+
+    /**
      * @var OptimizersConfigDiff|null
      */
     protected $optimizersConfig = null;
@@ -19,6 +24,17 @@ class UpdateCollection implements RequestModel
      * @var CollectionParamsDiff|null
      */
     protected $collectionParamsDiff = null;
+
+    public function addVector(VectorParams $vectorParams, string $name = null): UpdateCollection
+    {
+        if ($name !== null) {
+            $this->vectors[$name] = $vectorParams->toArray();
+        } else {
+            $this->vectors = $vectorParams->toArray();
+        }
+
+        return $this;
+    }
 
     public function addOptimizersConfigDiff(OptimizersConfigDiff $optimizersConfig): UpdateCollection
     {
@@ -37,6 +53,9 @@ class UpdateCollection implements RequestModel
     public function toArray(): array
     {
         $data = [];
+        if ($this->vectors) {
+            $data['vectors'] = $this->vectors;
+        }
         if ($this->optimizersConfig) {
             $data['optimizers_config'] = $this->optimizersConfig->toArray();
         }
