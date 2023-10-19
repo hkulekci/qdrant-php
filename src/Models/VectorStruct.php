@@ -12,13 +12,8 @@ class VectorStruct implements VectorStructInterface
 {
     use ProtectedPropertyAccessor;
 
-    protected array $vector;
-    protected ?string $name;
-
-    public function __construct(array $vector, string $name = null)
+    public function __construct(protected array $vector, protected ?string $name = null)
     {
-        $this->vector = $vector;
-        $this->name = $name;
     }
 
     public function isNamed(): bool

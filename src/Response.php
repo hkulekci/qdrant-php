@@ -17,17 +17,13 @@ class Response implements ArrayAccess
 {
     protected array $raw;
 
-    protected ResponseInterface $response;
-
     /**
      * @throws ServerException
      * @throws InvalidArgumentException
      * @throws JsonException
      */
-    public function __construct(ResponseInterface $response)
+    public function __construct(protected ResponseInterface $response)
     {
-        $this->response = $response;
-
         if ($response->getHeaderLine('content-type') === 'application/json') {
             $this->raw = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
         } else {

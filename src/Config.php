@@ -10,15 +10,11 @@ namespace Qdrant;
 
 class Config
 {
-    protected string $host;
 
-    protected string $port;
     protected ?string $apiKey = null;
 
-    public function __construct($host, $port = 6333)
+    public function __construct(protected string $host, protected int $port = 6333)
     {
-        $this->host = $host;
-        $this->port = $port;
     }
 
     public function getDomain(): string

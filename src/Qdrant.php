@@ -14,11 +14,9 @@ use Qdrant\Http\HttpClientInterface;
 
 class Qdrant implements ClientInterface
 {
-    private HttpClientInterface $client;
 
-    public function __construct(HttpClientInterface $client)
+    public function __construct(private HttpClientInterface $client)
     {
-        $this->client = $client;
     }
 
     public function collections(string $collectionName = null): Collections

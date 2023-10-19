@@ -15,15 +15,11 @@ class PointStruct
 {
     use ProtectedPropertyAccessor;
 
-    protected int|string $id;
-    protected ?array $payload = null;
-    protected VectorStructInterface $vector;
-
-    public function __construct(int|string $id, VectorStructInterface $vector, array $payload = null)
-    {
-        $this->id = $id;
-        $this->vector = $vector;
-        $this->payload = $payload;
+    public function __construct(
+        protected int|string $id,
+        protected VectorStructInterface $vector,
+        protected ?array $payload = null
+    ) {
     }
 
     public static function createFromArray(array $pointArray): PointStruct

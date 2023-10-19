@@ -18,12 +18,10 @@ use Qdrant\Response;
 
 class GuzzleClient implements HttpClientInterface
 {
-    protected Config $config;
     protected Client $client;
 
-    public function __construct(Config $config)
+    public function __construct(protected Config $config)
     {
-        $this->config = $config;
         $this->client = new Client([
             'base_uri' => $this->config->getDomain(),
             'http_errors' => true,

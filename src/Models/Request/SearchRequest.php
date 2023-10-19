@@ -19,8 +19,6 @@ class SearchRequest
 
     protected array $params = [];
 
-    protected VectorStructInterface $vector;
-
     protected ?int $limit = null;
 
     protected ?int $offset = null;
@@ -33,9 +31,8 @@ class SearchRequest
 
     protected ?string $name = null;
 
-    public function __construct(VectorStructInterface $vector)
+    public function __construct(protected VectorStructInterface $vector)
     {
-        $this->vector = $vector;
     }
 
     public function setName(string $name): static

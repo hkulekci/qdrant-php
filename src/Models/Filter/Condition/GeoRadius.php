@@ -7,14 +7,12 @@
 namespace Qdrant\Models\Filter\Condition;
 
 use Qdrant\Domain\Assert;
-use Qdrant\Exception\InvalidArgumentException;
 
 class GeoRadius extends AbstractCondition implements ConditionInterface
 {
     protected const CONDITIONS = ['center', 'radius'];
-    protected array $radius;
 
-    public function __construct(string $key, array $radius)
+    public function __construct(string $key, protected array $radius)
     {
         parent::__construct($key);
         Assert::keysExists(
@@ -23,7 +21,6 @@ class GeoRadius extends AbstractCondition implements ConditionInterface
 
         Assert::keysExists($radius['center'], ['lat', 'lon'], 'Radius center parameter expected lat and lon');
 
-        $this->radius = $radius;
     }
 
     public function toArray(): array
