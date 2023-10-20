@@ -10,11 +10,8 @@ namespace Qdrant\Models\Request;
 
 class InitFrom implements RequestModel
 {
-    protected string $collection;
-
-    public function __construct(string $collection)
+    public function __construct(protected string $collection)
     {
-        $this->collection = $collection;
     }
 
     public function toArray(): array

@@ -15,13 +15,10 @@ use Qdrant\Http\HttpClientInterface;
 
 abstract class AbstractEndpoint
 {
-    protected HttpClientInterface $client;
-
     protected ?string $collectionName = null;
 
-    public function __construct(HttpClientInterface $client)
+    public function __construct(protected HttpClientInterface $client)
     {
-        $this->client = $client;
     }
 
     public function setCollectionName(?string $collectionName): static

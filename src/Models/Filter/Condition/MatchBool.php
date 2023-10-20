@@ -8,12 +8,9 @@ namespace Qdrant\Models\Filter\Condition;
 
 class MatchBool extends AbstractCondition implements ConditionInterface
 {
-    protected bool $value;
-
-    public function __construct(string $key, bool $value)
+    public function __construct(string $key, protected bool $value)
     {
         parent::__construct($key);
-        $this->value = $value;
     }
 
     public function toArray(): array

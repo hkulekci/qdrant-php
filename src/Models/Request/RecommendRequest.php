@@ -15,17 +15,13 @@ class RecommendRequest
     use ProtectedPropertyAccessor;
 
     protected ?Filter $filter = null;
-    protected array $positive;
-    protected array $negative;
     protected ?string $using = null;
     protected ?int $limit = null;
     protected ?int $offset = null;
     protected ?float $scoreThreshold = null;
 
-    public function __construct(array $positive, array $negative = [])
+    public function __construct(protected array $positive, protected array $negative = [])
     {
-        $this->positive = $positive;
-        $this->negative = $negative;
     }
 
     public function setFilter(Filter $filter): static

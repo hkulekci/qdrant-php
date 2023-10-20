@@ -16,23 +16,16 @@ class VectorParams implements RequestModel
     public const DISTANCE_EUCLID = 'Euclid';
     public const DISTANCE_DOT = 'Dot';
 
-    protected int $size;
-
     /**
-     * @var string [Cosine, Euclid, Dot]
-     */
-    protected string $distance;
+     * @param $distance string [Cosine, Euclid, Dot]
 
-    /**
      * @throws InvalidArgumentException
      */
-    public function __construct(int $size, string $distance)
+    public function __construct(protected int $size, protected string $distance)
     {
-        $this->size = $size;
         if (!in_array($distance, [self::DISTANCE_COSINE, self::DISTANCE_DOT, self::DISTANCE_EUCLID])) {
             throw new InvalidArgumentException('Invalid distance for Vector Param');
         }
-        $this->distance = $distance;
     }
 
     public function toArray(): array

@@ -7,14 +7,12 @@
 namespace Qdrant\Models\Filter\Condition;
 
 use Qdrant\Domain\Assert;
-use Qdrant\Exception\InvalidArgumentException;
 
 class Range extends AbstractCondition implements ConditionInterface
 {
     protected const CONDITIONS = ['gt', 'gte', 'lt', 'lte'];
-    protected array $ranges;
 
-    public function __construct(string $key, array $ranges)
+    public function __construct(string $key, protected array $ranges)
     {
         parent::__construct($key);
         Assert::keysExistsAtLeastOne(
@@ -22,7 +20,6 @@ class Range extends AbstractCondition implements ConditionInterface
             self::CONDITIONS,
             'Range expects at least one of %s keys'
         );
-        $this->ranges = $ranges;
     }
 
     public function toArray(): array
