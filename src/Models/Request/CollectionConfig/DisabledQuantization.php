@@ -10,10 +10,6 @@ namespace Qdrant\Models\Request\CollectionConfig;
 
 class DisabledQuantization implements QuantizationConfig
 {
-    public function __construct()
-    {
-    }
-
     public function toArray(): array
     {
         return [

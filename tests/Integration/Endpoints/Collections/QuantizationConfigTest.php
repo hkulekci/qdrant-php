@@ -5,7 +5,7 @@
  * @since     Mar 2023
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
-namespace Qdrant\Tests\Integration\Endpoints;
+namespace Qdrant\Tests\Integration\Endpoints\Collections;
 
 use Qdrant\Endpoints\Collections;
 use Qdrant\Models\Request\CollectionConfig\BinaryQuantization;
