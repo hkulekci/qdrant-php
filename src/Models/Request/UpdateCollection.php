@@ -8,11 +8,16 @@
 
 namespace Qdrant\Models\Request;
 
+use Qdrant\Models\Request\CollectionConfig\DisabledQuantization;
+use Qdrant\Models\Request\CollectionConfig\QuantizationConfig;
+
 class UpdateCollection implements RequestModel
 {
     protected ?OptimizersConfigDiff $optimizersConfig = null;
 
     protected ?CollectionParamsDiff $collectionParamsDiff = null;
+
+    protected ?QuantizationConfig $quantizationConfig = null;
 
     public function addOptimizersConfigDiff(OptimizersConfigDiff $optimizersConfig): UpdateCollection
     {
@@ -28,6 +33,13 @@ class UpdateCollection implements RequestModel
         return $this;
     }
 
+    public function setQuantizationConfig(QuantizationConfig $quantizationConfig): UpdateCollection
+    {
+        $this->quantizationConfig = $quantizationConfig;
+
+        return $this;
+    }
+
     public function toArray(): array
     {
         $data = [];
@@ -36,6 +48,12 @@ class UpdateCollection implements RequestModel
         }
         if ($this->collectionParamsDiff) {
             $data['collection_params_diff'] = $this->collectionParamsDiff->toArray();
+        }
+
+        if ($this->quantizationConfig instanceof DisabledQuantization) {
+            $data['quantization_config'] = 'Disabled';
+        } else if ($this->quantizationConfig !== null) {
+            $data['quantization_config'] = $this->quantizationConfig->toArray();
         }
 
         return $data;
