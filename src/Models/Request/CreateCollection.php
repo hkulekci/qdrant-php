@@ -8,6 +8,9 @@
 
 namespace Qdrant\Models\Request;
 
+use Qdrant\Models\Request\CollectionConfig\DisabledQuantization;
+use Qdrant\Models\Request\CollectionConfig\QuantizationConfig;
+
 class CreateCollection implements RequestModel
 {
     /**
@@ -22,6 +25,8 @@ class CreateCollection implements RequestModel
     protected ?bool $onDiskPayload = null;
 
     protected ?InitFrom $initFrom = null;
+
+    protected ?QuantizationConfig $quantizationConfig = null;
 
     public function addVector(VectorParams $vectorParams, string $name = null): CreateCollection
     {
@@ -69,7 +74,12 @@ class CreateCollection implements RequestModel
         return $this;
     }
 
+    public function setQuantizationConfig(QuantizationConfig $quantizationConfig): CreateCollection
+    {
+        $this->quantizationConfig = $quantizationConfig;
 
+        return $this;
+    }
 
     public function toArray(): array
     {
@@ -91,6 +101,12 @@ class CreateCollection implements RequestModel
         }
         if ($this->initFrom !== null) {
             $data['init_from'] = $this->initFrom->toArray();
+        }
+
+        if ($this->quantizationConfig instanceof DisabledQuantization) {
+            $data['quantization_config'] = 'Disabled';
+        } else if ($this->quantizationConfig !== null) {
+            $data['quantization_config'] = $this->quantizationConfig->toArray();
         }
 
         return $data;
