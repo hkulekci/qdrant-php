@@ -6,7 +6,9 @@
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
-namespace Qdrant\Models\Request;
+namespace Qdrant\Models\Request\CollectionConfig;
+
+use Qdrant\Models\Request\RequestModel;
 
 class OptimizersConfigDiff implements RequestModel
 {
@@ -48,6 +50,63 @@ class OptimizersConfigDiff implements RequestModel
      */
     protected ?int $maxOptimizationThreads = null;
 
+
+    public function setDeletedThreshold(?float $deletedThreshold): OptimizersConfigDiff
+    {
+        $this->deletedThreshold = $deletedThreshold;
+
+        return $this;
+    }
+
+    public function setIndexingThreshold(?int $indexingThreshold): OptimizersConfigDiff
+    {
+        $this->indexingThreshold = $indexingThreshold;
+
+        return $this;
+    }
+
+    public function setVacuumMinVectorNumber(?int $vacuumMinVectorNumber): OptimizersConfigDiff
+    {
+        $this->vacuumMinVectorNumber = $vacuumMinVectorNumber;
+
+        return $this;
+    }
+
+    public function setDefaultSegmentNumber(?int $defaultSegmentNumber): OptimizersConfigDiff
+    {
+        $this->defaultSegmentNumber = $defaultSegmentNumber;
+
+        return $this;
+    }
+
+    public function setMaxSegmentSize(?int $maxSegmentSize): OptimizersConfigDiff
+    {
+        $this->maxSegmentSize = $maxSegmentSize;
+
+        return $this;
+    }
+
+    public function setMemmapThreshold(?int $memmapThreshold): OptimizersConfigDiff
+    {
+        $this->memmapThreshold = $memmapThreshold;
+
+        return $this;
+    }
+
+    public function setFlushIntervalSec(?int $flushIntervalSec): OptimizersConfigDiff
+    {
+        $this->flushIntervalSec = $flushIntervalSec;
+
+        return $this;
+    }
+
+    public function setMaxOptimizationThreads(?int $maxOptimizationThreads): OptimizersConfigDiff
+    {
+        $this->maxOptimizationThreads = $maxOptimizationThreads;
+
+        return $this;
+    }
+
     public function toArray(): array
     {
         $data = [];
@@ -77,19 +136,5 @@ class OptimizersConfigDiff implements RequestModel
         }
 
         return $data;
-    }
-
-    public function setDeletedThreshold(?float $deletedThreshold): OptimizersConfigDiff
-    {
-        $this->deletedThreshold = $deletedThreshold;
-
-        return $this;
-    }
-
-    public function setIndexingThreshold(?int $indexingThreshold): OptimizersConfigDiff
-    {
-        $this->indexingThreshold = $indexingThreshold;
-
-        return $this;
     }
 }
