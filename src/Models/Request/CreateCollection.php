@@ -9,6 +9,7 @@
 namespace Qdrant\Models\Request;
 
 use Qdrant\Models\Request\CollectionConfig\DisabledQuantization;
+use Qdrant\Models\Request\CollectionConfig\OptimizersConfigDiff;
 use Qdrant\Models\Request\CollectionConfig\QuantizationConfig;
 
 class CreateCollection implements RequestModel
@@ -25,6 +26,8 @@ class CreateCollection implements RequestModel
     protected ?bool $onDiskPayload = null;
 
     protected ?InitFrom $initFrom = null;
+
+    protected ?OptimizersConfigDiff $optimizersConfig = null;
 
     protected ?QuantizationConfig $quantizationConfig = null;
 
@@ -70,6 +73,13 @@ class CreateCollection implements RequestModel
     public function setInitFrom(InitFrom $initFrom): CreateCollection
     {
         $this->initFrom = $initFrom;
+
+        return $this;
+    }
+
+    public function setOptimizersConfigDiff(OptimizersConfigDiff $optimizersConfig): CreateCollection
+    {
+        $this->optimizersConfig = $optimizersConfig;
 
         return $this;
     }

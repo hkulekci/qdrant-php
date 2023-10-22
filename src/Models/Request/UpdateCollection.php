@@ -9,6 +9,7 @@
 namespace Qdrant\Models\Request;
 
 use Qdrant\Models\Request\CollectionConfig\DisabledQuantization;
+use Qdrant\Models\Request\CollectionConfig\OptimizersConfigDiff;
 use Qdrant\Models\Request\CollectionConfig\QuantizationConfig;
 
 class UpdateCollection implements RequestModel
@@ -19,7 +20,7 @@ class UpdateCollection implements RequestModel
 
     protected ?QuantizationConfig $quantizationConfig = null;
 
-    public function addOptimizersConfigDiff(OptimizersConfigDiff $optimizersConfig): UpdateCollection
+    public function setOptimizersConfigDiff(OptimizersConfigDiff $optimizersConfig): UpdateCollection
     {
         $this->optimizersConfig = $optimizersConfig;
 

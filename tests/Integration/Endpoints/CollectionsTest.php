@@ -9,9 +9,9 @@ namespace Qdrant\Tests\Integration\Endpoints;
 
 use Qdrant\Endpoints\Collections;
 use Qdrant\Exception\InvalidArgumentException;
+use Qdrant\Models\Request\CollectionConfig\OptimizersConfigDiff;
 use Qdrant\Models\Request\CreateCollection;
 use Qdrant\Models\Request\InitFrom;
-use Qdrant\Models\Request\OptimizersConfigDiff;
 use Qdrant\Models\Request\UpdateCollection;
 use Qdrant\Models\Request\VectorParams;
 use Qdrant\Tests\Integration\AbstractIntegration;
@@ -129,12 +129,34 @@ class CollectionsTest extends AbstractIntegration
         $this->assertEquals('green', $response['result']['status']);
 
         $response = $collections->update(
-            (new UpdateCollection())->addOptimizersConfigDiff(
+            (new UpdateCollection())->setOptimizersConfigDiff(
                 (new OptimizersConfigDiff())
                     ->setIndexingThreshold(10000)
             )
         );
         $this->assertEquals('ok', $response['status']);
+    }
+
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function testCreateCollectionWithOptimizersConfig(): void
+    {
+        $collections = new Collections($this->client);
+        $collections->setCollectionName('sample-collection');
+
+        $request = (new CreateCollection())
+            ->addVector(new VectorParams(300, VectorParams::DISTANCE_COSINE), 'image')
+            ->setOptimizersConfigDiff(
+                (new OptimizersConfigDiff())->setIndexingThreshold(10000)
+            );
+
+        $response = $collections->create($request);
+        $this->assertEquals('ok', $response['status']);
+
+        $response = $collections->info();
+        $this->assertEquals('green', $response['result']['status']);
     }
 
     /**
