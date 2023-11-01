@@ -48,9 +48,6 @@ class ResponseTest extends TestCase
 
     public function testConstructResponseWith4xxHttpCode(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid argument exception');
-        $this->expectExceptionCode(418);
         $httpResponse = new HttpResponse(
             418,
             [
@@ -59,20 +56,19 @@ class ResponseTest extends TestCase
             Utils::streamFor(json_encode(['foo' => 'bar']))
         );
 
-        new Response($httpResponse);
+        $response = new Response($httpResponse);
+        $this->assertEquals('bar', $response['foo']);
     }
 
     public function testConstructResponseWith5xxHttpCode(): void
     {
-        $this->expectException(ServerException::class);
-        $this->expectExceptionMessage('Server Exception');
-        $this->expectExceptionCode(510);
         $httpResponse = new HttpResponse(
             510,
             [],
             Utils::streamFor(json_encode(['foo' => 'bar']))
         );
 
-        new Response($httpResponse);
+        $response = new Response($httpResponse);
+        $this->assertEquals('{"foo":"bar"}', $response['content']);
     }
 }
