@@ -10,7 +10,7 @@ namespace Qdrant\Exception;
 
 use Qdrant\Response;
 
-class ServerException extends \Exception
+class ServerException extends \RuntimeException
 {
     protected Response $response;
 

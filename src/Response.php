@@ -33,11 +33,13 @@ class Response implements ArrayAccess
         }
 
         if ($this->response->getStatusCode() >= 400 && $this->response->getStatusCode() < 500) {
-            throw (new InvalidArgumentException($this->raw['status']['error'] ?? 'Invalid argument exception'))->setResponse($this);
+            throw (new InvalidArgumentException(
+                $this->raw['status']['error'] ?? 'Invalid argument exception',
+                $this->response->getStatusCode()))->setResponse($this);
         }
 
-        if ($this->response->getStatusCode() >= 500 && $this->response->getStatusCode() < 500) {
-            throw (new ServerException())->setResponse($this);
+        if ($this->response->getStatusCode() >= 500) {
+            throw (new ServerException('Server Exception', $this->response->getStatusCode()))->setResponse($this);
         }
     }
 
