@@ -6,8 +6,7 @@
 namespace Qdrant\Http;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 use JsonException;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Message\RequestInterface;
@@ -52,15 +51,19 @@ class GuzzleClient implements HttpClientInterface
     {
         $request = $this->prepareHeaders($request);
         try {
-            $res = $this->client->sendRequest($request);
+            $res = $this->client->send($request);
 
             return new Response($res);
-        } catch (ClientException $e) {
+        } catch (RequestException $e) {
             $statusCode = $e->getResponse()->getStatusCode();
             if ($statusCode >= 400 && $statusCode < 500) {
-                throw new InvalidArgumentException($e->getMessage());
+                $errorResponse = new Response($e->getResponse());
+                throw (new InvalidArgumentException($e->getMessage(), $statusCode))
+                    ->setResponse($errorResponse);
             } elseif ($statusCode >= 500) {
-                throw new ServerException($e->getMessage());
+                $errorResponse = new Response($e->getResponse());
+                throw (new ServerException($e->getMessage(), $statusCode))
+                    ->setResponse($errorResponse);
             }
         }
     }

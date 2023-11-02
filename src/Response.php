@@ -31,14 +31,6 @@ class Response implements ArrayAccess
                 'content' => $response->getBody()->getContents()
             ];
         }
-
-        if ($this->response->getStatusCode() >= 400 && $this->response->getStatusCode() < 500) {
-            throw (new InvalidArgumentException($this->raw['status']['error'] ?? 'Invalid argument exception'))->setResponse($this);
-        }
-
-        if ($this->response->getStatusCode() >= 500 && $this->response->getStatusCode() < 500) {
-            throw (new ServerException())->setResponse($this);
-        }
     }
 
     public function __toArray(): array
