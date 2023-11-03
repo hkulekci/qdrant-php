@@ -18,6 +18,7 @@ jobs:
         include:
           - php-version: '8.1'
           - php-version: '8.2'
+          - php-version: '8.3'
     services:
       qdrant:
         image: qdrant/qdrant
