@@ -7,7 +7,7 @@ namespace Qdrant\Tests\Unit\Models\Request;
 
 use PHPUnit\Framework\TestCase;
 use Qdrant\Models\Request\CollectionConfig\HnswConfig;
-use Qdrant\Models\Request\CollectionConfig\OptimizersConfigDiff;
+use Qdrant\Models\Request\CollectionConfig\OptimizersConfig;
 use Qdrant\Models\Request\CollectionConfig\WalConfig;
 use Qdrant\Models\Request\CreateCollection;
 use Qdrant\Models\Request\VectorParams;
@@ -143,15 +143,15 @@ class CreateCollectionTest extends TestCase
         );
     }
 
-    public function testCreateCollectionWithOptimizersConfigDiff(): void
+    public function testCreateCollectionWithOptimizersConfig(): void
     {
         $collection = new CreateCollection();
         $collection->addVector(new VectorParams(1024, VectorParams::DISTANCE_COSINE));
-        $diff = (new OptimizersConfigDiff())
+        $diff = (new OptimizersConfig())
             ->setMaxSegmentSize(1)
             ->setDefaultSegmentNumber(1);
 
-        $collection->setOptimizersConfigDiff($diff);
+        $collection->setOptimizersConfig($diff);
 
         $this->assertEquals(
             [

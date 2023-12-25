@@ -10,7 +10,7 @@ namespace Qdrant\Models\Request;
 
 use Qdrant\Models\Request\CollectionConfig\DisabledQuantization;
 use Qdrant\Models\Request\CollectionConfig\HnswConfig;
-use Qdrant\Models\Request\CollectionConfig\OptimizersConfigDiff;
+use Qdrant\Models\Request\CollectionConfig\OptimizersConfig;
 use Qdrant\Models\Request\CollectionConfig\QuantizationConfig;
 use Qdrant\Models\Request\CollectionConfig\WalConfig;
 
@@ -29,7 +29,7 @@ class CreateCollection implements RequestModel
 
     protected ?InitFrom $initFrom = null;
 
-    protected ?OptimizersConfigDiff $optimizersConfig = null;
+    protected ?OptimizersConfig $optimizersConfig = null;
 
     protected ?HnswConfig $hnswConfig = null;
 
@@ -83,7 +83,7 @@ class CreateCollection implements RequestModel
         return $this;
     }
 
-    public function setOptimizersConfigDiff(OptimizersConfigDiff $optimizersConfig): CreateCollection
+    public function setOptimizersConfig(OptimizersConfig $optimizersConfig): CreateCollection
     {
         $this->optimizersConfig = $optimizersConfig;
 
