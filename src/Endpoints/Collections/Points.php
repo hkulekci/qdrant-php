@@ -31,12 +31,12 @@ class Points extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function search(SearchRequest $searchParams): Response
+    public function search(SearchRequest $searchParams, array $queryParams = []): Response
     {
         return $this->client->execute(
             $this->createRequest(
                 'POST',
-                'collections/' . $this->collectionName . '/points/search',
+                'collections/' . $this->collectionName . '/points/search' . $this->queryBuild($queryParams),
                 $searchParams->toArray()
             )
         );
