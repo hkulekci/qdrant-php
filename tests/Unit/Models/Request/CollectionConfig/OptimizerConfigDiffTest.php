@@ -7,7 +7,6 @@
 namespace Qdrant\Tests\Unit\Models\Request\CollectionConfig;
 
 use PHPUnit\Framework\TestCase;
-use Qdrant\Models\Request\CollectionConfig\BinaryQuantization;
 use Qdrant\Models\Request\CollectionConfig\OptimizersConfigDiff;
 
 class OptimizerConfigDiffTest extends TestCase
