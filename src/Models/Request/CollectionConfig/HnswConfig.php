@@ -22,7 +22,7 @@ class HnswConfig implements RequestModel
 
     public function setM(?int $m): HnswConfig
     {
-        if ($this->efConstruct < 0) {
+        if ($m < 0) {
             throw new InvalidArgumentException('m should be bigger than 0');
         }
         $this->m = $m;

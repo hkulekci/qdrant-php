@@ -7,6 +7,7 @@
 namespace Qdrant\Tests\Unit\Models\Request\CollectionConfig;
 
 use PHPUnit\Framework\TestCase;
+use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\Request\CollectionConfig\HnswConfig;
 
 class HnswConfigTest extends TestCase
@@ -27,6 +28,15 @@ class HnswConfigTest extends TestCase
         ], $config->toArray());
     }
 
+    public function testWithInvalidM(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('m should be bigger than 0');
+        $config = (new HnswConfig())->setM(-1);
+
+        $this->assertEquals([], $config->toArray());
+    }
+
     public function testWithEfConstruct(): void
     {
         $config = (new HnswConfig())->setEfConstruct(10);
@@ -34,6 +44,15 @@ class HnswConfigTest extends TestCase
         $this->assertEquals([
             'ef_construct' => 10
         ], $config->toArray());
+    }
+
+    public function testWithInvalidEfConstruct(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('ef_construct should be bigger than 4');
+        $config = (new HnswConfig())->setEfConstruct(-1);
+
+        $this->assertEquals([], $config->toArray());
     }
 
     public function testWithFullScanThreshold(): void
@@ -45,13 +64,31 @@ class HnswConfigTest extends TestCase
         ], $config->toArray());
     }
 
-    public function testWithDeletedThreshold(): void
+    public function testWithInvalidFullScanThreshold(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('full_scan_threshold should be bigger than 10');
+        $config = (new HnswConfig())->setFullScanThreshold(1);
+
+        $this->assertEquals([], $config->toArray());
+    }
+
+    public function testWithMaxIndexingThreads(): void
     {
         $config = (new HnswConfig())->setMaxIndexingThreads(9);
 
         $this->assertEquals([
             'max_indexing_threads' => 9
         ], $config->toArray());
+    }
+
+    public function testWithInvalidMaxIndexingThreads(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('max_indexing_threads should be bigger than 0');
+        $config = (new HnswConfig())->setMaxIndexingThreads(-1);
+
+        $this->assertEquals([], $config->toArray());
     }
 
     public function testWithOnDisk(): void
@@ -63,7 +100,7 @@ class HnswConfigTest extends TestCase
         ], $config->toArray());
     }
 
-    public function testWithDefaultSegmentNumber(): void
+    public function testWithPayloadM(): void
     {
         $config = (new HnswConfig())->setPayloadM(10);
 
@@ -72,7 +109,16 @@ class HnswConfigTest extends TestCase
         ], $config->toArray());
     }
 
-    public function testWithFlushIntervalSec(): void
+    public function testWithInvalidPayloadM(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('payload_m should be bigger than 0');
+        $config = (new HnswConfig())->setPayloadM(-1);
+
+        $this->assertEquals([], $config->toArray());
+    }
+
+    public function testWithMultipleParameters(): void
     {
         $config = (new HnswConfig())->setMaxIndexingThreads(10)->setPayloadM(10);
 
