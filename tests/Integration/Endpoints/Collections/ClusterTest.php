@@ -43,7 +43,7 @@ class ClusterTest extends AbstractIntegration
         $response = $cluster->update([
             "move_shard" => [
                 "shard_id" => 0,
-                "to_peer_id" => 0,
+                "to_peer_id" => 1,
                 "from_peer_id" => 0
             ]
         ]);

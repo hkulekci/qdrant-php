@@ -83,6 +83,31 @@ class SearchTest extends AbstractIntegration
         $this->assertCount(1, $response['result']);
     }
 
+
+    /**
+     * @dataProvider searchQueryProvider
+     */
+    public function testSearchPointWithQueryParams(VectorStruct $vector): void
+    {
+        $searchRequest = (new SearchRequest($vector))
+            ->setLimit(3)
+            ->setFilter(
+                (new Filter())->addMust(
+                    new MatchString('image', 'sample image')
+                )
+            )
+            ->setParams([
+                'hnsw_ef' => 128,
+                'exact' => false,
+            ]);
+
+        $response = $this->getCollections('sample-collection')
+            ->points()->search($searchRequest, ['timeout' => 1, 'consistency' => 'all']);
+
+        $this->assertEquals('ok', $response['status']);
+        $this->assertCount(1, $response['result']);
+    }
+
     /**
      * @dataProvider searchQueryProvider
      */

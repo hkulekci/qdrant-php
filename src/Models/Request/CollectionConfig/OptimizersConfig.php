@@ -1,6 +1,6 @@
 <?php
 /**
- * OptimizersConfigDiff
+ * OptimizersConfig
  *
  * @since     Mar 2023
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
@@ -10,7 +10,7 @@ namespace Qdrant\Models\Request\CollectionConfig;
 
 use Qdrant\Models\Request\RequestModel;
 
-class OptimizersConfigDiff implements RequestModel
+class OptimizersConfig implements RequestModel
 {
     /** @var float|null The minimal fraction of deleted vectors in a segment, required to perform segment optimization */
     protected ?float $deletedThreshold = null;
@@ -51,56 +51,56 @@ class OptimizersConfigDiff implements RequestModel
     protected ?int $maxOptimizationThreads = null;
 
 
-    public function setDeletedThreshold(?float $deletedThreshold): OptimizersConfigDiff
+    public function setDeletedThreshold(?float $deletedThreshold): OptimizersConfig
     {
         $this->deletedThreshold = $deletedThreshold;
 
         return $this;
     }
 
-    public function setIndexingThreshold(?int $indexingThreshold): OptimizersConfigDiff
+    public function setIndexingThreshold(?int $indexingThreshold): OptimizersConfig
     {
         $this->indexingThreshold = $indexingThreshold;
 
         return $this;
     }
 
-    public function setVacuumMinVectorNumber(?int $vacuumMinVectorNumber): OptimizersConfigDiff
+    public function setVacuumMinVectorNumber(?int $vacuumMinVectorNumber): OptimizersConfig
     {
         $this->vacuumMinVectorNumber = $vacuumMinVectorNumber;
 
         return $this;
     }
 
-    public function setDefaultSegmentNumber(?int $defaultSegmentNumber): OptimizersConfigDiff
+    public function setDefaultSegmentNumber(?int $defaultSegmentNumber): OptimizersConfig
     {
         $this->defaultSegmentNumber = $defaultSegmentNumber;
 
         return $this;
     }
 
-    public function setMaxSegmentSize(?int $maxSegmentSize): OptimizersConfigDiff
+    public function setMaxSegmentSize(?int $maxSegmentSize): OptimizersConfig
     {
         $this->maxSegmentSize = $maxSegmentSize;
 
         return $this;
     }
 
-    public function setMemmapThreshold(?int $memmapThreshold): OptimizersConfigDiff
+    public function setMemmapThreshold(?int $memmapThreshold): OptimizersConfig
     {
         $this->memmapThreshold = $memmapThreshold;
 
         return $this;
     }
 
-    public function setFlushIntervalSec(?int $flushIntervalSec): OptimizersConfigDiff
+    public function setFlushIntervalSec(?int $flushIntervalSec): OptimizersConfig
     {
         $this->flushIntervalSec = $flushIntervalSec;
 
         return $this;
     }
 
-    public function setMaxOptimizationThreads(?int $maxOptimizationThreads): OptimizersConfigDiff
+    public function setMaxOptimizationThreads(?int $maxOptimizationThreads): OptimizersConfig
     {
         $this->maxOptimizationThreads = $maxOptimizationThreads;
 

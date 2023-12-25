@@ -40,7 +40,7 @@ class Payload extends AbstractEndpoint
      * @return Response
      * @throws InvalidArgumentException
      */
-    public function delete(array $points, array $keys, Filter $filter = null): Response
+    public function delete(array $points, array $keys, Filter $filter = null, array $queryParams = []): Response
     {
         $data = [
             'points' => $points,
@@ -53,7 +53,7 @@ class Payload extends AbstractEndpoint
         return $this->client->execute(
             $this->createRequest(
                 'POST',
-                '/collections/' . $this->getCollectionName() . '/points/payload/delete',
+                '/collections/' . $this->getCollectionName() . '/points/payload/delete' . $this->queryBuild($queryParams),
                 $data
             )
         );
@@ -62,12 +62,12 @@ class Payload extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function set(array $points, array $payload, array $params = []): Response
+    public function set(array $points, array $payload, array $queryParams = []): Response
     {
         return $this->client->execute(
             $this->createRequest(
                 'POST',
-                '/collections/' . $this->getCollectionName() . '/points/payload' . $this->queryBuild($params),
+                '/collections/' . $this->getCollectionName() . '/points/payload' . $this->queryBuild($queryParams),
                 [
                     'payload' => $payload,
                     'points' => $points,

@@ -9,7 +9,7 @@ namespace Qdrant\Tests\Integration\Endpoints;
 
 use Qdrant\Endpoints\Collections;
 use Qdrant\Exception\InvalidArgumentException;
-use Qdrant\Models\Request\CollectionConfig\OptimizersConfigDiff;
+use Qdrant\Models\Request\CollectionConfig\OptimizersConfig;
 use Qdrant\Models\Request\CreateCollection;
 use Qdrant\Models\Request\InitFrom;
 use Qdrant\Models\Request\UpdateCollection;
@@ -129,8 +129,8 @@ class CollectionsTest extends AbstractIntegration
         $this->assertEquals('green', $response['result']['status']);
 
         $response = $collections->update(
-            (new UpdateCollection())->setOptimizersConfigDiff(
-                (new OptimizersConfigDiff())
+            (new UpdateCollection())->setOptimizersConfig(
+                (new OptimizersConfig())
                     ->setIndexingThreshold(10000)
             )
         );
@@ -148,8 +148,8 @@ class CollectionsTest extends AbstractIntegration
 
         $request = (new CreateCollection())
             ->addVector(new VectorParams(300, VectorParams::DISTANCE_COSINE), 'image')
-            ->setOptimizersConfigDiff(
-                (new OptimizersConfigDiff())->setIndexingThreshold(10000)
+            ->setOptimizersConfig(
+                (new OptimizersConfig())->setIndexingThreshold(10000)
             );
 
         $response = $collections->create($request);
