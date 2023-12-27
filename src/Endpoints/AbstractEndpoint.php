@@ -7,7 +7,8 @@
  */
 namespace Qdrant\Endpoints;
 
-use GuzzleHttp\Psr7\HttpFactory;
+use Http\Factory\Guzzle\RequestFactory;
+use Http\Factory\Guzzle\StreamFactory;
 use GuzzleHttp\Psr7\Query;
 use Psr\Http\Message\RequestInterface;
 use Qdrant\Exception\InvalidArgumentException;
@@ -62,12 +63,12 @@ abstract class AbstractEndpoint
      */
     protected function createRequest(string $method, string $uri, array $body = []): RequestInterface
     {
-        $httpFactory = new HttpFactory();
+        $httpFactory = new RequestFactory();
         $request = $httpFactory->createRequest($method, $uri);
         if ($body) {
             try {
                 $request = $request->withBody(
-                    $httpFactory->createStream(json_encode($body, 4194304))
+                    (new StreamFactory)->createStream(json_encode($body, 4194304))
                 );
             } catch (\JsonException $e) {
                 throw new InvalidArgumentException('Json parse error!');
