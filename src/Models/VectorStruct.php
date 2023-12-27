@@ -24,8 +24,8 @@ class VectorStruct implements VectorStructInterface
 
     public function __construct(array $vector, ?string $name = null)
     {
-        $this->name = $name;
         $this->vector = $vector;
+        $this->name = $name;
     }
 
     public function isNamed(): bool

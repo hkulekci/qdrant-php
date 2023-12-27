@@ -18,7 +18,7 @@ abstract class AbstractEndpoint
     /**
      * @var string|null
      */
-    protected $collectionName = null;
+    protected $collectionName;
 
     /**
      * @var HttpClientInterface

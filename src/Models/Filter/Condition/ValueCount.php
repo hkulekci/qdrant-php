@@ -19,13 +19,13 @@ class ValueCount extends AbstractCondition implements ConditionInterface
 
     public function __construct(string $key, array $valueCount)
     {
-        $this->valueCount = $valueCount;
         parent::__construct($key);
         Assert::keysExistsAtLeastOne(
             $valueCount,
             self::CONDITIONS,
             'ValueCount expects at least one of %s key'
         );
+        $this->valueCount = $valueCount;
     }
 
     public function toArray(): array

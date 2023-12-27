@@ -23,7 +23,7 @@ class Config
     /**
      * @var string|null
      */
-    protected $apiKey = null;
+    protected $apiKey;
 
     public function __construct($host, $port = 6333)
     {

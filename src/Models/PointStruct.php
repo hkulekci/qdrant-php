@@ -28,7 +28,7 @@ class PointStruct
     /**
      * @var array|null
      */
-    protected $payload = null;
+    protected $payload;
 
     public function __construct(
         $id,

@@ -15,8 +15,8 @@ class MatchAny extends AbstractCondition implements ConditionInterface
 
     public function __construct(string $key, array $values = [])
     {
-        $this->values = $values;
         parent::__construct($key);
+        $this->values = $values;
     }
 
     public function toArray(): array

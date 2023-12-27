@@ -51,8 +51,8 @@ class RecommendRequest
 
     public function __construct(array $positive, array $negative = [])
     {
-        $this->negative = $negative;
         $this->positive = $positive;
+        $this->negative = $negative;
     }
 
     public function setFilter(Filter $filter)

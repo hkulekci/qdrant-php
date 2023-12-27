@@ -15,9 +15,8 @@ class MatchString extends AbstractCondition implements ConditionInterface
 
     public function __construct(string $key, string $value)
     {
-        $this->value = $value;
-
         parent::__construct($key);
+        $this->value = $value;
     }
 
     public function toArray(): array

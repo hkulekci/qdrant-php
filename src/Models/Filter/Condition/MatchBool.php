@@ -15,9 +15,8 @@ class MatchBool extends AbstractCondition implements ConditionInterface
 
     public function __construct(string $key, bool $value)
     {
-        $this->value = $value;
-
         parent::__construct($key);
+        $this->value = $value;
     }
 
     public function toArray(): array
