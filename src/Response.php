@@ -52,7 +52,7 @@ class Response implements ArrayAccess
         return isset($this->raw[$offset]);
     }
 
-    public function offsetGet($offset): mixed
+    public function offsetGet($offset)
     {
         return $this->raw[$offset];
     }
