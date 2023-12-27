@@ -17,14 +17,14 @@ use Qdrant\Http\HttpClientInterface;
 abstract class AbstractEndpoint
 {
     /**
+     * @var string|null
+     */
+    protected $collectionName;
+
+    /**
      * @var HttpClientInterface
      */
     protected $client;
-
-    /**
-     * @var string|null
-     */
-    protected $collectionName = null;
 
     public function __construct(HttpClientInterface $client)
     {

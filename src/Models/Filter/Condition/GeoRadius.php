@@ -7,7 +7,6 @@
 namespace Qdrant\Models\Filter\Condition;
 
 use Qdrant\Domain\Assert;
-use Qdrant\Exception\InvalidArgumentException;
 
 class GeoRadius extends AbstractCondition implements ConditionInterface
 {

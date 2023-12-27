@@ -17,7 +17,27 @@ class RecommendRequest
     /**
      * @var Filter|null
      */
-    protected $filter = null;
+    protected $filter;
+
+    /**
+     * @var string|null
+     */
+    protected $using;
+
+    /**
+     * @var int|null
+     */
+    protected $limit;
+
+    /**
+     * @var int|null
+     */
+    protected $offset;
+
+    /**
+     * @var float|null
+     */
+    protected $scoreThreshold;
 
     /**
      * @var array
@@ -27,27 +47,7 @@ class RecommendRequest
     /**
      * @var array
      */
-    protected $negative;
-
-    /**
-     * @var string|null
-     */
-    protected $using = null;
-
-    /**
-     * @var int|null
-     */
-    protected $limit = null;
-
-    /**
-     * @var int|null
-     */
-    protected $offset = null;
-
-    /**
-     * @var float|null
-     */
-    protected $scoreThreshold = null;
+    protected $negative = [];
 
     public function __construct(array $positive, array $negative = [])
     {

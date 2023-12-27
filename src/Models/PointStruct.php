@@ -21,20 +21,23 @@ class PointStruct
     protected $id;
 
     /**
-     * @var array|null
-     */
-    protected $payload = null;
-
-    /**
      * @var VectorStructInterface
      */
     protected $vector;
 
-    public function __construct($id, VectorStructInterface $vector, array $payload = null)
-    {
-        $this->id = $id;
-        $this->vector = $vector;
+    /**
+     * @var array|null
+     */
+    protected $payload;
+
+    public function __construct(
+        $id,
+        VectorStructInterface $vector,
+        ?array $payload = null
+    ) {
         $this->payload = $payload;
+        $this->vector = $vector;
+        $this->id = $id;
     }
 
     public static function createFromArray(array $pointArray): PointStruct
@@ -73,6 +76,9 @@ class PointStruct
         return $point;
     }
 
+    /**
+     * @return int|string
+     */
     public function getId()
     {
         return $this->id;

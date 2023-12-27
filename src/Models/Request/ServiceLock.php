@@ -18,7 +18,7 @@ class ServiceLock implements RequestModel
      */
     protected $write;
 
-    public function __construct(bool $write, string $errorMessage = null)
+    public function __construct(bool $write, ?string $errorMessage = null)
     {
         $this->write = $write;
         $this->errorMessage = $errorMessage;

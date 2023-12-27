@@ -7,7 +7,6 @@ namespace Qdrant\Http;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Message\RequestInterface;
@@ -19,14 +18,14 @@ use Qdrant\Response;
 class GuzzleClient implements HttpClientInterface
 {
     /**
-     * @var Config
-     */
-    protected $config;
-
-    /**
      * @var Client
      */
     protected $client;
+
+    /**
+     * @var Config
+     */
+    protected $config;
 
     public function __construct(Config $config)
     {
@@ -67,9 +66,13 @@ class GuzzleClient implements HttpClientInterface
         } catch (ClientException $e) {
             $statusCode = $e->getResponse()->getStatusCode();
             if ($statusCode >= 400 && $statusCode < 500) {
-                throw new InvalidArgumentException($e->getMessage());
+                $errorResponse = new Response($e->getResponse());
+                throw (new InvalidArgumentException($e->getMessage(), $statusCode))
+                    ->setResponse($errorResponse);
             } elseif ($statusCode >= 500) {
-                throw new ServerException($e->getMessage());
+                $errorResponse = new Response($e->getResponse());
+                throw (new ServerException($e->getMessage(), $statusCode))
+                    ->setResponse($errorResponse);
             }
         }
     }

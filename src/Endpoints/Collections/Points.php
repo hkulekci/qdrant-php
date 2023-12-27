@@ -31,23 +31,23 @@ class Points extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function search(SearchRequest $searchParams): Response
+    public function search(SearchRequest $searchParams, array $queryParams = []): Response
     {
         return $this->client->execute(
             $this->createRequest(
                 'POST',
-                'collections/' . $this->collectionName . '/points/search',
+                'collections/' . $this->collectionName . '/points/search' . $this->queryBuild($queryParams),
                 $searchParams->toArray()
             )
         );
     }
 
     /**
-     * @param Filter|ScrollRequest $scrollParams
+     * @param Filter|ScrollRequest|null $scrollParams
      * @param array $queryParams
      * @return Response
      */
-    public function scroll($scrollParams, array $queryParams = []): Response
+    public function scroll($scrollParams = null, array $queryParams = []): Response
     {
         $body = [];
         if ($scrollParams instanceof Filter) {

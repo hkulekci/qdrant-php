@@ -1,52 +1,110 @@
 <?php
 /**
- * OptimizersConfigDiff
+ * OptimizersConfig
  *
  * @since     Mar 2023
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
-namespace Qdrant\Models\Request;
+namespace Qdrant\Models\Request\CollectionConfig;
 
-class OptimizersConfigDiff implements RequestModel
+use Qdrant\Models\Request\RequestModel;
+
+class OptimizersConfig implements RequestModel
 {
     /** @var float|null The minimal fraction of deleted vectors in a segment, required to perform segment optimization */
-    protected $deletedThreshold = null;
+    protected $deletedThreshold;
 
     /**
      * @var int|null The minimal number of vectors in a segment, required to perform segment optimization
      */
-    protected $vacuumMinVectorNumber = null;
+    protected $vacuumMinVectorNumber;
 
     /**
      * @var int|null Target amount of segments optimizer will try to keep. Real amount of segments may vary depending on multiple parameters: - Amount of stored points - Current write RPS  It is recommended to select default number of segments as a factor of the number of search threads, so that each segment would be handled evenly by one of the threads If `default_segment_number = 0`, will be automatically selected by the number of available CPUs
      */
-    protected $defaultSegmentNumber = null;
+    protected $defaultSegmentNumber;
 
     /**
      * @var int|null Do not create segments larger this size (in KiloBytes). Large segments might require disproportionately long indexation times, therefore it makes sense to limit the size of segments.  If indexation speed have more priority for your - make this parameter lower. If search speed is more important - make this parameter higher. Note: 1Kb = 1 vector of size 256
      */
-    protected $maxSegmentSize = null;
+    protected $maxSegmentSize;
 
     /**
      * @var int|null Maximum size (in KiloBytes) of vectors to store in-memory per segment. Segments larger than this threshold will be stored as read-only memmaped file. To enable memmap storage, lower the threshold Note: 1Kb = 1 vector of size 256
      */
-    protected $memmapThreshold = null;
+    protected $memmapThreshold;
 
     /**
      * @var int|null Maximum size (in KiloBytes) of vectors allowed for plain index. Default value based on &lt;https://github.com/google-research/google-research/blob/master/scann/docs/algorithms.md&gt; Note: 1Kb = 1 vector of size 256
      */
-    protected $indexingThreshold = null;
+    protected $indexingThreshold;
 
     /**
      * @var int|null Minimum interval between forced flushes.
      */
-    protected $flushIntervalSec = null;
+    protected $flushIntervalSec;
 
     /**
      * @var int|null Maximum available threads for optimization workers
      */
-    protected $maxOptimizationThreads = null;
+    protected $maxOptimizationThreads;
+
+    public function setDeletedThreshold(?float $deletedThreshold): OptimizersConfig
+    {
+        $this->deletedThreshold = $deletedThreshold;
+
+        return $this;
+    }
+
+    public function setIndexingThreshold(?int $indexingThreshold): OptimizersConfig
+    {
+        $this->indexingThreshold = $indexingThreshold;
+
+        return $this;
+    }
+
+    public function setVacuumMinVectorNumber(?int $vacuumMinVectorNumber): OptimizersConfig
+    {
+        $this->vacuumMinVectorNumber = $vacuumMinVectorNumber;
+
+        return $this;
+    }
+
+    public function setDefaultSegmentNumber(?int $defaultSegmentNumber): OptimizersConfig
+    {
+        $this->defaultSegmentNumber = $defaultSegmentNumber;
+
+        return $this;
+    }
+
+    public function setMaxSegmentSize(?int $maxSegmentSize): OptimizersConfig
+    {
+        $this->maxSegmentSize = $maxSegmentSize;
+
+        return $this;
+    }
+
+    public function setMemmapThreshold(?int $memmapThreshold): OptimizersConfig
+    {
+        $this->memmapThreshold = $memmapThreshold;
+
+        return $this;
+    }
+
+    public function setFlushIntervalSec(?int $flushIntervalSec): OptimizersConfig
+    {
+        $this->flushIntervalSec = $flushIntervalSec;
+
+        return $this;
+    }
+
+    public function setMaxOptimizationThreads(?int $maxOptimizationThreads): OptimizersConfig
+    {
+        $this->maxOptimizationThreads = $maxOptimizationThreads;
+
+        return $this;
+    }
 
     public function toArray(): array
     {
@@ -77,19 +135,5 @@ class OptimizersConfigDiff implements RequestModel
         }
 
         return $data;
-    }
-
-    public function setDeletedThreshold(?float $deletedThreshold): OptimizersConfigDiff
-    {
-        $this->deletedThreshold = $deletedThreshold;
-
-        return $this;
-    }
-
-    public function setIndexingThreshold(?int $indexingThreshold): OptimizersConfigDiff
-    {
-        $this->indexingThreshold = $indexingThreshold;
-
-        return $this;
     }
 }

@@ -4,7 +4,7 @@
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
-namespace Qdrant\tests\Unit\Models\Request;
+namespace Qdrant\Tests\Unit\Models\Request;
 
 use PHPUnit\Framework\TestCase;
 use Qdrant\Exception\InvalidArgumentException;

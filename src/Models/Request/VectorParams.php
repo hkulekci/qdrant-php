@@ -22,11 +22,13 @@ class VectorParams implements RequestModel
     protected $size;
 
     /**
-     * @var string [Cosine, Euclid, Dot]
+     * @var string
      */
     protected $distance;
 
     /**
+     * @param $distance string [Cosine, Euclid, Dot]
+
      * @throws InvalidArgumentException
      */
     public function __construct(int $size, string $distance)

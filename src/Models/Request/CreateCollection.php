@@ -8,37 +8,63 @@
 
 namespace Qdrant\Models\Request;
 
+use Qdrant\Models\Request\CollectionConfig\DisabledQuantization;
+use Qdrant\Models\Request\CollectionConfig\HnswConfig;
+use Qdrant\Models\Request\CollectionConfig\OptimizersConfig;
+use Qdrant\Models\Request\CollectionConfig\QuantizationConfig;
+use Qdrant\Models\Request\CollectionConfig\WalConfig;
+
 class CreateCollection implements RequestModel
 {
     /**
-     * @var array
+     * @var array|VectorParams|VectorParams[]
      */
     protected $vectors;
 
     /**
      * @var int|null
      */
-    protected $shardNumber = null;
+    protected $shardNumber ;
 
     /**
      * @var int|null
      */
-    protected $replicationFactor = null;
+    protected $replicationFactor;
 
     /**
      * @var int|null
      */
-    protected $writeConsistencyFactor = null;
+    protected $writeConsistencyFactor;
 
     /**
      * @var bool|null
      */
-    protected $onDiskPayload = null;
+    protected $onDiskPayload;
 
     /**
      * @var InitFrom|null
      */
-    protected $initFrom = null;
+    protected $initFrom;
+
+    /**
+     * @var OptimizersConfig|null
+     */
+    protected $optimizersConfig;
+
+    /**
+     * @var HnswConfig|null
+     */
+    protected $hnswConfig;
+
+    /**
+     * @var WalConfig|null
+     */
+    protected $walConfig;
+
+    /**
+     * @var QuantizationConfig|null
+     */
+    protected $quantizationConfig;
 
     public function addVector(VectorParams $vectorParams, string $name = null): CreateCollection
     {
@@ -86,7 +112,33 @@ class CreateCollection implements RequestModel
         return $this;
     }
 
+    public function setOptimizersConfig(OptimizersConfig $optimizersConfig): CreateCollection
+    {
+        $this->optimizersConfig = $optimizersConfig;
 
+        return $this;
+    }
+
+    public function setHnswConfig(HnswConfig $hnswConfig): CreateCollection
+    {
+        $this->hnswConfig = $hnswConfig;
+
+        return $this;
+    }
+
+    public function setWalConfig(WalConfig $walConfig): CreateCollection
+    {
+        $this->walConfig = $walConfig;
+
+        return $this;
+    }
+
+    public function setQuantizationConfig(QuantizationConfig $quantizationConfig): CreateCollection
+    {
+        $this->quantizationConfig = $quantizationConfig;
+
+        return $this;
+    }
 
     public function toArray(): array
     {
@@ -108,6 +160,21 @@ class CreateCollection implements RequestModel
         }
         if ($this->initFrom !== null) {
             $data['init_from'] = $this->initFrom->toArray();
+        }
+        if ($this->optimizersConfig !== null) {
+            $data['optimizers_config'] = $this->optimizersConfig->toArray();
+        }
+        if ($this->hnswConfig !== null) {
+            $data['hnsw_config'] = $this->hnswConfig->toArray();
+        }
+        if ($this->walConfig !== null) {
+            $data['wal_config'] = $this->walConfig->toArray();
+        }
+
+        if ($this->quantizationConfig instanceof DisabledQuantization) {
+            $data['quantization_config'] = 'Disabled';
+        } elseif ($this->quantizationConfig !== null) {
+            $data['quantization_config'] = $this->quantizationConfig->toArray();
         }
 
         return $data;
