@@ -8,6 +8,7 @@ namespace Qdrant\Tests\Integration\Endpoints;
 
 use Qdrant\Endpoints\Cluster;
 use Qdrant\Exception\InvalidArgumentException;
+use Qdrant\Exception\ServerException;
 use Qdrant\Tests\Integration\AbstractIntegration;
 
 class ClusterTest extends AbstractIntegration
@@ -29,15 +30,12 @@ class ClusterTest extends AbstractIntegration
      */
     public function testClusterRecover(): void
     {
+        $this->expectException(ServerException::class);
+        $this->expectExceptionMessage('500 Internal Server Error');
+        $this->expectExceptionCode(500);
+
         $cluster = new Cluster($this->client);
         $response = $cluster->recover();
-
-        $this->assertArrayHasKey('status', $response);
-        $this->assertArrayHasKey('time', $response);
-        $this->assertEquals(
-            'Service internal error: Qdrant is running in standalone mode',
-            $response['status']['error']
-        );
     }
 
     /**

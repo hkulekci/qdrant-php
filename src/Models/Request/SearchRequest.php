@@ -18,7 +18,7 @@ class SearchRequest
     /**
      * @var Filter|null
      */
-    protected $filter = null;
+    protected $filter;
 
     /**
      * @var array
@@ -26,39 +26,39 @@ class SearchRequest
     protected $params = [];
 
     /**
-     * @var VectorStructInterface
+     * @var int|null
      */
-    protected $vector;
+    protected $limit;
 
     /**
      * @var int|null
      */
-    protected $limit = null;
-
-    /**
-     * @var int|null
-     */
-    protected $offset = null;
+    protected $offset;
 
     /**
      * @var bool|array|null
      */
-    protected $withVector = null;
+    protected $withVector;
 
     /**
      * @var bool|array|null
      */
-    protected $withPayload = null;
+    protected $withPayload;
 
     /**
      * @var float|null
      */
-    protected $scoreThreshold = null;
+    protected $scoreThreshold;
 
     /**
      * @var string|null
      */
-    protected $name = null;
+    protected $name;
+
+    /**
+     * @var VectorStructInterface
+     */
+    protected $vector;
 
     public function __construct(VectorStructInterface $vector)
     {

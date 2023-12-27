@@ -113,6 +113,28 @@ class PayloadTest extends AbstractIntegration
      * @throws InvalidArgumentException
      * @dataProvider basicPointDataProvider
      */
+    public function testDeletePayloadForPointWithQueryParams(array $pointsArray): void
+    {
+        $collections = new Collections($this->client);
+
+        $response = $collections->setCollectionName('sample-collection')->create(self::sampleCollectionOption());
+        $this->assertEquals('ok', $response['status'], 'Collection Could Not Created!');
+        $points = $collections->setCollectionName('sample-collection')->points();
+        $points->upsert(PointsStruct::createFromArray($pointsArray));
+
+        $payload = $collections->setCollectionName('sample-collection')->points()->payload();
+        $payload->delete([2], ['image'], null, ['wait' => 'true', 'ordering' => 'strong']);
+
+        $response = $points->id(2);
+        $this->assertArrayHasKey('result', $response);
+        $this->assertArrayHasKey('payload', $response['result']);
+        $this->assertEmpty($response['result']['payload']);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @dataProvider basicPointDataProvider
+     */
     public function testDeleteOnlyOneKeyFromPayloadForPoint(array $pointsArray): void
     {
         $collections = new Collections($this->client);

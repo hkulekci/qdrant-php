@@ -9,19 +9,19 @@ namespace Qdrant\Models\Request;
 class ServiceLock implements RequestModel
 {
     /**
-     * @var string|null
-     */
-    protected $errorMessage;
-
-    /**
      * @var bool
      */
     protected $write;
 
-    public function __construct(bool $write, string $errorMessage = null)
+    /**
+     * @var string|null
+     */
+    protected $errorMessage;
+
+    public function __construct(bool $write, ?string $errorMessage = null)
     {
-        $this->write = $write;
         $this->errorMessage = $errorMessage;
+        $this->write = $write;
     }
 
     public function toArray(): array

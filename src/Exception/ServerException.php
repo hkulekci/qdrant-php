@@ -9,8 +9,9 @@
 namespace Qdrant\Exception;
 
 use Qdrant\Response;
+use RuntimeException;
 
-class ServerException extends \Exception
+class ServerException extends RuntimeException
 {
     /**
      * @var Response

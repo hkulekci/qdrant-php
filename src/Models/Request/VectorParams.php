@@ -13,7 +13,9 @@ use Qdrant\Exception\InvalidArgumentException;
 class VectorParams implements RequestModel
 {
     public const DISTANCE_COSINE = 'Cosine';
+
     public const DISTANCE_EUCLID = 'Euclid';
+
     public const DISTANCE_DOT = 'Dot';
 
     /**
@@ -22,20 +24,22 @@ class VectorParams implements RequestModel
     protected $size;
 
     /**
-     * @var string [Cosine, Euclid, Dot]
+     * @var string
      */
     protected $distance;
 
     /**
+     * @param $distance string [Cosine, Euclid, Dot]
+
      * @throws InvalidArgumentException
      */
     public function __construct(int $size, string $distance)
     {
+        $this->distance = $distance;
         $this->size = $size;
         if (!in_array($distance, [self::DISTANCE_COSINE, self::DISTANCE_DOT, self::DISTANCE_EUCLID])) {
             throw new InvalidArgumentException('Invalid distance for Vector Param');
         }
-        $this->distance = $distance;
     }
 
     public function toArray(): array

@@ -11,6 +11,18 @@ use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\PointStruct;
 use Qdrant\Models\VectorStruct;
 
+class TestClass {
+    /**
+     * @var int
+     */
+    public $id = 1;
+
+    /**
+     * @var array|int[]
+     */
+    public $vector = [1, 2, 3];
+}
+
 class PointStructTest extends TestCase
 {
     public function testPointStruct(): void
@@ -66,10 +78,7 @@ class PointStructTest extends TestCase
 
     public function testPointStructWithWrongObject(): void
     {
-        $class = new class {
-            public $id = 1;
-            public $vector = [1, 2, 3];
-        };
+        $class = new TestClass();
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid vector type');
         $points = PointStruct::createFromArray([

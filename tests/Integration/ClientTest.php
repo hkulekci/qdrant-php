@@ -9,7 +9,7 @@ declare(strict_types = 1);
 
 namespace Qdrant\Tests\Integration;
 
-use Http\Factory\Guzzle\RequestFactory;
+use GuzzleHttp\Psr7\HttpFactory;
 use Qdrant\Config;
 use Qdrant\Endpoints\Cluster;
 use Qdrant\Endpoints\Collections;
@@ -25,7 +25,7 @@ class ClientTest extends AbstractIntegration
     {
         $config = (new Config('http://127.0.0.1'));
         $client = new Qdrant(new GuzzleClient($config));
-        $httpFactory = new RequestFactory();
+        $httpFactory = new HttpFactory();
         $request = $httpFactory->createRequest('GET', '/');
 
         $response = $client->execute($request);

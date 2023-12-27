@@ -16,9 +16,9 @@ class Config
     protected $host;
 
     /**
-     * @var string
+     * @var int
      */
-    protected $port;
+    protected $port = 6333;
 
     /**
      * @var string|null

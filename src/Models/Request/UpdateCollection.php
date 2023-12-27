@@ -8,44 +8,58 @@
 
 namespace Qdrant\Models\Request;
 
+use Qdrant\Models\Request\CollectionConfig\CollectionParams;
+use Qdrant\Models\Request\CollectionConfig\DisabledQuantization;
+use Qdrant\Models\Request\CollectionConfig\HnswConfig;
+use Qdrant\Models\Request\CollectionConfig\OptimizersConfig;
+use Qdrant\Models\Request\CollectionConfig\QuantizationConfig;
+
 class UpdateCollection implements RequestModel
 {
     /**
-     * @var array
+     * @var OptimizersConfig|null
      */
-    protected $vectors;
+    protected $optimizersConfig;
 
     /**
-     * @var OptimizersConfigDiff|null
+     * @var HnswConfig|null
      */
-    protected $optimizersConfig = null;
+    protected $hnswConfig;
 
     /**
-     * @var CollectionParamsDiff|null
+     * @var CollectionParams|null
      */
-    protected $collectionParamsDiff = null;
+    protected $collectionParams;
 
-    public function addVector(VectorParams $vectorParams, string $name = null): UpdateCollection
-    {
-        if ($name !== null) {
-            $this->vectors[$name] = $vectorParams->toArray();
-        } else {
-            $this->vectors = $vectorParams->toArray();
-        }
+    /**
+     * @var QuantizationConfig|null
+     */
+    protected $quantizationConfig;
 
-        return $this;
-    }
-
-    public function addOptimizersConfigDiff(OptimizersConfigDiff $optimizersConfig): UpdateCollection
+    public function setOptimizersConfig(OptimizersConfig $optimizersConfig): UpdateCollection
     {
         $this->optimizersConfig = $optimizersConfig;
 
         return $this;
     }
 
-    public function addCollectionParamsDiff(CollectionParamsDiff $collectionParamsDiff): UpdateCollection
+    public function setHnswConfig(HnswConfig $hnswConfig): UpdateCollection
     {
-        $this->collectionParamsDiff = $collectionParamsDiff;
+        $this->hnswConfig = $hnswConfig;
+
+        return $this;
+    }
+
+    public function setCollectionParams(CollectionParams $collectionParams): UpdateCollection
+    {
+        $this->collectionParams = $collectionParams;
+
+        return $this;
+    }
+
+    public function setQuantizationConfig(QuantizationConfig $quantizationConfig): UpdateCollection
+    {
+        $this->quantizationConfig = $quantizationConfig;
 
         return $this;
     }
@@ -53,14 +67,20 @@ class UpdateCollection implements RequestModel
     public function toArray(): array
     {
         $data = [];
-        if ($this->vectors) {
-            $data['vectors'] = $this->vectors;
-        }
         if ($this->optimizersConfig) {
             $data['optimizers_config'] = $this->optimizersConfig->toArray();
         }
-        if ($this->collectionParamsDiff) {
-            $data['collection_params_diff'] = $this->collectionParamsDiff->toArray();
+        if ($this->hnswConfig) {
+            $data['hnsw_config'] = $this->hnswConfig->toArray();
+        }
+        if ($this->collectionParams) {
+            $data['params'] = $this->collectionParams->toArray();
+        }
+
+        if ($this->quantizationConfig instanceof DisabledQuantization) {
+            $data['quantization_config'] = 'Disabled';
+        } elseif ($this->quantizationConfig !== null) {
+            $data['quantization_config'] = $this->quantizationConfig->toArray();
         }
 
         return $data;

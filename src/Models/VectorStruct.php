@@ -22,10 +22,10 @@ class VectorStruct implements VectorStructInterface
      */
     protected $name;
 
-    public function __construct(array $vector, string $name = null)
+    public function __construct(array $vector, ?string $name = null)
     {
-        $this->vector = $vector;
         $this->name = $name;
+        $this->vector = $vector;
     }
 
     public function isNamed(): bool

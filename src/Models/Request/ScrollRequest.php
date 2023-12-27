@@ -13,27 +13,27 @@ class ScrollRequest implements RequestModel
     /**
      * @var Filter|null
      */
-    protected $filter = null;
+    protected $filter;
 
     /**
      * @var int|null
      */
-    protected $limit = null;
+    protected $limit;
 
     /**
      * @var int|string|null
      */
-    protected $offset = null;
+    protected $offset;
 
     /**
      * @var bool|array|null
      */
-    protected $withVector = null;
+    protected $withVector;
 
     /**
      * @var bool|array|null
      */
-    protected $withPayload = null;
+    protected $withPayload;
 
     public function setFilter(Filter $filter)
     {

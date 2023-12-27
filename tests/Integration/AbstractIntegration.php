@@ -26,7 +26,7 @@ abstract class AbstractIntegration extends TestCase
     /**
      * @var Collections|null
      */
-    private $collections = null;
+    private $collections;
 
     protected function setUp(): void
     {
