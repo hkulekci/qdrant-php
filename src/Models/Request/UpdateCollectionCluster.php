@@ -8,7 +8,7 @@
 
 namespace Qdrant\Models\Request;
 
-use Qdrant\Models\Request\CollectionUpdate\Operation;
+use Qdrant\Models\Request\ClusterUpdate\Operation;
 
 class UpdateCollectionCluster implements RequestModel
 {

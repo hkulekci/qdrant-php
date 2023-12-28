@@ -7,7 +7,8 @@ namespace Qdrant\Tests\Integration\Endpoints\Collections;
 
 use Qdrant\Endpoints\Collections;
 use Qdrant\Exception\InvalidArgumentException;
-use Qdrant\Models\Request\CollectionUpdate\MoveShardOperation;
+use Qdrant\Models\Request\ClusterUpdate\MoveShardOperation;
+use Qdrant\Models\Request\UpdateCollectionCluster;
 use Qdrant\Tests\Integration\AbstractIntegration;
 
 class ClusterTest extends AbstractIntegration
@@ -41,7 +42,7 @@ class ClusterTest extends AbstractIntegration
         $this->createCollections('sample-collection');
         $cluster->setCollectionName('sample-collection');
 
-        $operation = new MoveShardOperation(0, 1, 0);
+        $operation = new UpdateCollectionCluster(new MoveShardOperation(0, 1, 0));
 
         $response = $cluster->update($operation);
     }
