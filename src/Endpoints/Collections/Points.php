@@ -188,12 +188,12 @@ class Points extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function recommend(RecommendRequest $recommendParams): Response
+    public function recommend(RecommendRequest $recommendParams, array $queryParams = []): Response
     {
         return $this->client->execute(
             $this->createRequest(
                 'POST',
-                'collections/' . $this->collectionName . '/points/recommend',
+                'collections/' . $this->collectionName . '/points/recommend' . $this->queryBuild($queryParams),
                 $recommendParams->toArray()
             )
         );
