@@ -20,6 +20,11 @@ class RecommendRequest
     protected $filter;
 
     /**
+     * @var array
+     */
+    protected $params = [];
+
+    /**
      * @var string|null
      */
     protected $using;
@@ -77,6 +82,13 @@ class RecommendRequest
         return $this;
     }
 
+    public function setParams(array $params)
+    {
+        $this->params = $params;
+
+        return $this;
+    }
+
     public function setStrategy(string $strategy)
     {
         $this->strategy = $strategy;
@@ -117,6 +129,9 @@ class RecommendRequest
         }
         if($this->scoreThreshold) {
             $body['score_threshold'] = $this->scoreThreshold;
+        }
+        if ($this->params) {
+            $body['params'] = $this->params;
         }
         if ($this->using) {
             $body['using'] = $this->using;
