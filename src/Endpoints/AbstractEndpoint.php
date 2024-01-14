@@ -7,17 +7,16 @@
  */
 namespace Qdrant\Endpoints;
 
-use GuzzleHttp\Psr7\HttpFactory;
-use GuzzleHttp\Psr7\Query;
+use Http\Discovery\Psr17FactoryDiscovery;
 use Psr\Http\Message\RequestInterface;
+use Qdrant\ClientInterface;
 use Qdrant\Exception\InvalidArgumentException;
-use Qdrant\Http\HttpClientInterface;
 
 abstract class AbstractEndpoint
 {
     protected ?string $collectionName = null;
 
-    public function __construct(protected HttpClientInterface $client)
+    public function __construct(protected ClientInterface $client)
     {
     }
 
@@ -42,10 +41,12 @@ abstract class AbstractEndpoint
 
     protected function queryBuild(array $params): string
     {
-        if ($params) {
-            return '?' . Query::build($params);
+        $p = [];
+        foreach ($params as $k => $v) {
+            $p[] = urldecode($k) . "=" . urlencode($v);
         }
-        return '';
+
+        return '?' . implode('&', $p);
     }
 
     /**
@@ -53,7 +54,7 @@ abstract class AbstractEndpoint
      */
     protected function createRequest(string $method, string $uri, array $body = []): RequestInterface
     {
-        $httpFactory = new HttpFactory();
+        $httpFactory = Psr17FactoryDiscovery::findRequestFactory();
         $request = $httpFactory->createRequest($method, $uri);
         if ($body) {
             try {

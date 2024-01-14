@@ -5,19 +5,9 @@
  */
 namespace Qdrant;
 
-use Qdrant\Endpoints\Cluster;
-use Qdrant\Endpoints\Collections;
-use Qdrant\Endpoints\Service;
-use Qdrant\Endpoints\Snapshots;
-use Qdrant\Http\HttpClientInterface;
+use Psr\Http\Message\RequestInterface;
 
-interface ClientInterface extends HttpClientInterface
+interface ClientInterface
 {
-    public function collections(string $collectionName = null): Collections;
-
-    public function snapshots(): Snapshots;
-
-    public function cluster(): Cluster;
-
-    public function service(): Service;
+    public function execute(RequestInterface $request): Response;
 }

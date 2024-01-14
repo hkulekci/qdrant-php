@@ -8,16 +8,16 @@
         "psr/http-client": "^1.0",
         "psr/http-message": "^1.0|^2.0",
         "psr/log": "^1.0|^2.0|^3.0",
-        "guzzlehttp/guzzle": "^7.5",
-        "guzzlehttp/psr7": "^2.0",
-        "webmozart/assert": "^1.11"
+        "webmozart/assert": "^1.11",
+        "psr/http-factory": "^1.0",
+        "php-http/discovery": "^1.19"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.0",
         "mockery/mockery": "^1.5",
-        "openai-php/client": "^0.3.5",
-        "hkulekci/cohere": "dev-main",
-        "phpunit/php-code-coverage": "^10.1@dev"
+        "phpunit/php-code-coverage": "^10.1@dev",
+        "nyholm/psr7": "^1.8@dev",
+        "symfony/http-client": "^6.0|^7.0"
     },
     "autoload": {
         "psr-4": {
@@ -38,5 +38,10 @@
     "scripts": {
         "test": "vendor/bin/phpunit --display-warnings --display-deprecations",
         "coverage": "vendor/bin/phpunit --display-warnings --display-deprecations --coverage-html coverage/"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": false
+        }
     }
 }

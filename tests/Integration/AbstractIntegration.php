@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Qdrant\Config;
 use Qdrant\Endpoints\Collections;
 use Qdrant\Exception\InvalidArgumentException;
+use Qdrant\Http\Builder;
 use Qdrant\Http\GuzzleClient;
 use Qdrant\Http\HttpClientInterface;
 use Qdrant\Models\Request\CreateCollection;
@@ -18,14 +19,15 @@ use Qdrant\Qdrant;
 
 abstract class AbstractIntegration extends TestCase
 {
-    protected HttpClientInterface $client;
+    protected Qdrant $client;
     private ?Collections $collections = null;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $config = (new Config('http://127.0.0.1'));
-        $this->client = new GuzzleClient($config);
+        $config = (new Config('127.0.0.1'));
+        $transform = (new Builder())->build($config);
+        $this->client = new Qdrant($transform);
     }
 
     /**
