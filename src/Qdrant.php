@@ -11,6 +11,8 @@ use Qdrant\Endpoints\Cluster;
 use Qdrant\Endpoints\Collections;
 use Qdrant\Endpoints\Service;
 use Qdrant\Endpoints\Snapshots;
+use Qdrant\Exception\InvalidArgumentException;
+use Qdrant\Exception\ServerException;
 use Qdrant\Http\Transport;
 
 class Qdrant implements ClientInterface
@@ -41,22 +43,22 @@ class Qdrant implements ClientInterface
 
     public function execute(RequestInterface $request): Response
     {
-        try {
-            $res = $this->transport->sendRequest($request);
-
-            return new Response($res);
-        } catch (RequestExceptionInterface $e) {
-            var_dump('RequestException', $e->getMessage(), $request); exit();
-            /*$statusCode = $e->getResponse()->getStatusCode();
-            if ($statusCode >= 400 && $statusCode < 500) {
-                $errorResponse = new Response($e->getResponse());
-                throw (new InvalidArgumentException($e->getMessage(), $statusCode))
-                    ->setResponse($errorResponse);
-            } elseif ($statusCode >= 500) {
-                $errorResponse = new Response($e->getResponse());
-                throw (new ServerException($e->getMessage(), $statusCode))
-                    ->setResponse($errorResponse);
-            }*/
+        $res = $this->transport->sendRequest($request);
+        $statusCode = $res->getStatusCode();
+        if ($statusCode >= 400 && $statusCode < 500) {
+            $errorResponse = new Response($res);
+            throw (new InvalidArgumentException(
+                $errorResponse['status']['error'] ?? 'Invalid Argument Exception',
+                $statusCode)
+            )->setResponse($errorResponse);
+        } elseif ($statusCode >= 500) {
+            $errorResponse = new Response($res);
+            throw (new ServerException(
+                $errorResponse['status']['error'] ?? '500 Interval Service Error',
+                $statusCode)
+            )->setResponse($errorResponse);
         }
+
+        return new Response($res);
     }
 }

@@ -16,14 +16,19 @@ class Config
     {
     }
 
-    public function getHost()
+    public function getHost(): string
     {
-        return $this->host;
+        return parse_url($this->host, PHP_URL_HOST) ?: $this->host;
     }
 
-    public function getPort()
+    public function getPort(): int
     {
         return $this->port;
+    }
+
+    public function getScheme(): string
+    {
+        return parse_url($this->host, PHP_URL_SCHEME) ?: 'http';
     }
 
     public function getDomain(): string

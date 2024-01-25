@@ -30,7 +30,7 @@ class Transport implements ClientInterface
                 $request->getUri()
                     ->withHost($this->config->getHost())
                     ->withPort($this->config->getPort())
-                    ->withScheme('http')
+                    ->withScheme($this->config->getScheme())
             );
 
         if ($this->config->getApiKey()) {

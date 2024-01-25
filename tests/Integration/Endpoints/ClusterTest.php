@@ -31,7 +31,6 @@ class ClusterTest extends AbstractIntegration
     public function testClusterRecover(): void
     {
         $this->expectException(ServerException::class);
-        $this->expectExceptionMessage('500 Internal Server Error');
         $this->expectExceptionCode(500);
 
         $cluster = new Cluster($this->client);
