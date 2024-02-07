@@ -14,21 +14,15 @@ use Qdrant\Config;
 
 class Builder
 {
-    protected ClientInterface $baseClient;
-
-    public function getClient(): ClientInterface
-    {
-        if (empty($this->baseClient)) {
-            $this->baseClient = Psr18ClientDiscovery::find();
-        }
-
-        return $this->baseClient;
+    protected ?ClientInterface $client;
+    public function __construct(ClientInterface $client = null) {
+        $this->client = $client ?: Psr18ClientDiscovery::find();
     }
 
     public function build(Config $config): Transport
     {
         return new Transport(
-            $this->getClient(),
+            $this->client,
             $config
         );
     }
