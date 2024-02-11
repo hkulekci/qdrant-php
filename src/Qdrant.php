@@ -5,7 +5,6 @@
  */
 namespace Qdrant;
 
-use Psr\Http\Client\RequestExceptionInterface;
 use Psr\Http\Message\RequestInterface;
 use Qdrant\Endpoints\Cluster;
 use Qdrant\Endpoints\Collections;

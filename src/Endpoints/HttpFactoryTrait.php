@@ -43,7 +43,7 @@ trait HttpFactoryTrait
                     $this->getHttpFactory()->createStream(json_encode($body, JSON_THROW_ON_ERROR))
                 );
             } catch (\JsonException $e) {
-                throw new InvalidArgumentException('Json parse error!');
+                throw new InvalidArgumentException('Json parse error!', $e->getCode(), $e);
             }
         }
 
