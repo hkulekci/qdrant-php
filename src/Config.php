@@ -10,11 +10,25 @@ namespace Qdrant;
 
 class Config
 {
-
     protected ?string $apiKey = null;
 
     public function __construct(protected string $host, protected int $port = 6333)
     {
+    }
+
+    public function getHost(): string
+    {
+        return parse_url($this->host, PHP_URL_HOST) ?: $this->host;
+    }
+
+    public function getPort(): int
+    {
+        return $this->port;
+    }
+
+    public function getScheme(): string
+    {
+        return parse_url($this->host, PHP_URL_SCHEME) ?: 'http';
     }
 
     public function getDomain(): string

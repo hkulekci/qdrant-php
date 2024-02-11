@@ -8,6 +8,7 @@ namespace Qdrant\Tests\Unit;
 
 use GuzzleHttp\Psr7\Response as HttpResponse;
 use GuzzleHttp\Psr7\Utils;
+use Http\Discovery\Psr17FactoryDiscovery;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Qdrant\Exception\InvalidArgumentException;
@@ -18,13 +19,12 @@ class ResponseTest extends TestCase
 {
     public function testConstructResponse(): void
     {
-        $httpResponse = new HttpResponse(
-            200,
-            [
-                'content-type' => 'application/json'
-            ],
-            Utils::streamFor(json_encode(['foo' => 'bar']))
-        );
+        $httpFactory = Psr17FactoryDiscovery::findResponseFactory();
+        $streamFactory = Psr17FactoryDiscovery::findStreamFactory();
+
+        $httpResponse = $httpFactory->createResponse(200)
+            ->withHeader('content-type', 'application/json')
+            ->withBody($streamFactory->createStream(json_encode(['foo' => 'bar'])));
 
         $response = new Response($httpResponse);
 
@@ -33,13 +33,12 @@ class ResponseTest extends TestCase
 
     public function testConstructResponse2(): void
     {
-        $httpResponse = new HttpResponse(
-            200,
-            [
-                'content-type' => 'text/html'
-            ],
-            Utils::streamFor(json_encode(['foo' => 'bar']))
-        );
+        $httpFactory = Psr17FactoryDiscovery::findResponseFactory();
+        $streamFactory = Psr17FactoryDiscovery::findStreamFactory();
+
+        $httpResponse = $httpFactory->createResponse(200)
+            ->withHeader('content-type', 'text/html')
+            ->withBody($streamFactory->createStream(json_encode(['foo' => 'bar'])));
 
         $response = new Response($httpResponse);
 
@@ -48,13 +47,12 @@ class ResponseTest extends TestCase
 
     public function testConstructResponseWith4xxHttpCode(): void
     {
-        $httpResponse = new HttpResponse(
-            418,
-            [
-                'content-type' => 'application/json'
-            ],
-            Utils::streamFor(json_encode(['foo' => 'bar']))
-        );
+        $httpFactory = Psr17FactoryDiscovery::findResponseFactory();
+        $streamFactory = Psr17FactoryDiscovery::findStreamFactory();
+
+        $httpResponse = $httpFactory->createResponse(418)
+            ->withHeader('content-type', 'application/json')
+            ->withBody($streamFactory->createStream(json_encode(['foo' => 'bar'])));
 
         $response = new Response($httpResponse);
         $this->assertEquals('bar', $response['foo']);
@@ -62,11 +60,12 @@ class ResponseTest extends TestCase
 
     public function testConstructResponseWith5xxHttpCode(): void
     {
-        $httpResponse = new HttpResponse(
-            510,
-            [],
-            Utils::streamFor(json_encode(['foo' => 'bar']))
-        );
+
+        $httpFactory = Psr17FactoryDiscovery::findResponseFactory();
+        $streamFactory = Psr17FactoryDiscovery::findStreamFactory();
+
+        $httpResponse = $httpFactory->createResponse(510)
+            ->withBody($streamFactory->createStream(json_encode(['foo' => 'bar'])));
 
         $response = new Response($httpResponse);
         $this->assertEquals('{"foo":"bar"}', $response['content']);
