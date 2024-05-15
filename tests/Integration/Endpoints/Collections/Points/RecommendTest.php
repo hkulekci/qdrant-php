@@ -4,14 +4,15 @@
  * @author    Greg Priday <greg@siteorigin.com>
  */
 
-namespace Qdrant\Tests\Integration\Endpoints\Collections;
+namespace Integration\Endpoints\Collections\Points;
 
 use Qdrant\Endpoints\Collections;
 use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\Filter\Condition\MatchString;
 use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\PointsStruct;
-use Qdrant\Models\Request\RecommendRequest;
+use Qdrant\Models\Request\Points\BatchRecommendRequest;
+use Qdrant\Models\Request\Points\RecommendRequest;
 use Qdrant\Models\VectorStruct;
 use Qdrant\Tests\Integration\AbstractIntegration;
 
@@ -47,6 +48,20 @@ class RecommendTest extends AbstractIntegration
                             'image' => 'sample image'
                         ]
                     ],
+                    [
+                        'id' => 3,
+                        'vector' => new VectorStruct([1, 3, 200], 'image'),
+                        'payload' => [
+                            'image' => 'sample image'
+                        ]
+                    ],
+                    [
+                        'id' => 4,
+                        'vector' => new VectorStruct([1, 3, 100], 'image'),
+                        'payload' => [
+                            'image' => 'sample image'
+                        ]
+                    ],
                 ]
             ]
         ];
@@ -74,7 +89,7 @@ class RecommendTest extends AbstractIntegration
                 )
             );
 
-        $response = $this->getCollections('sample-collection')->points()->recommend($recommendRequest);
+        $response = $this->getCollections('sample-collection')->points()->recommend()->recommend($recommendRequest);
 
         $this->assertEquals('ok', $response['status']);
     }
@@ -104,11 +119,13 @@ class RecommendTest extends AbstractIntegration
         // Perform recommend without score threshold
         $responseWithoutThreshold = $this->getCollections('sample-collection')
             ->points()
+            ->recommend()
             ->recommend($recommendRequestWithoutThreshold);
 
         // Perform recommend with score threshold
         $responseWithThreshold = $this->getCollections('sample-collection')
             ->points()
+            ->recommend()
             ->recommend($recommendRequestWithThreshold);
 
         // Check that we got a response in both cases
@@ -121,6 +138,35 @@ class RecommendTest extends AbstractIntegration
             count($responseWithoutThreshold['result']),
             'The result count should be higher or the same when no score threshold is used'
         );
+    }
+
+    public static function batchRecommendQueryProvider(): array
+    {
+
+        return [
+            [
+                [
+                    (new RecommendRequest([1], [2]))->setLimit(3)->setUsing('image'),
+                    (new RecommendRequest([1, 2], []))->setLimit(3)->setUsing('image'),
+                    (new RecommendRequest([1], [2, 3]))->setLimit(3)->setUsing('image'),
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @dataProvider batchRecommendQueryProvider
+     */
+    public function testBatchRecommendPoint(array $batch): void
+    {
+        $recommendRequest = new BatchRecommendRequest($batch);
+
+        $response = $this->getCollections('sample-collection')
+            ->points()
+            ->recommend()
+            ->batch($recommendRequest);
+
+        $this->assertEquals('ok', $response['status']);
     }
 
 

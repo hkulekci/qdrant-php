@@ -12,11 +12,11 @@ namespace Qdrant\Endpoints\Collections;
 
 use Qdrant\Endpoints\AbstractEndpoint;
 use Qdrant\Endpoints\Collections\Points\Payload;
+use Qdrant\Endpoints\Collections\Points\Recommend;
 use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\PointsStruct;
 use Qdrant\Models\Request\PointsBatch;
-use Qdrant\Models\Request\RecommendRequest;
 use Qdrant\Models\Request\ScrollRequest;
 use Qdrant\Models\Request\SearchRequest;
 use Qdrant\Response;
@@ -26,6 +26,11 @@ class Points extends AbstractEndpoint
     public function payload(): Payload
     {
         return (new Payload($this->client))->setCollectionName($this->collectionName);
+    }
+
+    public function recommend(): Recommend
+    {
+        return (new Recommend($this->client))->setCollectionName($this->collectionName);
     }
 
     /**
@@ -177,20 +182,6 @@ class Points extends AbstractEndpoint
                 [
                     'batch' => $points->toArray(),
                 ]
-            )
-        );
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function recommend(RecommendRequest $recommendParams): Response
-    {
-        return $this->client->execute(
-            $this->createRequest(
-                'POST',
-                'collections/' . $this->collectionName . '/points/recommend',
-                $recommendParams->toArray()
             )
         );
     }

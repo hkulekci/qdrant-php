@@ -13,6 +13,8 @@ class Filter implements ConditionInterface
     protected array $must = [];
     protected array $must_not = [];
     protected array $should = [];
+    protected array $minShould = [];
+    protected ?int $minShouldCount;
 
     public function addMust(ConditionInterface $condition): Filter
     {
@@ -31,6 +33,20 @@ class Filter implements ConditionInterface
     public function addShould(ConditionInterface $condition): Filter
     {
         $this->should[] = $condition;
+
+        return $this;
+    }
+
+    public function addMinShould(ConditionInterface $condition): Filter
+    {
+        $this->minShould[] = $condition;
+
+        return $this;
+    }
+
+    public function setMinShouldCount(int $count): Filter
+    {
+        $this->minShouldCount = $count;
 
         return $this;
     }
@@ -57,6 +73,16 @@ class Filter implements ConditionInterface
             foreach ($this->should as $should) {
                 /** ConditionInterface $must */
                 $filter['should'][] = $should->toArray();
+            }
+        }
+        if ($this->minShould && $this->minShouldCount) {
+            $filter['min_should'] = [
+                'conditions' => [],
+                'min_count' => $this->minShouldCount
+            ];
+            foreach ($this->minShould as $should) {
+                /** ConditionInterface $must */
+                $filter['min_should']['conditions'][] = $should->toArray();
             }
         }
 
