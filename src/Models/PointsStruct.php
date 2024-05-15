@@ -13,21 +13,9 @@ class PointsStruct
     use ProtectedPropertyAccessor;
 
     /**
-     * @var array
+     * @var mixed[]
      */
     protected $points = [];
-
-    public function addPoint(PointStruct $pointStruct): void
-    {
-        $this->points[] = $pointStruct;
-    }
-
-    public function addPoints(array $points): void
-    {
-        foreach ($points as $point) {
-            $this->addPoint($point);
-        }
-    }
 
     public static function createFromArray(array $points): PointsStruct
     {
@@ -37,6 +25,18 @@ class PointsStruct
         }
 
         return $pointsStruct;
+    }
+
+    public function addPoints(array $points): void
+    {
+        foreach ($points as $point) {
+            $this->addPoint($point);
+        }
+    }
+
+    public function addPoint(PointStruct $pointStruct): void
+    {
+        $this->points[] = $pointStruct;
     }
 
     public function toArray(): array

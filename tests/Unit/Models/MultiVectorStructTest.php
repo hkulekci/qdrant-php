@@ -58,7 +58,7 @@ class MultiVectorStructTest extends TestCase
     public function testNamedMultiVectorStructWithMissingName(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Vector with name uber not found');
+        $this->expectExceptionMessage("Vector with name uber not found");
 
         $vector = new MultiVectorStruct([
             'foo' => [1, 2, 3],

@@ -7,6 +7,7 @@
  * @since     Mar 2023
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
+
 namespace Qdrant\Endpoints\Collections;
 
 use Qdrant\Endpoints\AbstractEndpoint;
@@ -38,7 +39,7 @@ class Aliases extends AbstractEndpoint
     public function aliases(): Response
     {
         return $this->client->execute(
-            $this->createRequest('GET', '/collections/'.$this->getCollectionName().'/aliases')
+            $this->createRequest('GET', '/collections/' . $this->getCollectionName() . '/aliases')
         );
     }
 }

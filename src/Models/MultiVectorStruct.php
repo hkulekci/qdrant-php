@@ -7,7 +7,7 @@ use Qdrant\Exception\InvalidArgumentException;
 class MultiVectorStruct implements VectorStructInterface
 {
     /**
-     * @var array
+     * @var mixed[]
      */
     protected $vectors = [];
 
@@ -25,11 +25,12 @@ class MultiVectorStruct implements VectorStructInterface
 
     public function getName(): ?string
     {
-        if(empty($this->vectors)) {
+        if (empty($this->vectors)) {
             throw new InvalidArgumentException('No vectors added yet');
         }
+        reset($this->vectors);
 
-        return array_key_first($this->vectors);
+        return key($this->vectors);
     }
 
     public function toSearchArray(string $name = null): array
@@ -39,7 +40,7 @@ class MultiVectorStruct implements VectorStructInterface
             throw new InvalidArgumentException('Must provide a name to search');
         }
 
-        if(!isset($this->vectors[$name])) {
+        if (!isset($this->vectors[$name])) {
             throw new InvalidArgumentException("Vector with name $name not found");
         }
 

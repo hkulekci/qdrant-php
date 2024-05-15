@@ -11,7 +11,7 @@ namespace Qdrant\Models\Request;
 class AliasActions
 {
     /**
-     * @var array
+     * @var mixed[]
      */
     protected $actions;
 

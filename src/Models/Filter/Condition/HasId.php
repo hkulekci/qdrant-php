@@ -9,7 +9,7 @@ namespace Qdrant\Models\Filter\Condition;
 class HasId implements ConditionInterface
 {
     /**
-     * @var array
+     * @var mixed[]
      */
     protected $ids;
 

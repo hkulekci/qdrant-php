@@ -14,7 +14,6 @@ class ProductQuantization implements QuantizationConfig
      * @var string
      */
     protected $compression;
-
     /**
      * @var bool|null
      */
@@ -22,8 +21,8 @@ class ProductQuantization implements QuantizationConfig
 
     public function __construct(string $compression, ?bool $alwaysRam = null)
     {
-        $this->alwaysRam = $alwaysRam;
         $this->compression = $compression;
+        $this->alwaysRam = $alwaysRam;
     }
 
     public function toArray(): array

@@ -17,7 +17,6 @@ class WalConfig implements RequestModel
      * @var int|null
      */
     protected $walCapacityMb;
-
     /**
      * @var int|null
      */

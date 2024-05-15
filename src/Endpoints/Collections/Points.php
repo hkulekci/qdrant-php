@@ -43,9 +43,8 @@ class Points extends AbstractEndpoint
     }
 
     /**
-     * @param Filter|ScrollRequest|null $scrollParams
-     * @param array $queryParams
-     * @return Response
+     * @param Filter|ScrollRequest $scrollParams
+     * @throws InvalidArgumentException
      */
     public function scroll($scrollParams = null, array $queryParams = []): Response
     {
@@ -106,9 +105,9 @@ class Points extends AbstractEndpoint
                 'POST',
                 '/collections/' . $this->getCollectionName() . '/points' . $this->queryBuild($queryParams),
                 [
-                    'ids'          => $ids,
+                    'ids' => $ids,
                     'with_payload' => $withPayload,
-                    'with_vector'  => $withVector,
+                    'with_vector' => $withVector,
                 ]
             )
         );
@@ -116,8 +115,7 @@ class Points extends AbstractEndpoint
 
     /**
      * @param int|string $id
-     * @param array $queryParams
-     * @return Response
+     * @throws InvalidArgumentException
      */
     public function id($id, array $queryParams = []): Response
     {
@@ -188,12 +186,12 @@ class Points extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function recommend(RecommendRequest $recommendParams, array $queryParams = []): Response
+    public function recommend(RecommendRequest $recommendParams): Response
     {
         return $this->client->execute(
             $this->createRequest(
                 'POST',
-                'collections/' . $this->collectionName . '/points/recommend' . $this->queryBuild($queryParams),
+                'collections/' . $this->collectionName . '/points/recommend',
                 $recommendParams->toArray()
             )
         );

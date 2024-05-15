@@ -17,27 +17,22 @@ class HnswConfig implements RequestModel
      * @var int|null
      */
     protected $m;
-
     /**
      * @var int|null
      */
     protected $efConstruct;
-
     /**
      * @var int|null
      */
     protected $fullScanThreshold;
-
     /**
      * @var int|null
      */
     protected $maxIndexingThreads;
-
     /**
      * @var bool|null
      */
     protected $onDisk;
-
     /**
      * @var int|null
      */

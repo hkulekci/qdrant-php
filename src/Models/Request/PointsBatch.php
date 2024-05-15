@@ -15,7 +15,7 @@ use Qdrant\Models\VectorStruct;
 class PointsBatch implements RequestModel
 {
     /**
-     * @var array|array[]
+     * @var mixed[]
      */
     protected $batchPoints = [
         'ids' => [],

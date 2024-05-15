@@ -19,7 +19,7 @@ class CreateIndex implements RequestModel
     protected $fieldSchema;
 
     /**
-     * @var array
+     * @var mixed[]
      */
     protected $schemaParams = [];
 

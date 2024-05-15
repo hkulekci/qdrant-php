@@ -27,6 +27,7 @@ class InvalidArgumentException extends \InvalidArgumentException
 
     /**
      * @param Response $response
+     * @return InvalidArgumentException
      */
     public function setResponse(Response $response): InvalidArgumentException
     {

@@ -10,27 +10,20 @@ use Qdrant\Models\Traits\ProtectedPropertyAccessor;
 
 class VectorStruct implements VectorStructInterface
 {
-    use ProtectedPropertyAccessor;
-
     /**
-     * @var array
+     * @var mixed[]
      */
     protected $vector;
-
     /**
      * @var string|null
      */
     protected $name;
+    use ProtectedPropertyAccessor;
 
     public function __construct(array $vector, ?string $name = null)
     {
         $this->vector = $vector;
         $this->name = $name;
-    }
-
-    public function isNamed(): bool
-    {
-        return $this->name !== null;
     }
 
     public function getName(): ?string
@@ -47,6 +40,11 @@ class VectorStruct implements VectorStructInterface
             ];
         }
         return $this->vector;
+    }
+
+    public function isNamed(): bool
+    {
+        return $this->name !== null;
     }
 
     public function toArray(): array

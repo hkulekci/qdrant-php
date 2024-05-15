@@ -11,21 +11,20 @@ use Qdrant\Domain\Assert;
 class ValueCount extends AbstractCondition implements ConditionInterface
 {
     protected const CONDITIONS = ['gt', 'gte', 'lt', 'lte'];
-
     /**
-     * @var array
+     * @var mixed[]
      */
     protected $valueCount;
 
     public function __construct(string $key, array $valueCount)
     {
+        $this->valueCount = $valueCount;
         parent::__construct($key);
         Assert::keysExistsAtLeastOne(
             $valueCount,
             self::CONDITIONS,
             'ValueCount expects at least one of %s key'
         );
-        $this->valueCount = $valueCount;
     }
 
     public function toArray(): array

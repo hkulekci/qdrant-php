@@ -14,12 +14,10 @@ class ScalarQuantization implements QuantizationConfig
      * @var string
      */
     protected $type;
-
     /**
      * @var float|null
      */
     protected $quantile;
-
     /**
      * @var bool|null
      */
@@ -27,9 +25,9 @@ class ScalarQuantization implements QuantizationConfig
 
     public function __construct(string $type, ?float $quantile = null, ?bool $alwaysRam = null)
     {
-        $this->alwaysRam = $alwaysRam;
-        $this->quantile = $quantile;
         $this->type = $type;
+        $this->quantile = $quantile;
+        $this->alwaysRam = $alwaysRam;
     }
 
     public function toArray(): array

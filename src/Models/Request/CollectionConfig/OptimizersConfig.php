@@ -50,6 +50,7 @@ class OptimizersConfig implements RequestModel
      */
     protected $maxOptimizationThreads;
 
+
     public function setDeletedThreshold(?float $deletedThreshold): OptimizersConfig
     {
         $this->deletedThreshold = $deletedThreshold;
@@ -109,28 +110,28 @@ class OptimizersConfig implements RequestModel
     public function toArray(): array
     {
         $data = [];
-        if ($this->deletedThreshold) {
+        if ($this->deletedThreshold !== null) {
             $data['deleted_threshold'] = $this->deletedThreshold;
         }
-        if ($this->vacuumMinVectorNumber) {
+        if ($this->vacuumMinVectorNumber !== null) {
             $data['vacuum_min_vector_number'] = $this->vacuumMinVectorNumber;
         }
-        if ($this->defaultSegmentNumber) {
+        if ($this->defaultSegmentNumber !== null) {
             $data['default_segment_number'] = $this->defaultSegmentNumber;
         }
-        if ($this->maxSegmentSize) {
+        if ($this->maxSegmentSize !== null) {
             $data['max_segment_size'] = $this->maxSegmentSize;
         }
-        if ($this->memmapThreshold) {
+        if ($this->memmapThreshold !== null) {
             $data['memmap_threshold'] = $this->memmapThreshold;
         }
-        if ($this->indexingThreshold) {
+        if ($this->indexingThreshold !== null) {
             $data['indexing_threshold'] = $this->indexingThreshold;
         }
-        if ($this->flushIntervalSec) {
+        if ($this->flushIntervalSec !== null) {
             $data['flush_interval_sec'] = $this->flushIntervalSec;
         }
-        if ($this->maxOptimizationThreads) {
+        if ($this->maxOptimizationThreads !== null) {
             $data['max_optimization_threads'] = $this->maxOptimizationThreads;
         }
 

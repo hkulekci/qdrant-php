@@ -15,8 +15,8 @@ class MatchInt extends AbstractCondition implements ConditionInterface
 
     public function __construct(string $key, int $value)
     {
-        parent::__construct($key);
         $this->value = $value;
+        parent::__construct($key);
     }
 
     public function toArray(): array

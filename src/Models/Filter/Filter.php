@@ -11,17 +11,15 @@ use Qdrant\Models\Filter\Condition\ConditionInterface;
 class Filter implements ConditionInterface
 {
     /**
-     * @var array
+     * @var mixed[]
      */
     protected $must = [];
-
     /**
-     * @var array
+     * @var mixed[]
      */
     protected $must_not = [];
-
     /**
-     * @var array
+     * @var mixed[]
      */
     protected $should = [];
 

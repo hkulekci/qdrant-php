@@ -5,37 +5,29 @@
  * @since     Mar 2023
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
+
 namespace Qdrant\Endpoints;
 
-use Http\Factory\Guzzle\RequestFactory;
-use Http\Factory\Guzzle\StreamFactory;
-use GuzzleHttp\Psr7\Query;
-use Psr\Http\Message\RequestInterface;
+use Qdrant\ClientInterface;
 use Qdrant\Exception\InvalidArgumentException;
-use Qdrant\Http\HttpClientInterface;
 
 abstract class AbstractEndpoint
 {
+    /**
+     * @var ClientInterface
+     */
+    protected $client;
+
     /**
      * @var string|null
      */
     protected $collectionName;
 
-    /**
-     * @var HttpClientInterface
-     */
-    protected $client;
+    use HttpFactoryTrait;
 
-    public function __construct(HttpClientInterface $client)
+    public function __construct(ClientInterface $client)
     {
         $this->client = $client;
-    }
-
-    public function setCollectionName(?string $collectionName)
-    {
-        $this->collectionName = $collectionName;
-
-        return $this;
     }
 
     /**
@@ -50,31 +42,13 @@ abstract class AbstractEndpoint
         return $this->collectionName;
     }
 
-    protected function queryBuild(array $params): string
-    {
-        if ($params) {
-            return '?' . Query::build($params);
-        }
-        return '';
-    }
-
     /**
-     * @throws InvalidArgumentException
+     * @return static
      */
-    protected function createRequest(string $method, string $uri, array $body = []): RequestInterface
+    public function setCollectionName(?string $collectionName)
     {
-        $httpFactory = new RequestFactory();
-        $request = $httpFactory->createRequest($method, $uri);
-        if ($body) {
-            try {
-                $request = $request->withBody(
-                    (new StreamFactory)->createStream(json_encode($body, 4194304))
-                );
-            } catch (\JsonException $e) {
-                throw new InvalidArgumentException('Json parse error!');
-            }
-        }
+        $this->collectionName = $collectionName;
 
-        return $request;
+        return $this;
     }
 }

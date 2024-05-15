@@ -13,10 +13,10 @@ class ProtectedPropertyAccessorTest extends TestCase
         $mock = new class {
             use ProtectedPropertyAccessor;
 
-            protected $exampleProperty = 'value';
+            protected $exampleProperty = "value";
         };
 
-        $this->assertEquals('value', $mock->getExampleProperty());
+        $this->assertEquals("value", $mock->getExampleProperty());
     }
 
     public function testAccessNonExistentProperty()
@@ -39,7 +39,7 @@ class ProtectedPropertyAccessorTest extends TestCase
         $mock = new class {
             use ProtectedPropertyAccessor;
 
-            public $publicProperty = 'publicValue';
+            public $publicProperty = "publicValue";
         };
 
         $unused = $mock->getPublicProperty();
@@ -53,7 +53,7 @@ class ProtectedPropertyAccessorTest extends TestCase
         $mock = new class {
             use ProtectedPropertyAccessor;
 
-            private $privateProperty = 'privateValue';
+            private $privateProperty = "privateValue";
         };
 
         $unused = $mock->getPrivateProperty();

@@ -24,11 +24,12 @@ trait ProtectedPropertyAccessor
     {
         $prefix = 'get';
 
-        if (str_starts_with($method, $prefix)) {
+        if (strncmp($method, $prefix, strlen($prefix)) === 0) {
             $property = lcfirst(substr($method, strlen($prefix)));
 
             if (property_exists($this, $property)) {
                 $reflection = new ReflectionProperty($this, $property);
+                $reflection->setAccessible(true);
                 if ($reflection->isProtected()) {
                     return $this->$property;
                 } else {

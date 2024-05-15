@@ -18,6 +18,30 @@ class OptimizerConfigTest extends TestCase
         $this->assertEquals([], $config->toArray());
     }
 
+    public function testWithValueZero(): void
+    {
+        $config = (new OptimizersConfig())
+            ->setDeletedThreshold(0)
+            ->setVacuumMinVectorNumber(0)
+            ->setDefaultSegmentNumber(0)
+            ->setMaxSegmentSize(0)
+            ->setMemmapThreshold(0)
+            ->setIndexingThreshold(0)
+            ->setFlushIntervalSec(0)
+            ->setMaxOptimizationThreads(0);
+
+        $this->assertEquals([
+            'deleted_threshold' => 0.0,
+            'vacuum_min_vector_number' => 0,
+            'default_segment_number' => 0,
+            'max_segment_size' => 0,
+            'memmap_threshold' => 0,
+            'indexing_threshold' => 0,
+            'flush_interval_sec' => 0,
+            'max_optimization_threads' => 0,
+        ], $config->toArray());
+    }
+
     public function testWithIndexingThreshold(): void
     {
         $config = (new OptimizersConfig())->setIndexingThreshold(10);

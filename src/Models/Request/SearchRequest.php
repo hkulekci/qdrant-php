@@ -5,6 +5,7 @@
  * @since     Mar 2023
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
+
 namespace Qdrant\Models\Request;
 
 use Qdrant\Models\Filter\Filter;
@@ -13,6 +14,10 @@ use Qdrant\Models\VectorStructInterface;
 
 class SearchRequest
 {
+    /**
+     * @var VectorStructInterface
+     */
+    protected $vector;
     use ProtectedPropertyAccessor;
 
     /**
@@ -21,7 +26,7 @@ class SearchRequest
     protected $filter;
 
     /**
-     * @var array
+     * @var mixed[]
      */
     protected $params = [];
 
@@ -36,14 +41,14 @@ class SearchRequest
     protected $offset;
 
     /**
-     * @var bool|array|null
+     * @var mixed[]|bool|null
      */
-    protected $withVector;
+    protected $withVector = null;
 
     /**
-     * @var bool|array|null
+     * @var mixed[]|bool|null
      */
-    protected $withPayload;
+    protected $withPayload = null;
 
     /**
      * @var float|null
@@ -55,16 +60,14 @@ class SearchRequest
      */
     protected $name;
 
-    /**
-     * @var VectorStructInterface
-     */
-    protected $vector;
-
     public function __construct(VectorStructInterface $vector)
     {
         $this->vector = $vector;
     }
 
+    /**
+     * @return static
+     */
     public function setName(string $name)
     {
         $this->name = $name;
@@ -72,6 +75,9 @@ class SearchRequest
         return $this;
     }
 
+    /**
+     * @return static
+     */
     public function setFilter(Filter $filter)
     {
         $this->filter = $filter;
@@ -79,6 +85,9 @@ class SearchRequest
         return $this;
     }
 
+    /**
+     * @return static
+     */
     public function setScoreThreshold(float $scoreThreshold)
     {
         $this->scoreThreshold = $scoreThreshold;
@@ -86,6 +95,9 @@ class SearchRequest
         return $this;
     }
 
+    /**
+     * @return static
+     */
     public function setParams(array $params)
     {
         $this->params = $params;
@@ -93,6 +105,9 @@ class SearchRequest
         return $this;
     }
 
+    /**
+     * @return static
+     */
     public function setLimit(int $limit)
     {
         $this->limit = $limit;
@@ -100,6 +115,9 @@ class SearchRequest
         return $this;
     }
 
+    /**
+     * @return static
+     */
     public function setOffset(int $offset)
     {
         $this->offset = $offset;
@@ -107,6 +125,9 @@ class SearchRequest
         return $this;
     }
 
+    /**
+     * @return static
+     */
     public function setWithPayload($withPayload)
     {
         $this->withPayload = $withPayload;
@@ -114,6 +135,9 @@ class SearchRequest
         return $this;
     }
 
+    /**
+     * @return static
+     */
     public function setWithVector($withVector)
     {
         $this->withVector = $withVector;
@@ -130,7 +154,7 @@ class SearchRequest
         if ($this->filter !== null && $this->filter->toArray()) {
             $body['filter'] = $this->filter->toArray();
         }
-        if($this->scoreThreshold) {
+        if ($this->scoreThreshold) {
             $body['score_threshold'] = $this->scoreThreshold;
         }
         if ($this->params) {

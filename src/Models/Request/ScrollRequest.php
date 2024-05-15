@@ -23,18 +23,21 @@ class ScrollRequest implements RequestModel
     /**
      * @var int|string|null
      */
-    protected $offset;
+    protected $offset = null;
 
     /**
-     * @var bool|array|null
+     * @var mixed[]|bool|null
      */
-    protected $withVector;
+    protected $withVector = null;
 
     /**
-     * @var bool|array|null
+     * @var mixed[]|bool|null
      */
-    protected $withPayload;
+    protected $withPayload = null;
 
+    /**
+     * @return static
+     */
     public function setFilter(Filter $filter)
     {
         $this->filter = $filter;
@@ -42,6 +45,9 @@ class ScrollRequest implements RequestModel
         return $this;
     }
 
+    /**
+     * @return static
+     */
     public function setLimit(int $limit)
     {
         $this->limit = $limit;
@@ -51,7 +57,7 @@ class ScrollRequest implements RequestModel
 
     /**
      * @param int|string $offset
-     * @return $this
+     * @return static
      */
     public function setOffset($offset)
     {
@@ -60,6 +66,9 @@ class ScrollRequest implements RequestModel
         return $this;
     }
 
+    /**
+     * @return static
+     */
     public function setWithPayload($withPayload)
     {
         $this->withPayload = $withPayload;
@@ -67,6 +76,9 @@ class ScrollRequest implements RequestModel
         return $this;
     }
 
+    /**
+     * @return static
+     */
     public function setWithVector($withVector)
     {
         $this->withVector = $withVector;

@@ -11,21 +11,20 @@ use Qdrant\Domain\Assert;
 class Range extends AbstractCondition implements ConditionInterface
 {
     protected const CONDITIONS = ['gt', 'gte', 'lt', 'lte'];
-
     /**
-     * @var array
+     * @var mixed[]
      */
     protected $ranges;
 
     public function __construct(string $key, array $ranges)
     {
+        $this->ranges = $ranges;
         parent::__construct($key);
         Assert::keysExistsAtLeastOne(
             $ranges,
             self::CONDITIONS,
             'Range expects at least one of %s keys'
         );
-        $this->ranges = $ranges;
     }
 
     public function toArray(): array

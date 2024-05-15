@@ -15,8 +15,8 @@ class FullTextMatch extends AbstractCondition implements ConditionInterface
 
     public function __construct(string $key, string $text)
     {
-        parent::__construct($key);
         $this->text = $text;
+        parent::__construct($key);
     }
 
     public function toArray(): array

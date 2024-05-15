@@ -11,7 +11,7 @@ use Qdrant\Models\Filter\Condition\ConditionInterface;
 class Nested implements ConditionInterface
 {
     /**
-     * @var array
+     * @var mixed[]
      */
     protected $container = [];
 

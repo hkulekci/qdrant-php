@@ -17,11 +17,6 @@ use Qdrant\Models\Request\CollectionConfig\QuantizationConfig;
 class UpdateCollection implements RequestModel
 {
     /**
-     * @var array
-     */
-    protected $vectors;
-
-    /**
      * @var OptimizersConfig|null
      */
     protected $optimizersConfig;
@@ -40,17 +35,6 @@ class UpdateCollection implements RequestModel
      * @var QuantizationConfig|null
      */
     protected $quantizationConfig;
-
-    public function addVector(VectorParams $vectorParams, string $name = null): UpdateCollection
-    {
-        if ($name !== null) {
-            $this->vectors[$name] = $vectorParams->toArray();
-        } else {
-            $this->vectors = $vectorParams->toArray();
-        }
-
-        return $this;
-    }
 
     public function setOptimizersConfig(OptimizersConfig $optimizersConfig): UpdateCollection
     {
@@ -83,9 +67,6 @@ class UpdateCollection implements RequestModel
     public function toArray(): array
     {
         $data = [];
-        if ($this->vectors) {
-            $data['vectors'] = $this->vectors;
-        }
         if ($this->optimizersConfig) {
             $data['optimizers_config'] = $this->optimizersConfig->toArray();
         }
@@ -98,7 +79,7 @@ class UpdateCollection implements RequestModel
 
         if ($this->quantizationConfig instanceof DisabledQuantization) {
             $data['quantization_config'] = 'Disabled';
-        } elseif ($this->quantizationConfig !== null) {
+        } else if ($this->quantizationConfig !== null) {
             $data['quantization_config'] = $this->quantizationConfig->toArray();
         }
 

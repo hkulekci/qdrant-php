@@ -17,26 +17,27 @@ class Point implements RequestModel
      * @var string
      */
     protected $id;
-
     /**
-     * @var VectorStructInterface|array
+     * @var mixed[]|null
+     */
+    protected $payload;
+    /**
+     * @var VectorStructInterface
      */
     protected $vector;
 
     /**
-     * @var array|null
+     * @param VectorStructInterface|mixed[] $vector
      */
-    protected $payload;
-
     public function __construct(string $id, $vector, ?array $payload = null)
     {
-        if(is_array($vector)) {
+        $this->id = $id;
+        $this->payload = $payload;
+        if (is_array($vector)) {
             $vector = new VectorStruct($vector);
         }
 
-        $this->id = $id;
         $this->vector = $vector;
-        $this->payload = $payload;
     }
 
     public function toArray(): array

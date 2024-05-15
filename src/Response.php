@@ -16,14 +16,14 @@ use Qdrant\Exception\ServerException;
 class Response implements ArrayAccess
 {
     /**
-     * @var array|mixed
-     */
-    protected $raw;
-
-    /**
      * @var ResponseInterface
      */
     protected $response;
+
+    /**
+     * @var mixed[]
+     */
+    protected $raw;
 
     /**
      * @throws ServerException
@@ -34,7 +34,10 @@ class Response implements ArrayAccess
     {
         $this->response = $response;
         if ($response->getHeaderLine('content-type') === 'application/json') {
-            $this->raw = json_decode($response->getBody()->getContents(), true, 512, 4194304);
+            $this->raw = json_decode($response->getBody()->getContents(), true, 512, 0);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new Exception(json_last_error_msg());
+            }
         } else {
             $this->raw = [
                 'content' => $response->getBody()->getContents()
@@ -47,17 +50,27 @@ class Response implements ArrayAccess
         return $this->raw;
     }
 
+    /**
+     * @param mixed $offset
+     */
     public function offsetExists($offset): bool
     {
         return isset($this->raw[$offset]);
     }
 
+    /**
+     * @param mixed $offset
+     * @return mixed
+     */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->raw[$offset];
     }
 
     /**
+     * @param mixed $offset
+     * @param mixed $value
      * @throws Exception
      */
     public function offsetSet($offset, $value): void
@@ -66,6 +79,7 @@ class Response implements ArrayAccess
     }
 
     /**
+     * @param mixed $offset
      * @throws Exception
      */
     public function offsetUnset($offset): void

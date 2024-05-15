@@ -16,17 +16,14 @@ class CollectionParams implements RequestModel
      * @var int|null
      */
     protected $replicationFactor;
-
     /**
      * @var int|null
      */
     protected $writeConsistencyFactor;
-
     /**
      * @var int|null
      */
     protected $readFanOutFactor;
-
     /**
      * @var bool|null
      */

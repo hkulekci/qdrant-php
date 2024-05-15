@@ -9,13 +9,15 @@ declare(strict_types = 1);
 
 namespace Qdrant\Tests\Integration;
 
-use Http\Factory\Guzzle\RequestFactory;
+use GuzzleHttp\Psr7\HttpFactory;
+use Http\Discovery\Psr17FactoryDiscovery;
 use Qdrant\Config;
 use Qdrant\Endpoints\Cluster;
 use Qdrant\Endpoints\Collections;
 use Qdrant\Endpoints\Service;
 use Qdrant\Endpoints\Snapshots;
 use Qdrant\Exception\InvalidArgumentException;
+use Qdrant\Http\Builder;
 use Qdrant\Http\GuzzleClient;
 use Qdrant\Qdrant;
 
@@ -23,9 +25,10 @@ class ClientTest extends AbstractIntegration
 {
     public function testClient(): void
     {
-        $config = (new Config('http://127.0.0.1'));
-        $client = new Qdrant(new GuzzleClient($config));
-        $httpFactory = new RequestFactory();
+        $config = (new Config('127.0.0.1'));
+        $transform = (new Builder())->build($config);
+        $client = new Qdrant($transform);
+        $httpFactory = Psr17FactoryDiscovery::findRequestFactory();
         $request = $httpFactory->createRequest('GET', '/');
 
         $response = $client->execute($request);
@@ -37,8 +40,9 @@ class ClientTest extends AbstractIntegration
      */
     public function testClientService(): void
     {
-        $config = (new Config('http://127.0.0.1'));
-        $client = new Qdrant(new GuzzleClient($config));
+        $config = (new Config('127.0.0.1'));
+        $transform = (new Builder())->build($config);
+        $client = new Qdrant($transform);
 
         $this->assertInstanceOf(Service::class, $client->service());
         $this->assertInstanceOf(Cluster::class, $client->cluster());

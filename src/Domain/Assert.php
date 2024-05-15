@@ -11,11 +11,6 @@ use Webmozart\Assert\Assert as BaseAssert;
 
 class Assert extends BaseAssert
 {
-    protected static function reportInvalidArgument($message): void
-    {
-        throw new InvalidArgumentException($message);
-    }
-
     public static function keysExists(array $array, array $keys, $message = ''): void
     {
         foreach ($keys as $key) {
@@ -26,6 +21,11 @@ class Assert extends BaseAssert
                 ));
             }
         }
+    }
+
+    protected static function reportInvalidArgument($message): void
+    {
+        throw new InvalidArgumentException($message);
     }
 
     public static function keysExistsAtLeastOne(array $array, array $keys, $message = ''): void

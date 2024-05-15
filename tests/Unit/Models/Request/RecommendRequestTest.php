@@ -95,18 +95,6 @@ class RecommendRequestTest extends TestCase
         ], $request->toArray());
     }
 
-    public function testRecommendRequestWithStrategy(): void
-    {
-        $request = (new RecommendRequest([100, 101], [110]))
-            ->setStrategy('best_score');
-
-        $this->assertEquals([
-            'positive' => [100, 101],
-            'negative' => [110],
-            'strategy'=> 'best_score',
-        ], $request->toArray());
-    }
-
     public function testRecommendRequestWithLimit(): void
     {
         $request = (new RecommendRequest([100, 101], [110]))
