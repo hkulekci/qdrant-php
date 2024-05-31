@@ -193,6 +193,31 @@ class CreateCollectionTest extends TestCase
         );
     }
 
+    public function testCreateCollectionWithHnswConfigAndZeroM(): void
+    {
+        $collection = new CreateCollection();
+        $collection->addVector(new VectorParams(1024, VectorParams::DISTANCE_COSINE));
+        $diff = (new HnswConfig())
+            ->setM(0)
+            ->setPayloadM(1);
+
+        $collection->setHnswConfig($diff);
+
+        $this->assertEquals(
+            [
+                'vectors' => [
+                    'size' => '1024',
+                    'distance' => 'Cosine'
+                ],
+                'hnsw_config' => [
+                    'm' => 0,
+                    'payload_m' => 1,
+                ]
+            ],
+            $collection->toArray()
+        );
+    }
+
     public function testCreateCollectionWithWalConfig(): void
     {
         $collection = new CreateCollection();

@@ -28,6 +28,15 @@ class HnswConfigTest extends TestCase
         ], $config->toArray());
     }
 
+    public function testWithZeroM(): void
+    {
+        $config = (new HnswConfig())->setM(0);
+
+        $this->assertEquals([
+            'm' => 0
+        ], $config->toArray());
+    }
+
     public function testWithInvalidM(): void
     {
         $this->expectException(InvalidArgumentException::class);

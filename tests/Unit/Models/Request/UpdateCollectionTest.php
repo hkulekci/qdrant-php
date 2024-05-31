@@ -58,6 +58,22 @@ class UpdateCollectionTest extends TestCase
         );
     }
 
+    public function testUpdateCollectionWithHnswConfigAndZeroM(): void
+    {
+        $collection = new UpdateCollection();
+        $collection->setHnswConfig((new HnswConfig())->setM(0)->setEfConstruct(5));
+
+        $this->assertEquals(
+            [
+                'hnsw_config' => [
+                    'm' => 0,
+                    'ef_construct' => 5
+                ],
+            ],
+            $collection->toArray()
+        );
+    }
+
     public function testUpdateCollectionWithQuantizationConfig(): void
     {
         $collection = new UpdateCollection();
