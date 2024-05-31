@@ -80,7 +80,7 @@ class HnswConfig implements RequestModel
     public function toArray(): array
     {
         $data = [];
-        if ($this->m) {
+        if ($this->m !== null) {
             $data['m'] = $this->m;
         }
         if ($this->efConstruct) {
