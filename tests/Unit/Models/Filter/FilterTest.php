@@ -76,12 +76,36 @@ class FilterTest extends TestCase
         );
     }
 
+    public function testAddMinShouldFilter(): void
+    {
+        $filter = (new Filter())->addMinShould(new MatchInt('key', 1))->setMinShouldCount(1);
+
+        $this->assertEquals(
+            [
+                'min_should' => [
+                    'conditions' => [
+                        [
+                            'key' => 'key',
+                            'match' => [
+                                'value' => 1
+                            ]
+                        ]
+                    ],
+                    'min_count' => 1
+                ],
+            ],
+            $filter->toArray()
+        );
+    }
+
     public function testAddAllFilter(): void
     {
         $filter = (new Filter())
             ->addShould(new MatchInt('key', 1))
             ->addMust(new MatchInt('key', 2))
-            ->addMustNot(new MatchInt('key', 3));
+            ->addMustNot(new MatchInt('key', 3))
+            ->addMinShould(new MatchInt('key', 4))
+            ->setMinShouldCount(1);
 
         $this->assertArrayHasKey('must', $filter->toArray());
         $this->assertArrayHasKey('must_not', $filter->toArray());
@@ -111,6 +135,17 @@ class FilterTest extends TestCase
                             'value' => 1
                         ]
                     ]
+                ],
+                'min_should' => [
+                    'conditions' => [
+                        [
+                            'key' => 'key',
+                            'match' => [
+                                'value' => 4
+                            ]
+                        ]
+                    ],
+                    'min_count' => 1
                 ],
             ],
             $filter->toArray()
