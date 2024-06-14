@@ -3,6 +3,7 @@
  * Transport.php
  *
  * @since     Jan 2024
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -18,8 +19,7 @@ class Transport implements ClientInterface
     public function __construct(
         private readonly ClientInterface $client,
         private readonly Config $config
-    )
-    {
+    ) {
     }
 
     private function prepareHeaders(RequestInterface $request): RequestInterface
@@ -33,7 +33,8 @@ class Transport implements ClientInterface
                     ->withScheme($this->config->getScheme())
             );
 
-        if ($this->config->getApiKey()) {
+        if ($this->config->getApiKey())
+        {
             $request = $request->withHeader('api-key', $this->config->getApiKey());
         }
 

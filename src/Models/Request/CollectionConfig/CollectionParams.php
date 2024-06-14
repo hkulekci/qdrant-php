@@ -3,6 +3,7 @@
  * CollectionParams
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -13,8 +14,11 @@ use Qdrant\Models\Request\RequestModel;
 class CollectionParams implements RequestModel
 {
     protected ?int $replicationFactor;
+
     protected ?int $writeConsistencyFactor;
+
     protected ?int $readFanOutFactor;
+
     protected ?bool $onDiskPayload;
 
     public function setReplicationFactor(?int $replicationFactor): CollectionParams

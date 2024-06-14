@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Jul 2023
+ *
  * @author    Your Name <your-email@example.com>
  */
 
@@ -10,9 +11,9 @@ use Qdrant\Endpoints\Collections;
 use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\Filter\Condition\MatchString;
 use Qdrant\Models\Filter\Filter;
+use Qdrant\Models\MultiVectorStruct;
 use Qdrant\Models\PointsStruct;
 use Qdrant\Models\Request\SearchRequest;
-use Qdrant\Models\MultiVectorStruct;
 use Qdrant\Tests\Integration\AbstractIntegration;
 
 class MultiVectorSearchTest extends AbstractIntegration
@@ -40,21 +41,21 @@ class MultiVectorSearchTest extends AbstractIntegration
                         'id' => 1,
                         'vector' => new MultiVectorStruct([
                             'image' => [1, 3, 400],
-                            'text' => [2, 5, 300]
+                            'text' => [2, 5, 300],
                         ]),
                     ],
                     [
                         'id' => 2,
                         'vector' => new MultiVectorStruct([
                             'image' => [1, 3, 300],
-                            'text' => [2, 5, 200]
+                            'text' => [2, 5, 200],
                         ]),
                         'payload' => [
-                            'images' => 'sample images'
-                        ]
-                    ]
-                ]
-            ]
+                            'images' => 'sample images',
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 

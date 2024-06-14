@@ -3,6 +3,7 @@
  * BinaryQuantization
  *
  * @since     Oct 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -18,7 +19,8 @@ class BinaryQuantization implements QuantizationConfig
     {
         $binary = [];
 
-        if ($this->alwaysRam !== null) {
+        if ($this->alwaysRam !== null)
+        {
             $binary['always_ram'] = $this->alwaysRam;
         }
 

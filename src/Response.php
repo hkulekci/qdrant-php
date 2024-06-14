@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -24,11 +25,14 @@ class Response implements ArrayAccess
      */
     public function __construct(protected ResponseInterface $response)
     {
-        if ($response->getHeaderLine('content-type') === 'application/json') {
+        if ($response->getHeaderLine('content-type') === 'application/json')
+        {
             $this->raw = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
-        } else {
+        }
+        else
+        {
             $this->raw = [
-                'content' => $response->getBody()->getContents()
+                'content' => $response->getBody()->getContents(),
             ];
         }
     }

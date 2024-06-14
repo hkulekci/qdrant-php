@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Apr 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -8,7 +9,6 @@ namespace Qdrant\Tests\Integration\Endpoints\Collections;
 
 use Qdrant\Endpoints\Collections;
 use Qdrant\Exception\InvalidArgumentException;
-use Qdrant\Models\Request\CreateIndex;
 use Qdrant\Tests\Integration\AbstractIntegration;
 
 class SnapshotsTest extends AbstractIntegration

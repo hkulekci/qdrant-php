@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -17,7 +18,7 @@ class AssertTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         $data = [
-            'foo' => 'bar'
+            'foo' => 'bar',
         ];
 
         Assert::keysNotExists($data, ['foo']);
@@ -25,7 +26,6 @@ class AssertTest extends TestCase
 
     /**
      * @doesNotPerformAssertions
-     * @return void
      */
     public function testValidAssertKeyNotExists(): void
     {
@@ -40,7 +40,6 @@ class AssertTest extends TestCase
 
     /**
      * @doesNotPerformAssertions
-     * @return void
      */
     public function testValidAssertExistsAtLeastOne(): void
     {
@@ -54,9 +53,6 @@ class AssertTest extends TestCase
         Assert::keysExistsAtLeastOne($data, ['foo4', 'foo2']);
     }
 
-    /**
-     * @return void
-     */
     public function testInvalidAssertExistsAtLeastOne(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -71,7 +67,6 @@ class AssertTest extends TestCase
 
     /**
      * @doesNotPerformAssertions
-     * @return void
      */
     public function testValidAssertKeysExists(): void
     {
@@ -84,9 +79,6 @@ class AssertTest extends TestCase
         Assert::keysExists($data, ['foo1', 'foo2']);
     }
 
-    /**
-     * @return void
-     */
     public function testInvalidAssertKeysExists(): void
     {
         $this->expectException(InvalidArgumentException::class);

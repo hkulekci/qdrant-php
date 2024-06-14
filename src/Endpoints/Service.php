@@ -3,8 +3,10 @@
  * Service
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
+
 namespace Qdrant\Endpoints;
 
 use Qdrant\Exception\InvalidArgumentException;
@@ -23,7 +25,7 @@ class Service extends AbstractEndpoint
     {
 
         return $this->client->execute(
-            $this->createRequest('GET', '/telemetry' . ($anonymize ? '?anonymize=true' : ''))
+            $this->createRequest('GET', '/telemetry'.($anonymize ? '?anonymize=true' : ''))
         );
     }
 
@@ -36,7 +38,7 @@ class Service extends AbstractEndpoint
     public function metrics(bool $anonymize): Response
     {
         return $this->client->execute(
-            $this->createRequest('GET', '/metrics' . ($anonymize ? '?anonymize=true' : ''))
+            $this->createRequest('GET', '/metrics'.($anonymize ? '?anonymize=true' : ''))
         );
     }
 

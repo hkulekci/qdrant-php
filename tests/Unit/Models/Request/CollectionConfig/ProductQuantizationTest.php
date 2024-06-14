@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Oct 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -26,7 +27,7 @@ class ProductQuantizationTest extends TestCase
             'product' => [
                 'compression' => 'x4',
                 'always_ram' => true,
-            ]
+            ],
         ], $config->toArray());
     }
 }

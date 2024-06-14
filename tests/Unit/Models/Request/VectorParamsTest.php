@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -24,7 +25,7 @@ class VectorParamsTest extends TestCase
         $this->assertEquals(
             [
                 'size' => 300,
-                'distance' => 'Cosine'
+                'distance' => 'Cosine',
             ],
             $vector->toArray()
         );

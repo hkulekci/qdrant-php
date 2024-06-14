@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Jun 2023
+ *
  * @author    Greg Priday <greg@siteorigin.com>
  */
 
@@ -39,31 +40,31 @@ class RecommendTest extends AbstractIntegration
                 [
                     [
                         'id' => 1,
-                        'vector' => new VectorStruct([1, 3, 400], 'image')
+                        'vector' => new VectorStruct([1, 3, 400], 'image'),
                     ],
                     [
                         'id' => 2,
                         'vector' => new VectorStruct([1, 3, 300], 'image'),
                         'payload' => [
-                            'image' => 'sample image'
-                        ]
+                            'image' => 'sample image',
+                        ],
                     ],
                     [
                         'id' => 3,
                         'vector' => new VectorStruct([1, 3, 200], 'image'),
                         'payload' => [
-                            'image' => 'sample image'
-                        ]
+                            'image' => 'sample image',
+                        ],
                     ],
                     [
                         'id' => 4,
                         'vector' => new VectorStruct([1, 3, 100], 'image'),
                         'payload' => [
-                            'image' => 'sample image'
-                        ]
+                            'image' => 'sample image',
+                        ],
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
@@ -149,8 +150,8 @@ class RecommendTest extends AbstractIntegration
                     (new RecommendRequest([1], [2]))->setLimit(3)->setUsing('image'),
                     (new RecommendRequest([1, 2], []))->setLimit(3)->setUsing('image'),
                     (new RecommendRequest([1], [2, 3]))->setLimit(3)->setUsing('image'),
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
@@ -168,7 +169,6 @@ class RecommendTest extends AbstractIntegration
 
         $this->assertEquals('ok', $response['status']);
     }
-
 
     protected function tearDown(): void
     {

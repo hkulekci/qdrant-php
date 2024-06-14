@@ -1,13 +1,14 @@
 <?php
 /**
  * @since     May 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
 namespace Qdrant\Models\Filter\Condition;
 
-use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Domain\Assert;
+use Qdrant\Exception\InvalidArgumentException;
 
 class GeoPolygon extends AbstractCondition implements ConditionInterface
 {
@@ -15,15 +16,19 @@ class GeoPolygon extends AbstractCondition implements ConditionInterface
     {
         parent::__construct($key);
 
-        if (empty($this->exterior)) {
+        if (empty($this->exterior))
+        {
             throw new InvalidArgumentException('Exteriors required!');
         }
 
-        foreach ($this->exterior as $point) {
+        foreach ($this->exterior as $point)
+        {
             Assert::keysExists($point, ['lat', 'lon'], 'Each point of polygon needs lat and lon parameters');
         }
-        if ($interiors) {
-            foreach ($this->interiors as $point) {
+        if ($interiors)
+        {
+            foreach ($this->interiors as $point)
+            {
                 Assert::keysExists($point, ['lat', 'lon'], 'Each point of polygon needs lat and lon parameters');
             }
         }
@@ -35,8 +40,8 @@ class GeoPolygon extends AbstractCondition implements ConditionInterface
             'key' => $this->key,
             'geo_polygon' => [
                 'exterior' => $this->exterior,
-                'interiors' => $this->interiors ?? []
-            ]
+                'interiors' => $this->interiors ?? [],
+            ],
         ];
     }
 }

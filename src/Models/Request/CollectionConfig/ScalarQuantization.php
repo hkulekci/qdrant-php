@@ -3,6 +3,7 @@
  * ScalarQuantization
  *
  * @since     Oct 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -17,19 +18,21 @@ class ScalarQuantization implements QuantizationConfig
     public function toArray(): array
     {
         $scalar = [
-            'type' => $this->type
+            'type' => $this->type,
         ];
 
-        if ($this->quantile !== null) {
+        if ($this->quantile !== null)
+        {
             $scalar['quantile'] = $this->quantile;
         }
 
-        if ($this->alwaysRam !== null) {
+        if ($this->alwaysRam !== null)
+        {
             $scalar['always_ram'] = $this->alwaysRam;
         }
 
         return [
-            'scalar' => $scalar
+            'scalar' => $scalar,
         ];
     }
 }

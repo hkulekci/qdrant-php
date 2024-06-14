@@ -5,8 +5,10 @@
  * https://qdrant.github.io/qdrant/redoc/#tag/cluster/operation/cluster_status
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
+
 namespace Qdrant\Endpoints\Collections;
 
 use Qdrant\Endpoints\AbstractEndpoint;
@@ -25,7 +27,7 @@ class Cluster extends AbstractEndpoint
     public function info(): Response
     {
         return $this->client->execute(
-            $this->createRequest('GET', '/collections/' . $this->getCollectionName() . '/cluster')
+            $this->createRequest('GET', '/collections/'.$this->getCollectionName().'/cluster')
         );
     }
 
@@ -39,7 +41,7 @@ class Cluster extends AbstractEndpoint
         return $this->client->execute(
             $this->createRequest(
                 'POST',
-                '/collections/' . $this->getCollectionName() . '/cluster' . $this->queryBuild($queryParams),
+                '/collections/'.$this->getCollectionName().'/cluster'.$this->queryBuild($queryParams),
                 $params->toArray()
             )
         );

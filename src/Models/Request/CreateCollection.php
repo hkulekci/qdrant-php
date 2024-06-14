@@ -3,6 +3,7 @@
  * Create Collection
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -20,7 +21,9 @@ class CreateCollection implements RequestModel
      * @var VectorParams|VectorParams[]
      */
     protected array $vectors;
+
     protected ?int $shardNumber = null;
+
     protected ?int $replicationFactor = null;
 
     protected ?int $writeConsistencyFactor = null;
@@ -37,11 +40,14 @@ class CreateCollection implements RequestModel
 
     protected ?QuantizationConfig $quantizationConfig = null;
 
-    public function addVector(VectorParams $vectorParams, string $name = null): CreateCollection
+    public function addVector(VectorParams $vectorParams, ?string $name = null): CreateCollection
     {
-        if ($name !== null) {
+        if ($name !== null)
+        {
             $this->vectors[$name] = $vectorParams->toArray();
-        } else {
+        }
+        else
+        {
             $this->vectors = $vectorParams->toArray();
         }
 
@@ -114,37 +120,49 @@ class CreateCollection implements RequestModel
     public function toArray(): array
     {
         $data = [];
-        if ($this->vectors) {
+        if ($this->vectors)
+        {
             $data['vectors'] = $this->vectors;
         }
-        if ($this->shardNumber !== null) {
+        if ($this->shardNumber !== null)
+        {
             $data['shard_number'] = $this->shardNumber;
         }
-        if ($this->replicationFactor !== null) {
+        if ($this->replicationFactor !== null)
+        {
             $data['replication_factor'] = $this->replicationFactor;
         }
-        if ($this->writeConsistencyFactor !== null) {
+        if ($this->writeConsistencyFactor !== null)
+        {
             $data['write_consistency_factor'] = $this->writeConsistencyFactor;
         }
-        if ($this->onDiskPayload !== null) {
+        if ($this->onDiskPayload !== null)
+        {
             $data['on_disk_payload'] = $this->onDiskPayload;
         }
-        if ($this->initFrom !== null) {
+        if ($this->initFrom !== null)
+        {
             $data['init_from'] = $this->initFrom->toArray();
         }
-        if ($this->optimizersConfig !== null) {
+        if ($this->optimizersConfig !== null)
+        {
             $data['optimizers_config'] = $this->optimizersConfig->toArray();
         }
-        if ($this->hnswConfig !== null) {
+        if ($this->hnswConfig !== null)
+        {
             $data['hnsw_config'] = $this->hnswConfig->toArray();
         }
-        if ($this->walConfig !== null) {
+        if ($this->walConfig !== null)
+        {
             $data['wal_config'] = $this->walConfig->toArray();
         }
 
-        if ($this->quantizationConfig instanceof DisabledQuantization) {
+        if ($this->quantizationConfig instanceof DisabledQuantization)
+        {
             $data['quantization_config'] = 'Disabled';
-        } else if ($this->quantizationConfig !== null) {
+        }
+        elseif ($this->quantizationConfig !== null)
+        {
             $data['quantization_config'] = $this->quantizationConfig->toArray();
         }
 

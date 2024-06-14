@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -38,31 +39,31 @@ class PayloadTest extends AbstractIntegration
                         'id' => 1,
                         'vector' => new VectorStruct([2, 3, 400], 'image'),
                         'payload' => [
-                            'image' => 'other image'
-                        ]
+                            'image' => 'other image',
+                        ],
                     ],
                     [
                         'id' => 2,
                         'vector' => new VectorStruct([1, 3, 300], 'image'),
                         'payload' => [
-                            'image' => 'sample image'
-                        ]
+                            'image' => 'sample image',
+                        ],
                     ],
                     [
                         'id' => 3,
                         'vector' => new VectorStruct([1, 3, 300], 'image'),
                         'payload' => [
-                            'image' => 'sample image'
-                        ]
+                            'image' => 'sample image',
+                        ],
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
-
     /**
      * @throws InvalidArgumentException
+     *
      * @dataProvider basicPointDataProvider
      */
     public function testSetPayloadForPoint(array $pointsArray): void
@@ -89,6 +90,7 @@ class PayloadTest extends AbstractIntegration
 
     /**
      * @throws InvalidArgumentException
+     *
      * @dataProvider basicPointDataProvider
      */
     public function testDeletePayloadForPoint(array $pointsArray): void
@@ -111,6 +113,7 @@ class PayloadTest extends AbstractIntegration
 
     /**
      * @throws InvalidArgumentException
+     *
      * @dataProvider basicPointDataProvider
      */
     public function testDeletePayloadForPointWithQueryParams(array $pointsArray): void
@@ -133,6 +136,7 @@ class PayloadTest extends AbstractIntegration
 
     /**
      * @throws InvalidArgumentException
+     *
      * @dataProvider basicPointDataProvider
      */
     public function testDeleteOnlyOneKeyFromPayloadForPoint(array $pointsArray): void
@@ -159,6 +163,7 @@ class PayloadTest extends AbstractIntegration
 
     /**
      * @throws InvalidArgumentException
+     *
      * @dataProvider basicPointDataProvider
      */
     public function testDeletePayloadWithFilterForPoint(array $pointsArray): void
@@ -195,8 +200,8 @@ class PayloadTest extends AbstractIntegration
                             'diet' => [
                                 ['food' => 'leaves', 'likes' => false],
                                 ['food' => 'meat', 'likes' => true],
-                            ]
-                        ]
+                            ],
+                        ],
                     ],
                     [
                         'id' => 2,
@@ -206,16 +211,17 @@ class PayloadTest extends AbstractIntegration
                             'diet' => [
                                 ['food' => 'leaves', 'likes' => true],
                                 ['food' => 'meat', 'likes' => false],
-                            ]
-                        ]
+                            ],
+                        ],
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
     /**
      * @throws InvalidArgumentException
+     *
      * @dataProvider nestedPointDataProvider
      */
     public function testNestedFilterForPoint(array $pointsArray): void
@@ -246,9 +252,9 @@ class PayloadTest extends AbstractIntegration
         $this->assertEquals(2, $response['result']['points'][0]['id']);
     }
 
-
     /**
      * @throws InvalidArgumentException
+     *
      * @dataProvider basicPointDataProvider
      */
     public function testClearPayloadForPoint(array $pointsArray): void

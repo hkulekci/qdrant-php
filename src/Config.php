@@ -3,6 +3,7 @@
  * Qdrant PHP Client
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -33,7 +34,7 @@ class Config
 
     public function getDomain(): string
     {
-        return $this->host . ':' . $this->port;
+        return $this->host.':'.$this->port;
     }
 
     public function setApiKey($apiKey): Config

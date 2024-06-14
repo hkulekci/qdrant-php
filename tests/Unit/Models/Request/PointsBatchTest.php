@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -45,12 +46,12 @@ class PointsBatchTest extends TestCase
                     null,
                     [0.9, 0.1, 0.1],
                     null,
-                ]
+                ],
             ],
             'payloads' => [
                 ['color' => 'red'],
                 ['color' => 'green'],
-                ['color' => 'blue']
+                ['color' => 'blue'],
             ],
         ], $batch->toArray());
     }

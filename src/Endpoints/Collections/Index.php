@@ -5,8 +5,10 @@
  * https://qdrant.tech/documentation/indexing/
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
+
 namespace Qdrant\Endpoints\Collections;
 
 use Qdrant\Endpoints\AbstractEndpoint;
@@ -26,7 +28,7 @@ class Index extends AbstractEndpoint
         return $this->client->execute(
             $this->createRequest(
                 'PUT',
-                '/collections/' . $this->getCollectionName() . '/index' . $this->queryBuild($queryParams),
+                '/collections/'.$this->getCollectionName().'/index'.$this->queryBuild($queryParams),
                 $params->toArray()
             )
         );
@@ -42,7 +44,7 @@ class Index extends AbstractEndpoint
         return $this->client->execute(
             $this->createRequest(
                 'DELETE',
-                '/collections/' . $this->getCollectionName() . '/index/' . $fieldName . $this->queryBuild($queryParams),
+                '/collections/'.$this->getCollectionName().'/index/'.$fieldName.$this->queryBuild($queryParams),
             )
         );
     }

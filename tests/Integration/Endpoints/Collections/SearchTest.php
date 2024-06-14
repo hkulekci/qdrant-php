@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -38,17 +39,17 @@ class SearchTest extends AbstractIntegration
                 [
                     [
                         'id' => 1,
-                        'vector' => new VectorStruct([1, 3, 400], 'image')
+                        'vector' => new VectorStruct([1, 3, 400], 'image'),
                     ],
                     [
                         'id' => 2,
                         'vector' => new VectorStruct([1, 3, 300], 'image'),
                         'payload' => [
-                            'image' => 'sample image'
-                        ]
+                            'image' => 'sample image',
+                        ],
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
@@ -82,7 +83,6 @@ class SearchTest extends AbstractIntegration
         $this->assertEquals('ok', $response['status']);
         $this->assertCount(1, $response['result']);
     }
-
 
     /**
      * @dataProvider searchQueryProvider
@@ -169,7 +169,6 @@ class SearchTest extends AbstractIntegration
             'The result count should be higher or the same when no score threshold is used'
         );
     }
-
 
     protected function tearDown(): void
     {

@@ -1,5 +1,5 @@
 {
-    "name": "hkulekci/qdrant",
+    "name": "yaroslavpopovic/qdrant",
     "description": "PHP Client for Qdrant",
     "license": "MIT",
     "minimum-stability": "dev",

@@ -3,6 +3,7 @@
  * AliasActions
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -18,7 +19,7 @@ class AliasActions
             'create_alias' => [
                 'alias_name' => $alias,
                 'collection_name' => $collection,
-            ]
+            ],
         ];
     }
 
@@ -27,7 +28,7 @@ class AliasActions
         $this->actions[] = [
             'delete_alias' => [
                 'alias_name' => $alias,
-            ]
+            ],
         ];
     }
 

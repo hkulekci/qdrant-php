@@ -3,8 +3,10 @@
  * Collections
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
+
 namespace Qdrant\Tests\Integration\Endpoints\Collections;
 
 use Qdrant\Endpoints\Collections;
@@ -33,8 +35,8 @@ class QuantizationConfigTest extends AbstractIntegration
 
         $this->assertEquals([
             'product' => [
-                'compression' => 'x4'
-            ]
+                'compression' => 'x4',
+            ],
         ], $response['result']['config']['quantization_config']);
     }
 
@@ -50,7 +52,7 @@ class QuantizationConfigTest extends AbstractIntegration
         $response = $collections->setCollectionName('sample-collection')->info();
         $this->assertEquals('ok', $response['status']);
         $this->assertEquals([
-            'binary' => []
+            'binary' => [],
         ], $response['result']['config']['quantization_config']);
     }
 
@@ -67,8 +69,8 @@ class QuantizationConfigTest extends AbstractIntegration
         $this->assertEquals('ok', $response['status']);
         $this->assertEquals([
             'scalar' => [
-                'type' => 'int8'
-            ]
+                'type' => 'int8',
+            ],
         ], $response['result']['config']['quantization_config']);
     }
 
@@ -84,7 +86,7 @@ class QuantizationConfigTest extends AbstractIntegration
         $response = $collections->setCollectionName('sample-collection')->info();
         $this->assertEquals('ok', $response['status']);
         $this->assertEquals([
-            'binary' => []
+            'binary' => [],
         ], $response['result']['config']['quantization_config']);
 
         $updateRequest = (new UpdateCollection())->setQuantizationConfig(new DisabledQuantization());
@@ -95,7 +97,6 @@ class QuantizationConfigTest extends AbstractIntegration
         $this->assertEquals('ok', $response['status']);
         $this->assertNull($response['result']['config']['quantization_config']);
     }
-
 
     protected function tearDown(): void
     {

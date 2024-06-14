@@ -3,6 +3,7 @@
  * Point
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -17,7 +18,8 @@ class Point implements RequestModel
 
     public function __construct(protected string $id, VectorStructInterface|array $vector, protected ?array $payload = null)
     {
-        if(is_array($vector)) {
+        if (is_array($vector))
+        {
             $vector = new VectorStruct($vector);
         }
 
@@ -31,7 +33,8 @@ class Point implements RequestModel
             'vector' => $this->vector->toArray(),
         ];
 
-        if ($this->payload) {
+        if ($this->payload)
+        {
             $data['payload'] = $this->payload;
         }
 

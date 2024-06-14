@@ -3,6 +3,7 @@
  * QuantizationConfig.php
  *
  * @since     Oct 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 

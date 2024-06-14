@@ -5,8 +5,10 @@
  * https://qdrant.github.io/qdrant/redoc/#tag/cluster/operation/cluster_status
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
+
 namespace Qdrant\Endpoints;
 
 use Qdrant\Exception\InvalidArgumentException;
@@ -48,7 +50,7 @@ class Cluster extends AbstractEndpoint
     public function removePeer(int $peerId, array $queryParams = []): Response
     {
         return $this->client->execute(
-            $this->createRequest('DELETE', '/cluster/peer/' . $peerId . $this->queryBuild($queryParams))
+            $this->createRequest('DELETE', '/cluster/peer/'.$peerId.$this->queryBuild($queryParams))
         );
     }
 }

@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -26,37 +27,33 @@ class GeoPolygonTest extends TestCase
             [
                 [
                     [
-                        'lat' => 0
+                        'lat' => 0,
                     ],
                 ],
-                []
+                [],
             ],
             [
                 [
                     [
                         'lat' => 0,
-                        'lon' => 0
+                        'lon' => 0,
                     ],
                     [
                         'lat' => 1,
-                        'lon' => 1
+                        'lon' => 1,
                     ],
                 ],
                 [
                     [
-                        'lon' => 1
+                        'lon' => 1,
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
     /**
      * @dataProvider missingLatLonDataProvider
-     *
-     * @param array $exterior
-     * @param array $interiors
-     * @return void
      */
     public function testGeoPolygonFilterWithMissingData(array $exterior, array $interiors): void
     {
@@ -77,14 +74,14 @@ class GeoPolygonTest extends TestCase
             [
                 [
                     'lat' => 1,
-                    'lon' => 2
-                ]
+                    'lon' => 2,
+                ],
             ],
             [
                 [
                     'lat' => 9,
-                    'lon' => 10
-                ]
+                    'lon' => 10,
+                ],
             ]
         );
 
@@ -94,16 +91,16 @@ class GeoPolygonTest extends TestCase
                 'exterior' => [
                     [
                         'lat' => 1,
-                        'lon' => 2
-                    ]
+                        'lon' => 2,
+                    ],
                 ],
                 'interiors' => [
                     [
                         'lat' => 9,
-                        'lon' => 10
-                    ]
-                ]
-            ]
+                        'lon' => 10,
+                    ],
+                ],
+            ],
         ], $filter->toArray());
     }
 
@@ -114,8 +111,8 @@ class GeoPolygonTest extends TestCase
             [
                 [
                     'lat' => 1,
-                    'lon' => 2
-                ]
+                    'lon' => 2,
+                ],
             ]
         );
 
@@ -125,11 +122,11 @@ class GeoPolygonTest extends TestCase
                 'exterior' => [
                     [
                         'lat' => 1,
-                        'lon' => 2
-                    ]
+                        'lon' => 2,
+                    ],
                 ],
-                'interiors' => []
-            ]
+                'interiors' => [],
+            ],
         ], $filter->toArray());
     }
 }

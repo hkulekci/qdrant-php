@@ -1,8 +1,10 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
+
 namespace Qdrant\Tests\Unit\Models\Request;
 
 use PHPUnit\Framework\TestCase;
@@ -23,8 +25,8 @@ class SearchRequestTest extends TestCase
             [
                 'vector' => [
                     'name' => 'image',
-                    'vector' => [0, 300, 1]
-                ]
+                    'vector' => [0, 300, 1],
+                ],
             ],
             $searchRequest->toArray()
         );
@@ -40,9 +42,9 @@ class SearchRequestTest extends TestCase
             [
                 'vector' => [
                     'name' => 'image',
-                    'vector' => [0, 300, 1]
+                    'vector' => [0, 300, 1],
                 ],
-                'limit' => 10
+                'limit' => 10,
             ],
             $searchRequest->toArray()
         );
@@ -58,10 +60,10 @@ class SearchRequestTest extends TestCase
             [
                 'vector' => [
                     'name' => 'image',
-                    'vector' => [0, 300, 1]
+                    'vector' => [0, 300, 1],
                 ],
                 'limit' => 10,
-                'offset' => 10
+                'offset' => 10,
             ],
             $searchRequest->toArray()
         );
@@ -77,9 +79,9 @@ class SearchRequestTest extends TestCase
             [
                 'vector' => [
                     'name' => 'image',
-                    'vector' => [0, 300, 1]
+                    'vector' => [0, 300, 1],
                 ],
-                'with_payload' => true
+                'with_payload' => true,
             ],
             $searchRequest->toArray()
         );
@@ -95,9 +97,9 @@ class SearchRequestTest extends TestCase
             [
                 'vector' => [
                     'name' => 'image',
-                    'vector' => [0, 300, 1]
+                    'vector' => [0, 300, 1],
                 ],
-                'with_vector' => true
+                'with_vector' => true,
             ],
             $searchRequest->toArray()
         );
@@ -109,19 +111,19 @@ class SearchRequestTest extends TestCase
 
         $searchRequest = (new SearchRequest($vector))->setParams([
             'test1' => 'param1',
-            'test2' => 'param2'
+            'test2' => 'param2',
         ]);
 
         $this->assertEquals(
             [
                 'vector' => [
                     'name' => 'image',
-                    'vector' => [0, 300, 1]
+                    'vector' => [0, 300, 1],
                 ],
                 'params' => [
                     'test1' => 'param1',
-                    'test2' => 'param2'
-                ]
+                    'test2' => 'param2',
+                ],
             ],
             $searchRequest->toArray()
         );
@@ -141,13 +143,13 @@ class SearchRequestTest extends TestCase
             [
                 'vector' => [
                     'name' => 'image',
-                    'vector' => [0, 300, 1]
+                    'vector' => [0, 300, 1],
                 ],
                 'filter' => [
                     'must' => [
-                        ['key' => 'image', 'match' => ['value' => 'sample image']]
-                    ]
-                ]
+                        ['key' => 'image', 'match' => ['value' => 'sample image']],
+                    ],
+                ],
             ],
             $searchRequest->toArray()
         );

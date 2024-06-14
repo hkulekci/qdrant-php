@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -27,8 +28,8 @@ class PointsStructTest extends TestCase
             [
                 [
                     'id' => 1,
-                    'vector' => [1, 2, 3]
-                ]
+                    'vector' => [1, 2, 3],
+                ],
             ],
             $points->toArray()
         );
@@ -48,8 +49,8 @@ class PointsStructTest extends TestCase
             [
                 [
                     'id' => '550e8400-e29b-41d4-a716-446655440000',
-                    'vector' => [1, 2, 3]
-                ]
+                    'vector' => [1, 2, 3],
+                ],
             ],
             $points->toArray()
         );
@@ -67,7 +68,7 @@ class PointsStructTest extends TestCase
                 new PointStruct(
                     '550e8400-e29b-41d4-a716-446655440001',
                     new VectorStruct([1, 2, 4])
-                )
+                ),
             ]
         );
 
@@ -75,12 +76,12 @@ class PointsStructTest extends TestCase
             [
                 [
                     'id' => '550e8400-e29b-41d4-a716-446655440000',
-                    'vector' => [1, 2, 3]
+                    'vector' => [1, 2, 3],
                 ],
                 [
                     'id' => '550e8400-e29b-41d4-a716-446655440001',
-                    'vector' => [1, 2, 4]
-                ]
+                    'vector' => [1, 2, 4],
+                ],
             ],
             $points->toArray()
         );
@@ -91,16 +92,16 @@ class PointsStructTest extends TestCase
         $points = PointsStruct::createFromArray([
             [
                 'id' => 1,
-                'vector' => [1, 2, 3]
-            ]
+                'vector' => [1, 2, 3],
+            ],
         ]);
 
         $this->assertEquals(
             [
                 [
                     'id' => 1,
-                    'vector' => [1, 2, 3]
-                ]
+                    'vector' => [1, 2, 3],
+                ],
             ],
             $points->toArray()
         );
@@ -112,15 +113,15 @@ class PointsStructTest extends TestCase
             [
                 'id' => 1,
                 'vector' => [
-                    'image' => [1, 2, 3]
+                    'image' => [1, 2, 3],
                 ],
             ],
             [
                 'id' => '550e8400-e29b-41d4-a716-446655440000',
                 'vector' => [
-                    'image' => [3, 4, 5]
+                    'image' => [3, 4, 5],
                 ],
-            ]
+            ],
         ]);
 
         $this->assertEquals(
@@ -128,15 +129,15 @@ class PointsStructTest extends TestCase
                 [
                     'id' => 1,
                     'vector' => [
-                        'image' => [1, 2, 3]
+                        'image' => [1, 2, 3],
                     ],
                 ],
                 [
                     'id' => '550e8400-e29b-41d4-a716-446655440000',
                     'vector' => [
-                        'image' => [3, 4, 5]
+                        'image' => [3, 4, 5],
                     ],
-                ]
+                ],
             ],
             $points->toArray()
         );

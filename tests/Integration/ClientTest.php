@@ -3,13 +3,13 @@
  * Qdrant PHP Client
  *
  * @link      https://github.com/hkulekci/qdrant-php
+ *
  * @license   https://opensource.org/licenses/MIT MIT License
  */
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Qdrant\Tests\Integration;
 
-use GuzzleHttp\Psr7\HttpFactory;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Qdrant\Config;
 use Qdrant\Endpoints\Cluster;
@@ -18,7 +18,6 @@ use Qdrant\Endpoints\Service;
 use Qdrant\Endpoints\Snapshots;
 use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Http\Builder;
-use Qdrant\Http\GuzzleClient;
 use Qdrant\Qdrant;
 
 class ClientTest extends AbstractIntegration

@@ -3,6 +3,7 @@
  * PointStruct
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -25,19 +26,22 @@ class PointStruct
     public static function createFromArray(array $pointArray): PointStruct
     {
         $required = ['id', 'vector'];
-        if (count(array_intersect_key(array_flip($required), $pointArray)) !== count($required)) {
+        if (count(array_intersect_key(array_flip($required), $pointArray)) !== count($required))
+        {
             throw new InvalidArgumentException('Missing point keys');
         }
 
         $vector = $pointArray['vector'];
 
         // Check if it's an array and convert it to a VectorStruct
-        if (is_array($vector)) {
+        if (is_array($vector))
+        {
             $vector = new VectorStruct($vector, $pointArray['name'] ?? null);
         }
 
         // Check if it's already a VectorStruct or MultiVectorStruct
-        if (!($vector instanceof VectorStructInterface)) {
+        if (!($vector instanceof VectorStructInterface))
+        {
             throw new InvalidArgumentException('Invalid vector type');
         }
 
@@ -51,7 +55,8 @@ class PointStruct
             'vector' => $this->vector->toArray(),
         ];
 
-        if ($this->payload) {
+        if ($this->payload)
+        {
             $point['payload'] = $this->payload;
         }
 

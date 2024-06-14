@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Oct 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -27,7 +28,7 @@ class ScalarQuantizationTest extends TestCase
                 'type' => 'int8',
                 'quantile' => 1.0,
                 'always_ram' => true,
-            ]
+            ],
         ], $config->toArray());
     }
 }

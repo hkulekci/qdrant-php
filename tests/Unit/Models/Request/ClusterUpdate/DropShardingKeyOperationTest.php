@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Oct 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -30,7 +31,7 @@ class DropShardingKeyOperationTest extends TestCase
         $this->assertEquals([
             'drop_sharding_key' => [
                 'shard_key' => 'foo',
-            ]
+            ],
         ], $config->toArray());
     }
 }

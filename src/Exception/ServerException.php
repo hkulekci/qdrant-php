@@ -3,6 +3,7 @@
  * ServerException
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -15,18 +16,11 @@ class ServerException extends RuntimeException
 {
     protected Response $response;
 
-    /**
-     * @return Response
-     */
     public function getResponse(): Response
     {
         return $this->response;
     }
 
-    /**
-     * @param Response $response
-     * @return ServerException
-     */
     public function setResponse(Response $response): ServerException
     {
         $this->response = $response;

@@ -3,6 +3,7 @@
  * Points Batch
  *
  * @since     Jun 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -39,20 +40,27 @@ class PointsBatch implements RequestModel
 
         $vectors = [];
         $numberOfVectors = count($this->batchPoints['vectors']);
-        if ($isNamed) {
+        if ($isNamed)
+        {
             /** @var VectorStruct $vector */
-            foreach ($this->batchPoints['vectors'] as $index => $vector) {
+            foreach ($this->batchPoints['vectors'] as $index => $vector)
+            {
                 $vectorArr = $vector->toArray();
-                foreach ($vectorArr as $name => $item) {
-                    if (!isset($vectors[$name])) {
+                foreach ($vectorArr as $name => $item)
+                {
+                    if (!isset($vectors[$name]))
+                    {
                         $vectors[$name] = array_fill(0, $numberOfVectors, null);
                     }
                     $vectors[$name][$index] = $item;
                 }
             }
-        } else {
+        }
+        else
+        {
             /** @var VectorStruct $vector */
-            foreach ($this->batchPoints['vectors'] as $vector) {
+            foreach ($this->batchPoints['vectors'] as $vector)
+            {
                 $vectors[] = $vector->toArray();
             }
         }

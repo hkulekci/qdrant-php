@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -20,7 +21,7 @@ class PointStructTest extends TestCase
         $this->assertEquals(
             [
                 'id' => 1,
-                'vector' => [1, 2, 3]
+                'vector' => [1, 2, 3],
             ],
             $point->toArray()
         );
@@ -33,7 +34,7 @@ class PointStructTest extends TestCase
         $this->assertEquals(
             [
                 'id' => '550e8400-e29b-41d4-a716-446655440000',
-                'vector' => [1, 2, 3]
+                'vector' => [1, 2, 3],
             ],
             $point->toArray()
         );
@@ -43,13 +44,13 @@ class PointStructTest extends TestCase
     {
         $points = PointStruct::createFromArray([
             'id' => 1,
-            'vector' => [1, 2, 3]
+            'vector' => [1, 2, 3],
         ]);
 
         $this->assertEquals(
             [
                 'id' => 1,
-                'vector' => [1, 2, 3]
+                'vector' => [1, 2, 3],
             ],
             $points->toArray()
         );
@@ -68,13 +69,14 @@ class PointStructTest extends TestCase
     {
         $class = new class {
             public int $id = 1;
+
             public array $vector = [1, 2, 3];
         };
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid vector type');
         $points = PointStruct::createFromArray([
             'id' => 1,
-            'vector' => $class
+            'vector' => $class,
         ]);
     }
 }

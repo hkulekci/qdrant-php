@@ -3,6 +3,7 @@
  * ProductQuantization
  *
  * @since     Oct 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -17,15 +18,16 @@ class ProductQuantization implements QuantizationConfig
     public function toArray(): array
     {
         $product = [
-            'compression' => $this->compression
+            'compression' => $this->compression,
         ];
 
-        if ($this->alwaysRam !== null) {
+        if ($this->alwaysRam !== null)
+        {
             $product['always_ram'] = $this->alwaysRam;
         }
 
         return [
-            'product' => $product
+            'product' => $product,
         ];
     }
 }

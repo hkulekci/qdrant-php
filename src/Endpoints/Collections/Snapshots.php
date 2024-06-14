@@ -5,8 +5,10 @@
  * https://qdrant.tech/documentation/snapshots/
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
+
 namespace Qdrant\Endpoints\Collections;
 
 use Qdrant\Endpoints\AbstractEndpoint;
@@ -23,7 +25,7 @@ class Snapshots extends AbstractEndpoint
         return $this->client->execute(
             $this->createRequest(
                 'POST',
-                '/collections/' . $this->getCollectionName() . '/snapshots' . $this->queryBuild($queryParams),
+                '/collections/'.$this->getCollectionName().'/snapshots'.$this->queryBuild($queryParams),
                 $params
             )
         );
@@ -37,7 +39,7 @@ class Snapshots extends AbstractEndpoint
         return $this->client->execute(
             $this->createRequest(
                 'DELETE',
-                '/collections/' . $this->getCollectionName() . '/snapshots/' . $snapshotName . $this->queryBuild($queryParams)
+                '/collections/'.$this->getCollectionName().'/snapshots/'.$snapshotName.$this->queryBuild($queryParams)
             )
         );
     }
@@ -48,7 +50,7 @@ class Snapshots extends AbstractEndpoint
     public function list(): Response
     {
         return $this->client->execute(
-            $this->createRequest('GET', '/collections/' . $this->getCollectionName() . '/snapshots')
+            $this->createRequest('GET', '/collections/'.$this->getCollectionName().'/snapshots')
         );
     }
 
@@ -60,7 +62,7 @@ class Snapshots extends AbstractEndpoint
         return $this->client->execute(
             $this->createRequest(
                 'GET',
-                '/collections/' . $this->getCollectionName() . '/snapshots/' . $snapshotName
+                '/collections/'.$this->getCollectionName().'/snapshots/'.$snapshotName
             )
         );
     }
@@ -68,12 +70,12 @@ class Snapshots extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function recover(bool $wait = null): Response
+    public function recover(?bool $wait = null): Response
     {
         return $this->client->execute(
             $this->createRequest(
                 'GET',
-                '/collections/' . $this->getCollectionName() . '/snapshots/recover'
+                '/collections/'.$this->getCollectionName().'/snapshots/recover'
             )
         );
     }

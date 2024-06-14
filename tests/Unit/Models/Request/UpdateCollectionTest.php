@@ -1,8 +1,10 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
+
 namespace Qdrant\Tests\Unit\Models\Request;
 
 use PHPUnit\Framework\TestCase;
@@ -10,10 +12,7 @@ use Qdrant\Models\Request\CollectionConfig\BinaryQuantization;
 use Qdrant\Models\Request\CollectionConfig\CollectionParams;
 use Qdrant\Models\Request\CollectionConfig\HnswConfig;
 use Qdrant\Models\Request\CollectionConfig\OptimizersConfig;
-use Qdrant\Models\Request\CollectionConfig\WalConfig;
-use Qdrant\Models\Request\CreateCollection;
 use Qdrant\Models\Request\UpdateCollection;
-use Qdrant\Models\Request\VectorParams;
 
 class UpdateCollectionTest extends TestCase
 {
@@ -28,15 +27,15 @@ class UpdateCollectionTest extends TestCase
         $collection = new UpdateCollection();
         $collection->setOptimizersConfig(
             (new OptimizersConfig())->setVacuumMinVectorNumber(1)
-            ->setDeletedThreshold(1.0)
+                ->setDeletedThreshold(1.0)
         );
 
         $this->assertEquals(
             [
                 'optimizers_config' => [
                     'deleted_threshold' => 1.0,
-                    'vacuum_min_vector_number' => 1
-                ]
+                    'vacuum_min_vector_number' => 1,
+                ],
             ],
             $collection->toArray()
         );
@@ -51,7 +50,7 @@ class UpdateCollectionTest extends TestCase
             [
                 'hnsw_config' => [
                     'm' => 1,
-                    'ef_construct' => 5
+                    'ef_construct' => 5,
                 ],
             ],
             $collection->toArray()
@@ -67,7 +66,7 @@ class UpdateCollectionTest extends TestCase
             [
                 'hnsw_config' => [
                     'm' => 0,
-                    'ef_construct' => 5
+                    'ef_construct' => 5,
                 ],
             ],
             $collection->toArray()
@@ -85,7 +84,7 @@ class UpdateCollectionTest extends TestCase
             [
                 'quantization_config' => [
                     'binary' => [
-                        'always_ram' => true
+                        'always_ram' => true,
                     ],
                 ],
             ],
@@ -103,7 +102,7 @@ class UpdateCollectionTest extends TestCase
         $this->assertEquals(
             [
                 'params' => [
-                    'replication_factor' => 1
+                    'replication_factor' => 1,
                 ],
             ],
             $collection->toArray()

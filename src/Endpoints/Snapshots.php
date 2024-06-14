@@ -3,8 +3,10 @@
  * Snapshots
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
+
 namespace Qdrant\Endpoints;
 
 use Qdrant\Exception\InvalidArgumentException;
@@ -34,7 +36,7 @@ class Snapshots extends AbstractEndpoint
     public function create(array $queryParams = []): Response
     {
         return $this->client->execute(
-            $this->createRequest('POST', '/snapshots' . $this->queryBuild($queryParams))
+            $this->createRequest('POST', '/snapshots'.$this->queryBuild($queryParams))
         );
     }
 
@@ -47,7 +49,7 @@ class Snapshots extends AbstractEndpoint
     public function delete(string $name, array $queryParams = []): Response
     {
         return $this->client->execute(
-            $this->createRequest('DELETE', '/snapshots/' . $name . $this->queryBuild($queryParams))
+            $this->createRequest('DELETE', '/snapshots/'.$name.$this->queryBuild($queryParams))
         );
     }
 
@@ -60,7 +62,7 @@ class Snapshots extends AbstractEndpoint
     public function download(string $name): Response
     {
         return $this->client->execute(
-            $this->createRequest('GET', '/snapshots/' . $name)
+            $this->createRequest('GET', '/snapshots/'.$name)
         );
     }
 }

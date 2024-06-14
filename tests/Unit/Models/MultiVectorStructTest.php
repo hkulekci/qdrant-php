@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Aug 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -9,7 +10,6 @@ namespace Qdrant\Tests\Unit\Models;
 use PHPUnit\Framework\TestCase;
 use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\MultiVectorStruct;
-use Qdrant\Models\VectorStruct;
 
 class MultiVectorStructTest extends TestCase
 {
@@ -41,7 +41,7 @@ class MultiVectorStructTest extends TestCase
         $this->assertEquals(
             [
                 'name' => 'foo',
-                'vector' => [1, 2, 3]
+                'vector' => [1, 2, 3],
             ],
             $vector->toSearchArray('foo')
         );
@@ -49,7 +49,7 @@ class MultiVectorStructTest extends TestCase
         $this->assertEquals(
             [
                 'name' => 'bar',
-                'vector' => [1, 2, 4]
+                'vector' => [1, 2, 4],
             ],
             $vector->toSearchArray('bar')
         );
@@ -58,7 +58,7 @@ class MultiVectorStructTest extends TestCase
     public function testNamedMultiVectorStructWithMissingName(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Vector with name uber not found");
+        $this->expectExceptionMessage('Vector with name uber not found');
 
         $vector = new MultiVectorStruct([
             'foo' => [1, 2, 3],

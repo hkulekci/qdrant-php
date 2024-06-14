@@ -3,6 +3,7 @@
  * Init From
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -17,7 +18,7 @@ class InitFrom implements RequestModel
     public function toArray(): array
     {
         return [
-            'collection' => $this->collection
+            'collection' => $this->collection,
         ];
     }
 }

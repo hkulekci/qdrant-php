@@ -7,7 +7,6 @@ use Qdrant\Models\Traits\ProtectedPropertyAccessor;
 
 class ScrollRequest implements RequestModel
 {
-
     use ProtectedPropertyAccessor;
 
     protected ?Filter $filter = null;
@@ -59,19 +58,24 @@ class ScrollRequest implements RequestModel
     {
         $body = [];
 
-        if ($this->filter !== null && $this->filter->toArray()) {
+        if ($this->filter !== null && $this->filter->toArray())
+        {
             $body['filter'] = $this->filter->toArray();
         }
-        if ($this->limit) {
+        if ($this->limit)
+        {
             $body['limit'] = $this->limit;
         }
-        if ($this->offset) {
+        if ($this->offset)
+        {
             $body['offset'] = $this->offset;
         }
-        if ($this->withVector) {
+        if ($this->withVector)
+        {
             $body['with_vector'] = $this->withVector;
         }
-        if ($this->withPayload) {
+        if ($this->withPayload)
+        {
             $body['with_payload'] = $this->withPayload;
         }
 

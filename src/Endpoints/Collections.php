@@ -5,8 +5,10 @@
  * https://qdrant.tech/documentation/collections/
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
+
 namespace Qdrant\Endpoints;
 
 use Qdrant\Endpoints\Collections\Aliases;
@@ -45,7 +47,7 @@ class Collections extends AbstractEndpoint
         return $this->client->execute(
             $this->createRequest(
                 'PUT',
-                '/collections/' . $this->getCollectionName() . $this->queryBuild($queryParams),
+                '/collections/'.$this->getCollectionName().$this->queryBuild($queryParams),
                 $params->toArray()
             )
         );
@@ -60,7 +62,7 @@ class Collections extends AbstractEndpoint
     public function info(): Response
     {
         return $this->client->execute(
-            $this->createRequest('GET', '/collections/' . $this->getCollectionName())
+            $this->createRequest('GET', '/collections/'.$this->getCollectionName())
         );
     }
 
@@ -73,10 +75,10 @@ class Collections extends AbstractEndpoint
     public function exists(): Response
     {
         return $this->client->execute(
-            $this->createRequest('GET', '/collections/' . $this->getCollectionName(). '/exists')
+            $this->createRequest('GET', '/collections/'.$this->getCollectionName().'/exists')
         );
     }
-    
+
     /**
      * # Delete collection
      * Drop collection and all associated data
@@ -88,7 +90,7 @@ class Collections extends AbstractEndpoint
         return $this->client->execute(
             $this->createRequest(
                 'DELETE',
-                '/collections/' . $this->getCollectionName() . $this->queryBuild($queryParams)
+                '/collections/'.$this->getCollectionName().$this->queryBuild($queryParams)
             )
         );
     }
@@ -104,7 +106,7 @@ class Collections extends AbstractEndpoint
         return $this->client->execute(
             $this->createRequest(
                 'PATCH',
-                '/collections/' . $this->getCollectionName() . $this->queryBuild($queryParams),
+                '/collections/'.$this->getCollectionName().$this->queryBuild($queryParams),
                 $params->toArray()
             )
         );

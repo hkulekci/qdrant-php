@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -29,10 +30,10 @@ class FilterTest extends TestCase
                     [
                         'key' => 'key',
                         'match' => [
-                            'value' => 1
-                        ]
-                    ]
-                ]
+                            'value' => 1,
+                        ],
+                    ],
+                ],
             ],
             $filter->toArray()
         );
@@ -48,10 +49,10 @@ class FilterTest extends TestCase
                     [
                         'key' => 'key',
                         'match' => [
-                            'value' => 1
-                        ]
-                    ]
-                ]
+                            'value' => 1,
+                        ],
+                    ],
+                ],
             ],
             $filter->toArray()
         );
@@ -67,10 +68,10 @@ class FilterTest extends TestCase
                     [
                         'key' => 'key',
                         'match' => [
-                            'value' => 1
-                        ]
-                    ]
-                ]
+                            'value' => 1,
+                        ],
+                    ],
+                ],
             ],
             $filter->toArray()
         );
@@ -87,11 +88,11 @@ class FilterTest extends TestCase
                         [
                             'key' => 'key',
                             'match' => [
-                                'value' => 1
-                            ]
-                        ]
+                                'value' => 1,
+                            ],
+                        ],
                     ],
-                    'min_count' => 1
+                    'min_count' => 1,
                 ],
             ],
             $filter->toArray()
@@ -116,36 +117,36 @@ class FilterTest extends TestCase
                     [
                         'key' => 'key',
                         'match' => [
-                            'value' => 2
-                        ]
-                    ]
+                            'value' => 2,
+                        ],
+                    ],
                 ],
                 'must_not' => [
                     [
                         'key' => 'key',
                         'match' => [
-                            'value' => 3
-                        ]
-                    ]
+                            'value' => 3,
+                        ],
+                    ],
                 ],
                 'should' => [
                     [
                         'key' => 'key',
                         'match' => [
-                            'value' => 1
-                        ]
-                    ]
+                            'value' => 1,
+                        ],
+                    ],
                 ],
                 'min_should' => [
                     'conditions' => [
                         [
                             'key' => 'key',
                             'match' => [
-                                'value' => 4
-                            ]
-                        ]
+                                'value' => 4,
+                            ],
+                        ],
                     ],
-                    'min_count' => 1
+                    'min_count' => 1,
                 ],
             ],
             $filter->toArray()

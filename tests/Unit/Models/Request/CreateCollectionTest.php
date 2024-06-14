@@ -1,8 +1,10 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
+
 namespace Qdrant\Tests\Unit\Models\Request;
 
 use PHPUnit\Framework\TestCase;
@@ -24,9 +26,9 @@ class CreateCollectionTest extends TestCase
                 'vectors' => [
                     'image' => [
                         'size' => '1024',
-                        'distance' => 'Cosine'
-                    ]
-                ]
+                        'distance' => 'Cosine',
+                    ],
+                ],
             ],
             $collection->toArray()
         );
@@ -37,13 +39,12 @@ class CreateCollectionTest extends TestCase
         $collection = new CreateCollection();
         $collection->addVector(new VectorParams(1024, VectorParams::DISTANCE_COSINE));
 
-
         $this->assertEquals(
             [
                 'vectors' => [
                     'size' => '1024',
-                    'distance' => 'Cosine'
-                ]
+                    'distance' => 'Cosine',
+                ],
             ],
             $collection->toArray()
         );
@@ -59,9 +60,9 @@ class CreateCollectionTest extends TestCase
             [
                 'vectors' => [
                     'size' => '1024',
-                    'distance' => 'Cosine'
+                    'distance' => 'Cosine',
                 ],
-                'shard_number' => 1
+                'shard_number' => 1,
             ],
             $collection->toArray()
         );
@@ -77,9 +78,9 @@ class CreateCollectionTest extends TestCase
             [
                 'vectors' => [
                     'size' => '1024',
-                    'distance' => 'Cosine'
+                    'distance' => 'Cosine',
                 ],
-                'replication_factor' => 1
+                'replication_factor' => 1,
             ],
             $collection->toArray()
         );
@@ -97,11 +98,11 @@ class CreateCollectionTest extends TestCase
             [
                 'vectors' => [
                     'size' => '1024',
-                    'distance' => 'Cosine'
+                    'distance' => 'Cosine',
                 ],
                 'shard_number' => 1,
                 'replication_factor' => 0,
-                'write_consistency_factor' => 0
+                'write_consistency_factor' => 0,
             ],
             $collection->toArray()
         );
@@ -117,9 +118,9 @@ class CreateCollectionTest extends TestCase
             [
                 'vectors' => [
                     'size' => '1024',
-                    'distance' => 'Cosine'
+                    'distance' => 'Cosine',
                 ],
-                'write_consistency_factor' => 3
+                'write_consistency_factor' => 3,
             ],
             $collection->toArray()
         );
@@ -135,9 +136,9 @@ class CreateCollectionTest extends TestCase
             [
                 'vectors' => [
                     'size' => '1024',
-                    'distance' => 'Cosine'
+                    'distance' => 'Cosine',
                 ],
-                'on_disk_payload' => false
+                'on_disk_payload' => false,
             ],
             $collection->toArray()
         );
@@ -157,12 +158,12 @@ class CreateCollectionTest extends TestCase
             [
                 'vectors' => [
                     'size' => '1024',
-                    'distance' => 'Cosine'
+                    'distance' => 'Cosine',
                 ],
                 'optimizers_config' => [
                     'max_segment_size' => 1,
                     'default_segment_number' => 1,
-                ]
+                ],
             ],
             $collection->toArray()
         );
@@ -182,12 +183,12 @@ class CreateCollectionTest extends TestCase
             [
                 'vectors' => [
                     'size' => '1024',
-                    'distance' => 'Cosine'
+                    'distance' => 'Cosine',
                 ],
                 'hnsw_config' => [
                     'm' => 1,
                     'payload_m' => 1,
-                ]
+                ],
             ],
             $collection->toArray()
         );
@@ -207,12 +208,12 @@ class CreateCollectionTest extends TestCase
             [
                 'vectors' => [
                     'size' => '1024',
-                    'distance' => 'Cosine'
+                    'distance' => 'Cosine',
                 ],
                 'hnsw_config' => [
                     'm' => 0,
                     'payload_m' => 1,
-                ]
+                ],
             ],
             $collection->toArray()
         );
@@ -232,12 +233,12 @@ class CreateCollectionTest extends TestCase
             [
                 'vectors' => [
                     'size' => '1024',
-                    'distance' => 'Cosine'
+                    'distance' => 'Cosine',
                 ],
                 'wal_config' => [
                     'wal_segments_ahead' => 1,
                     'wal_capacity_mb' => 1,
-                ]
+                ],
             ],
             $collection->toArray()
         );

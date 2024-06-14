@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Apr 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -27,7 +28,7 @@ class GeoRadius extends AbstractCondition implements ConditionInterface
     {
         return [
             'key' => $this->key,
-            'geo_radius' => $this->radius
+            'geo_radius' => $this->radius,
         ];
     }
 }

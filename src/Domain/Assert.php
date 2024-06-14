@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Apr 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -18,8 +19,10 @@ class Assert extends BaseAssert
 
     public static function keysExists(array $array, array $keys, $message = ''): void
     {
-        foreach ($keys as $key) {
-            if (!(isset($array[$key]) || \array_key_exists($key, $array))) {
+        foreach ($keys as $key)
+        {
+            if (!(isset($array[$key]) || \array_key_exists($key, $array)))
+            {
                 static::reportInvalidArgument(\sprintf(
                     $message ?: 'Expected the key %s to exist.',
                     static::valueToString($key)
@@ -30,8 +33,10 @@ class Assert extends BaseAssert
 
     public static function keysExistsAtLeastOne(array $array, array $keys, $message = ''): void
     {
-        foreach ($keys as $key) {
-            if (isset($array[$key]) || \array_key_exists($key, $array)) {
+        foreach ($keys as $key)
+        {
+            if (isset($array[$key]) || \array_key_exists($key, $array))
+            {
                 return;
             }
         }
@@ -43,8 +48,10 @@ class Assert extends BaseAssert
 
     public static function keysNotExists(array $array, array $keys, $message = ''): void
     {
-        foreach ($keys as $key) {
-            if (isset($array[$key]) || \array_key_exists($key, $array)) {
+        foreach ($keys as $key)
+        {
+            if (isset($array[$key]) || \array_key_exists($key, $array))
+            {
                 static::reportInvalidArgument(\sprintf(
                     $message ?: 'Expected the key %s to exist.',
                     static::valueToString($key)

@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -28,7 +29,7 @@ class GeoBoundingBoxTest extends TestCase
         $filter = new GeoBoundingBox(
             'location',
             [
-                'bottom_right' => []
+                'bottom_right' => [],
             ]
         );
     }
@@ -42,7 +43,7 @@ class GeoBoundingBoxTest extends TestCase
             'location',
             [
                 'bottom_right' => [],
-                'top_left' => []
+                'top_left' => [],
             ]
         );
     }
@@ -56,11 +57,11 @@ class GeoBoundingBoxTest extends TestCase
             'location',
             [
                 'bottom_right' => [
-                    'lat' => 0.2
+                    'lat' => 0.2,
                 ],
                 'top_left' => [
-                    'lat' => 0.1
-                ]
+                    'lat' => 0.1,
+                ],
             ]
         );
     }
@@ -72,15 +73,14 @@ class GeoBoundingBoxTest extends TestCase
             [
                 'bottom_right' => [
                     'lat' => 0.2,
-                    'lon' => 0.1
+                    'lon' => 0.1,
                 ],
                 'top_left' => [
                     'lat' => 0.1,
-                    'lon' => 0.3
-                ]
+                    'lon' => 0.3,
+                ],
             ]
         );
-
 
         $this->assertEquals(
             [
@@ -88,13 +88,13 @@ class GeoBoundingBoxTest extends TestCase
                 'geo_bounding_box' => [
                     'bottom_right' => [
                         'lat' => 0.2,
-                        'lon' => 0.1
+                        'lon' => 0.1,
                     ],
                     'top_left' => [
                         'lat' => 0.1,
-                        'lon' => 0.3
-                    ]
-                ]
+                        'lon' => 0.3,
+                    ],
+                ],
             ],
             $filter->toArray()
         );

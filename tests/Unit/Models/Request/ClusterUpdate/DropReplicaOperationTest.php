@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Oct 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -32,7 +33,7 @@ class DropReplicaOperationTest extends TestCase
             'drop_replica' => [
                 'shard_id' => 0,
                 'peer_id' => 1,
-            ]
+            ],
         ], $config->toArray());
     }
 }

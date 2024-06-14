@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -17,7 +18,7 @@ class HasIdTest extends TestCase
 
         $this->assertEquals(
             [
-                'has_id' => [1, 2]
+                'has_id' => [1, 2],
             ],
             $filter->toArray()
         );

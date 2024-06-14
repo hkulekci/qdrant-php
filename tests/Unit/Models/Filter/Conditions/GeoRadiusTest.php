@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -28,7 +29,7 @@ class GeoRadiusTest extends TestCase
         $filter = new GeoRadius(
             'location',
             [
-                'center' => []
+                'center' => [],
             ]
         );
     }
@@ -42,7 +43,7 @@ class GeoRadiusTest extends TestCase
             'location',
             [
                 'center' => [],
-                'radius' => 100
+                'radius' => 100,
             ]
         );
     }
@@ -54,12 +55,11 @@ class GeoRadiusTest extends TestCase
             [
                 'center' => [
                     'lat' => 0.2,
-                    'lon' => 0.1
+                    'lon' => 0.1,
                 ],
-                'radius' => 100
+                'radius' => 100,
             ]
         );
-
 
         $this->assertEquals(
             [
@@ -67,10 +67,10 @@ class GeoRadiusTest extends TestCase
                 'geo_radius' => [
                     'center' => [
                         'lat' => 0.2,
-                        'lon' => 0.1
+                        'lon' => 0.1,
                     ],
-                    'radius' => 100
-                ]
+                    'radius' => 100,
+                ],
             ],
             $filter->toArray()
         );

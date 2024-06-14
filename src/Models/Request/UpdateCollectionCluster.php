@@ -3,6 +3,7 @@
  * UpdateCollectionCluster
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -12,9 +13,6 @@ use Qdrant\Models\Request\ClusterUpdate\Operation;
 
 class UpdateCollectionCluster implements RequestModel
 {
-    /**
-     * @param Operation $operation
-     */
     public function __construct(protected Operation $operation)
     {
     }

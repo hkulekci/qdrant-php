@@ -5,8 +5,10 @@
  * https://qdrant.tech/documentation/collections/#collection-aliases
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
+
 namespace Qdrant\Endpoints\Collections;
 
 use Qdrant\Endpoints\AbstractEndpoint;
@@ -26,7 +28,7 @@ class Aliases extends AbstractEndpoint
         return $this->client->execute(
             $this->createRequest(
                 'POST',
-                '/collections/aliases' . $this->queryBuild($queryParams),
+                '/collections/aliases'.$this->queryBuild($queryParams),
                 ['actions' => $actions->toArray()]
             )
         );

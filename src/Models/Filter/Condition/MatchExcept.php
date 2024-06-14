@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Apr 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -18,8 +19,8 @@ class MatchExcept extends AbstractCondition implements ConditionInterface
         return [
             'key' => $this->key,
             'match' => [
-                'except' => $this->values
-            ]
+                'except' => $this->values,
+            ],
         ];
     }
 }

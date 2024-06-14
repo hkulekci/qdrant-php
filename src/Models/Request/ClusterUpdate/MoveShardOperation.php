@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Dec 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -16,7 +17,8 @@ class MoveShardOperation implements Operation
         protected int $shardId,
         protected int $toPeerId,
         protected int $fromPeerId,
-    ) {}
+    ) {
+    }
 
     public function getKey(): string
     {
@@ -30,12 +32,15 @@ class MoveShardOperation implements Operation
             'to_peer_id' => $this->toPeerId,
             'from_peer_id' => $this->fromPeerId,
             'method' => $this->method,
-        ], static function($v) { return $v !== null; });
+        ], static function ($v) {
+            return $v !== null;
+        });
     }
 
     public function setMethod(string $method): MoveShardOperation
     {
-        if (!in_array($method, ['snapshot', 'stream_records'])) {
+        if (!in_array($method, ['snapshot', 'stream_records']))
+        {
             throw new InvalidArgumentException('Method could be snapshot or stream_record for operations');
         }
 

@@ -3,6 +3,7 @@
  * Update Collection
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -55,19 +56,25 @@ class UpdateCollection implements RequestModel
     public function toArray(): array
     {
         $data = [];
-        if ($this->optimizersConfig) {
+        if ($this->optimizersConfig)
+        {
             $data['optimizers_config'] = $this->optimizersConfig->toArray();
         }
-        if ($this->hnswConfig) {
+        if ($this->hnswConfig)
+        {
             $data['hnsw_config'] = $this->hnswConfig->toArray();
         }
-        if ($this->collectionParams) {
+        if ($this->collectionParams)
+        {
             $data['params'] = $this->collectionParams->toArray();
         }
 
-        if ($this->quantizationConfig instanceof DisabledQuantization) {
+        if ($this->quantizationConfig instanceof DisabledQuantization)
+        {
             $data['quantization_config'] = 'Disabled';
-        } else if ($this->quantizationConfig !== null) {
+        }
+        elseif ($this->quantizationConfig !== null)
+        {
             $data['quantization_config'] = $this->quantizationConfig->toArray();
         }
 

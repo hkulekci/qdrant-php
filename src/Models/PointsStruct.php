@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -21,7 +22,8 @@ class PointsStruct
 
     public function addPoints(array $points): void
     {
-        foreach ($points as $point) {
+        foreach ($points as $point)
+        {
             $this->addPoint($point);
         }
     }
@@ -29,7 +31,8 @@ class PointsStruct
     public static function createFromArray(array $points): PointsStruct
     {
         $pointsStruct = new self();
-        foreach ($points as $point) {
+        foreach ($points as $point)
+        {
             $pointsStruct->addPoint(PointStruct::createFromArray($point));
         }
 
@@ -40,7 +43,8 @@ class PointsStruct
     {
         $points = [];
         /** @var PointStruct $point */
-        foreach ($this->points as $point) {
+        foreach ($this->points as $point)
+        {
             $points[] = $point->toArray();
         }
 

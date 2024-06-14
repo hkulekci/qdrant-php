@@ -1,18 +1,14 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
 namespace Qdrant\Tests\Unit;
 
-use GuzzleHttp\Psr7\Response as HttpResponse;
-use GuzzleHttp\Psr7\Utils;
 use Http\Discovery\Psr17FactoryDiscovery;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ResponseInterface;
-use Qdrant\Exception\InvalidArgumentException;
-use Qdrant\Exception\ServerException;
 use Qdrant\Response;
 
 class ResponseTest extends TestCase

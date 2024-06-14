@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -22,7 +23,7 @@ class ValueCountTest extends TestCase
         $this->assertEquals(
             [
                 'key' => 'key',
-                'values_count' => []
+                'values_count' => [],
             ],
             $filter->toArray()
         );
@@ -31,15 +32,15 @@ class ValueCountTest extends TestCase
     public function testValueCountFilterWithValidData(): void
     {
         $filter = new ValueCount('key', [
-            'gt' => 5
+            'gt' => 5,
         ]);
 
         $this->assertEquals(
             [
                 'key' => 'key',
                 'values_count' => [
-                    'gt' => 5
-                ]
+                    'gt' => 5,
+                ],
             ],
             $filter->toArray()
         );

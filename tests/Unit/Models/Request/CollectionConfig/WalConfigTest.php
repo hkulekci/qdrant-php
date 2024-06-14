@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Oct 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -24,7 +25,7 @@ class WalConfigTest extends TestCase
         $config = (new WalConfig())->setWalCapacityMb(10);
 
         $this->assertEquals([
-            'wal_capacity_mb' => 10
+            'wal_capacity_mb' => 10,
         ], $config->toArray());
     }
 
@@ -42,7 +43,7 @@ class WalConfigTest extends TestCase
         $config = (new WalConfig())->setWalSegmentsAhead(1);
 
         $this->assertEquals([
-            'wal_segments_ahead' => 1
+            'wal_segments_ahead' => 1,
         ], $config->toArray());
     }
 

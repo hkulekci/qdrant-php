@@ -2,12 +2,10 @@
 
 namespace Qdrant\Tests\Unit\Models\Traits;
 
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Qdrant\Endpoints\HttpFactoryTrait;
-use Qdrant\Models\Traits\ProtectedPropertyAccessor;
 
 class HttpFactoryTraitTest extends TestCase
 {
@@ -33,7 +31,7 @@ class HttpFactoryTraitTest extends TestCase
 
             public function test(string $method, string $uri, array $body = [], $queryString = []): RequestInterface
             {
-                return $this->createRequest($method, $uri . $this->queryBuild($queryString), $body);
+                return $this->createRequest($method, $uri.$this->queryBuild($queryString), $body);
             }
         };
 

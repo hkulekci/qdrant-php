@@ -1,8 +1,10 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
+
 namespace Qdrant;
 
 use Psr\Http\Message\RequestInterface;
@@ -20,7 +22,7 @@ class Qdrant implements ClientInterface
     {
     }
 
-    public function collections(string $collectionName = null): Collections
+    public function collections(?string $collectionName = null): Collections
     {
         return (new Collections($this))->setCollectionName($collectionName);
     }
@@ -44,13 +46,16 @@ class Qdrant implements ClientInterface
     {
         $res = $this->transport->sendRequest($request);
         $statusCode = $res->getStatusCode();
-        if ($statusCode >= 400 && $statusCode < 500) {
+        if ($statusCode >= 400 && $statusCode < 500)
+        {
             $errorResponse = new Response($res);
             throw (new InvalidArgumentException(
                 $errorResponse['status']['error'] ?? 'Invalid Argument Exception',
                 $statusCode)
             )->setResponse($errorResponse);
-        } elseif ($statusCode >= 500) {
+        }
+        elseif ($statusCode >= 500)
+        {
             $errorResponse = new Response($res);
             throw (new ServerException(
                 $errorResponse['status']['error'] ?? '500 Interval Service Error',

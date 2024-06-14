@@ -3,8 +3,10 @@
  * Collections
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
+
 namespace Qdrant\Tests\Integration\Endpoints;
 
 use Qdrant\Endpoints\Collections;
@@ -136,7 +138,6 @@ class CollectionsTest extends AbstractIntegration
         );
         $this->assertEquals('ok', $response['status']);
     }
-
 
     /**
      * @throws InvalidArgumentException

@@ -3,6 +3,7 @@
  * HttpFactoryTrait
  *
  * @since     Jan 2024
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -19,9 +20,11 @@ trait HttpFactoryTrait
 
     public function getHttpFactory(): RequestFactoryInterface
     {
-        if ($this->httpFactory === null) {
+        if ($this->httpFactory === null)
+        {
             $this->httpFactory = Psr17FactoryDiscovery::findRequestFactory();
         }
+
         return $this->httpFactory;
     }
 
@@ -37,12 +40,16 @@ trait HttpFactoryTrait
     {
 
         $request = $this->getHttpFactory()->createRequest($method, $uri);
-        if ($body) {
-            try {
+        if ($body)
+        {
+            try
+            {
                 $request = $request->withBody(
                     $this->getHttpFactory()->createStream(json_encode($body, JSON_THROW_ON_ERROR))
                 );
-            } catch (\JsonException $e) {
+            }
+            catch (\JsonException $e)
+            {
                 throw new InvalidArgumentException('Json parse error!', $e->getCode(), $e);
             }
         }
@@ -52,6 +59,6 @@ trait HttpFactoryTrait
 
     protected function queryBuild(array $params): string
     {
-        return '?' . http_build_query($params);
+        return '?'.http_build_query($params);
     }
 }

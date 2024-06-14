@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -18,8 +19,8 @@ class IsEmptyTest extends TestCase
         $this->assertEquals(
             [
                 'is_empty' => [
-                    'key' => 'key'
-                ]
+                    'key' => 'key',
+                ],
             ],
             $filter->toArray()
         );

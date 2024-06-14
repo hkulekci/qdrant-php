@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Apr 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -26,7 +27,7 @@ class ValueCount extends AbstractCondition implements ConditionInterface
     {
         return [
             'key' => $this->key,
-            'values_count' => $this->valueCount
+            'values_count' => $this->valueCount,
         ];
     }
 }

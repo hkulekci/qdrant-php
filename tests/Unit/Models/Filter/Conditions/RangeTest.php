@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -22,7 +23,7 @@ class RangeTest extends TestCase
         $this->assertEquals(
             [
                 'key' => 'key',
-                'range' => []
+                'range' => [],
             ],
             $filter->toArray()
         );
@@ -31,15 +32,15 @@ class RangeTest extends TestCase
     public function testRangeFilterWithValidData(): void
     {
         $filter = new Range('key', [
-            'gt' => 5
+            'gt' => 5,
         ]);
 
         $this->assertEquals(
             [
                 'key' => 'key',
                 'range' => [
-                    'gt' => 5
-                ]
+                    'gt' => 5,
+                ],
             ],
             $filter->toArray()
         );

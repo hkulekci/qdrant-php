@@ -1,14 +1,13 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
 namespace Qdrant\Tests\Unit\Models\Request\Points;
 
 use PHPUnit\Framework\TestCase;
-use Qdrant\Models\Filter\Condition\MatchExcept;
-use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\Request\Points\BatchRecommendRequest;
 use Qdrant\Models\Request\Points\RecommendRequest;
 
@@ -22,7 +21,7 @@ class BatchRecommendRequestTest extends TestCase
         ]);
 
         $this->assertEquals([
-            'searches' =>[
+            'searches' => [
                 [
                     'positive' => [100, 101],
                     'negative' => [110],
@@ -30,8 +29,8 @@ class BatchRecommendRequestTest extends TestCase
                 [
                     'positive' => [101, 102],
                     'negative' => [112],
-                ]
-            ]
+                ],
+            ],
         ], $request->toArray());
     }
 }

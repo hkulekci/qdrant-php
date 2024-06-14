@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Oct 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -24,7 +25,7 @@ class HnswConfigTest extends TestCase
         $config = (new HnswConfig())->setM(10);
 
         $this->assertEquals([
-            'm' => 10
+            'm' => 10,
         ], $config->toArray());
     }
 
@@ -33,7 +34,7 @@ class HnswConfigTest extends TestCase
         $config = (new HnswConfig())->setM(0);
 
         $this->assertEquals([
-            'm' => 0
+            'm' => 0,
         ], $config->toArray());
     }
 
@@ -51,7 +52,7 @@ class HnswConfigTest extends TestCase
         $config = (new HnswConfig())->setEfConstruct(10);
 
         $this->assertEquals([
-            'ef_construct' => 10
+            'ef_construct' => 10,
         ], $config->toArray());
     }
 
@@ -69,7 +70,7 @@ class HnswConfigTest extends TestCase
         $config = (new HnswConfig())->setFullScanThreshold(10);
 
         $this->assertEquals([
-            'full_scan_threshold' => 10
+            'full_scan_threshold' => 10,
         ], $config->toArray());
     }
 
@@ -87,7 +88,7 @@ class HnswConfigTest extends TestCase
         $config = (new HnswConfig())->setMaxIndexingThreads(9);
 
         $this->assertEquals([
-            'max_indexing_threads' => 9
+            'max_indexing_threads' => 9,
         ], $config->toArray());
     }
 
@@ -105,7 +106,7 @@ class HnswConfigTest extends TestCase
         $config = (new HnswConfig())->setOnDisk(true);
 
         $this->assertEquals([
-            'on_disk' => 10
+            'on_disk' => 10,
         ], $config->toArray());
     }
 
@@ -114,7 +115,7 @@ class HnswConfigTest extends TestCase
         $config = (new HnswConfig())->setPayloadM(10);
 
         $this->assertEquals([
-            'payload_m' => 10
+            'payload_m' => 10,
         ], $config->toArray());
     }
 

@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Apr 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -12,7 +13,7 @@ class IsEmpty extends AbstractCondition implements ConditionInterface
     {
         return [
             'is_empty' => [
-                'key' => $this->key
+                'key' => $this->key,
             ],
         ];
     }

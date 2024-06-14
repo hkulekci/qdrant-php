@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -19,8 +20,8 @@ class MatchBoolTest extends TestCase
             [
                 'key' => 'key',
                 'match' => [
-                    'value' => true
-                ]
+                    'value' => true,
+                ],
             ],
             $filter->toArray()
         );

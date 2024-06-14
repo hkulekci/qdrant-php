@@ -3,27 +3,28 @@
  * RecommendRequest
  *
  * @since     Jun 2023
+ *
  * @author    Greg Priday <greg@siteorigin.com>
  */
+
 namespace Qdrant\Models\Request\Points;
 
-use Qdrant\Exception\InvalidArgumentException;
-use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\Traits\ProtectedPropertyAccessor;
 
 class BatchRecommendRequest
 {
     use ProtectedPropertyAccessor;
 
-    /** @var RecommendRequest[] $searches */
+    /** @var RecommendRequest[] */
     protected array $searches = [];
 
     /**
-     * @param RecommendRequest[] $searches
+     * @param  RecommendRequest[]  $searches
      */
     public function __construct(array $searches)
     {
-        foreach ($searches as $search) {
+        foreach ($searches as $search)
+        {
             $this->addSearch($search);
         }
     }
@@ -39,12 +40,13 @@ class BatchRecommendRequest
     {
         $searches = [];
 
-        foreach ($this->searches as $search) {
+        foreach ($this->searches as $search)
+        {
             $searches[] = $search->toArray();
         }
 
         return [
-            'searches' => $searches
+            'searches' => $searches,
         ];
     }
 }

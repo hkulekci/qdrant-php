@@ -5,6 +5,7 @@
  * https://qdrant.tech/documentation/points/
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -41,7 +42,7 @@ class Points extends AbstractEndpoint
         return $this->client->execute(
             $this->createRequest(
                 'POST',
-                'collections/' . $this->collectionName . '/points/search' . $this->queryBuild($queryParams),
+                'collections/'.$this->collectionName.'/points/search'.$this->queryBuild($queryParams),
                 $searchParams->toArray()
             )
         );
@@ -50,18 +51,22 @@ class Points extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function scroll(Filter|ScrollRequest $scrollParams = null, array $queryParams = []): Response
+    public function scroll(Filter|ScrollRequest|null $scrollParams = null, array $queryParams = []): Response
     {
         $body = [];
-        if ($scrollParams instanceof Filter) {
+        if ($scrollParams instanceof Filter)
+        {
             $body['filter'] = $scrollParams->toArray();
-        } elseif ($scrollParams instanceof ScrollRequest) {
+        }
+        elseif ($scrollParams instanceof ScrollRequest)
+        {
             $body = $scrollParams->toArray();
         }
+
         return $this->client->execute(
             $this->createRequest(
                 'POST',
-                '/collections/' . $this->getCollectionName() . '/points/scroll' . $this->queryBuild($queryParams),
+                '/collections/'.$this->getCollectionName().'/points/scroll'.$this->queryBuild($queryParams),
                 $body
             )
         );
@@ -75,7 +80,7 @@ class Points extends AbstractEndpoint
         return $this->client->execute(
             $this->createRequest(
                 'POST',
-                '/collections/' . $this->getCollectionName() . '/points/delete' . $this->queryBuild($queryParams),
+                '/collections/'.$this->getCollectionName().'/points/delete'.$this->queryBuild($queryParams),
                 [
                     'points' => $points,
                 ]
@@ -91,7 +96,7 @@ class Points extends AbstractEndpoint
         return $this->client->execute(
             $this->createRequest(
                 'POST',
-                '/collections/' . $this->getCollectionName() . '/points/delete',
+                '/collections/'.$this->getCollectionName().'/points/delete',
                 [
                     'filter' => $filter->toArray(),
                 ]
@@ -107,11 +112,11 @@ class Points extends AbstractEndpoint
         return $this->client->execute(
             $this->createRequest(
                 'POST',
-                '/collections/' . $this->getCollectionName() . '/points' . $this->queryBuild($queryParams),
+                '/collections/'.$this->getCollectionName().'/points'.$this->queryBuild($queryParams),
                 [
-                    'ids'          => $ids,
+                    'ids' => $ids,
                     'with_payload' => $withPayload,
-                    'with_vector'  => $withVector,
+                    'with_vector' => $withVector,
                 ]
             )
         );
@@ -125,7 +130,7 @@ class Points extends AbstractEndpoint
         return $this->client->execute(
             $this->createRequest(
                 'GET',
-                '/collections/' . $this->getCollectionName() . '/points/' . $id . $this->queryBuild($queryParams)
+                '/collections/'.$this->getCollectionName().'/points/'.$id.$this->queryBuild($queryParams)
             )
         );
     }
@@ -133,20 +138,21 @@ class Points extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function count(Filter $filter = null, $exact = false): Response
+    public function count(?Filter $filter = null, $exact = false): Response
     {
         $body = [
             'exact' => $exact,
         ];
 
-        if ($filter) {
+        if ($filter)
+        {
             $body['filter'] = $filter->toArray();
         }
 
         return $this->client->execute(
             $this->createRequest(
                 'POST',
-                '/collections/' . $this->getCollectionName() . '/points/count',
+                '/collections/'.$this->getCollectionName().'/points/count',
                 $body
             )
         );
@@ -160,7 +166,7 @@ class Points extends AbstractEndpoint
         return $this->client->execute(
             $this->createRequest(
                 'PUT',
-                '/collections/' . $this->getCollectionName() . '/points' . $this->queryBuild($queryParams),
+                '/collections/'.$this->getCollectionName().'/points'.$this->queryBuild($queryParams),
                 [
                     'points' => $points->toArray(),
                 ]
@@ -178,7 +184,7 @@ class Points extends AbstractEndpoint
         return $this->client->execute(
             $this->createRequest(
                 'PUT',
-                '/collections/' . $this->getCollectionName() . '/points' . $this->queryBuild($queryParams),
+                '/collections/'.$this->getCollectionName().'/points'.$this->queryBuild($queryParams),
                 [
                     'batch' => $points->toArray(),
                 ]

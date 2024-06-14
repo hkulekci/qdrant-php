@@ -3,8 +3,10 @@
  * RecommendRequest
  *
  * @since     Jun 2023
+ *
  * @author    Greg Priday <greg@siteorigin.com>
  */
+
 namespace Qdrant\Models\Request\Points;
 
 use Qdrant\Exception\InvalidArgumentException;
@@ -29,11 +31,17 @@ class RecommendRequest
     const STRATEGY_BEST_SCORE = 'best_score';
 
     protected ?string $shardKey = null;
+
     protected ?string $strategy = null;
+
     protected ?Filter $filter = null;
+
     protected ?string $using = null;
+
     protected ?int $limit = null;
+
     protected ?int $offset = null;
+
     protected ?float $scoreThreshold = null;
 
     public function __construct(protected array $positive, protected array $negative = [])
@@ -60,7 +68,8 @@ class RecommendRequest
             self::STRATEGY_AVERAGE_VECTOR,
             self::STRATEGY_BEST_SCORE,
         ];
-        if (!in_array($strategy, $strategies)) {
+        if (!in_array($strategy, $strategies))
+        {
             throw new InvalidArgumentException('Invalid strategy for recommendation.');
         }
         $this->strategy = $strategy;
@@ -103,25 +112,32 @@ class RecommendRequest
             'negative' => $this->negative,
         ];
 
-        if ($this->shardKey !== null) {
+        if ($this->shardKey !== null)
+        {
             $body['shard_key'] = $this->shardKey;
         }
-        if ($this->filter !== null && $this->filter->toArray()) {
+        if ($this->filter !== null && $this->filter->toArray())
+        {
             $body['filter'] = $this->filter->toArray();
         }
-        if($this->scoreThreshold !== null) {
+        if ($this->scoreThreshold !== null)
+        {
             $body['score_threshold'] = $this->scoreThreshold;
         }
-        if ($this->using !== null) {
+        if ($this->using !== null)
+        {
             $body['using'] = $this->using;
         }
-        if ($this->limit !== null) {
+        if ($this->limit !== null)
+        {
             $body['limit'] = $this->limit;
         }
-        if ($this->strategy !== null) {
+        if ($this->strategy !== null)
+        {
             $body['strategy'] = $this->strategy;
         }
-        if ($this->offset !== null) {
+        if ($this->offset !== null)
+        {
             $body['offset'] = $this->offset;
         }
 

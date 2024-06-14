@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -17,7 +18,7 @@ class CreateIndex implements RequestModel
         // TODO: schema params is missing
         return [
             'field_name' => $this->fieldName,
-            'field_schema' => $this->fieldSchema
+            'field_schema' => $this->fieldSchema,
         ];
     }
 }

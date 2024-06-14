@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Oct 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -47,7 +48,7 @@ class OptimizerConfigTest extends TestCase
         $config = (new OptimizersConfig())->setIndexingThreshold(10);
 
         $this->assertEquals([
-            'indexing_threshold' => 10
+            'indexing_threshold' => 10,
         ], $config->toArray());
     }
 
@@ -56,7 +57,7 @@ class OptimizerConfigTest extends TestCase
         $config = (new OptimizersConfig())->setMaxOptimizationThreads(10);
 
         $this->assertEquals([
-            'max_optimization_threads' => 10
+            'max_optimization_threads' => 10,
         ], $config->toArray());
     }
 
@@ -65,7 +66,7 @@ class OptimizerConfigTest extends TestCase
         $config = (new OptimizersConfig())->setMaxSegmentSize(10);
 
         $this->assertEquals([
-            'max_segment_size' => 10
+            'max_segment_size' => 10,
         ], $config->toArray());
     }
 
@@ -74,7 +75,7 @@ class OptimizerConfigTest extends TestCase
         $config = (new OptimizersConfig())->setDeletedThreshold(9.8);
 
         $this->assertEquals([
-            'deleted_threshold' => 9.8
+            'deleted_threshold' => 9.8,
         ], $config->toArray());
     }
 
@@ -83,7 +84,7 @@ class OptimizerConfigTest extends TestCase
         $config = (new OptimizersConfig())->setMemmapThreshold(10);
 
         $this->assertEquals([
-            'memmap_threshold' => 10
+            'memmap_threshold' => 10,
         ], $config->toArray());
     }
 
@@ -92,7 +93,7 @@ class OptimizerConfigTest extends TestCase
         $config = (new OptimizersConfig())->setDefaultSegmentNumber(10);
 
         $this->assertEquals([
-            'default_segment_number' => 10
+            'default_segment_number' => 10,
         ], $config->toArray());
     }
 
@@ -101,7 +102,7 @@ class OptimizerConfigTest extends TestCase
         $config = (new OptimizersConfig())->setFlushIntervalSec(10);
 
         $this->assertEquals([
-            'flush_interval_sec' => 10
+            'flush_interval_sec' => 10,
         ], $config->toArray());
     }
 
@@ -110,7 +111,7 @@ class OptimizerConfigTest extends TestCase
         $config = (new OptimizersConfig())->setVacuumMinVectorNumber(10);
 
         $this->assertEquals([
-            'vacuum_min_vector_number' => 10
+            'vacuum_min_vector_number' => 10,
         ], $config->toArray());
     }
 }

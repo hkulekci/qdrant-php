@@ -3,6 +3,7 @@
  * WalConfig
  *
  * @since     Dec 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -14,11 +15,13 @@ use Qdrant\Models\Request\RequestModel;
 class WalConfig implements RequestModel
 {
     protected ?int $walCapacityMb = null;
+
     protected ?int $walSegmentsAhead = null;
 
     public function setWalCapacityMb(?int $walCapacityMb): WalConfig
     {
-        if ($walCapacityMb < 1) {
+        if ($walCapacityMb < 1)
+        {
             throw new InvalidArgumentException('wal_capacity_mb should be bigger than 1');
         }
         $this->walCapacityMb = $walCapacityMb;
@@ -28,7 +31,8 @@ class WalConfig implements RequestModel
 
     public function setWalSegmentsAhead(?int $walSegmentsAhead): WalConfig
     {
-        if ($walSegmentsAhead < 0) {
+        if ($walSegmentsAhead < 0)
+        {
             throw new InvalidArgumentException('wal_segments_ahead should be bigger than 0');
         }
         $this->walSegmentsAhead = $walSegmentsAhead;
@@ -39,10 +43,12 @@ class WalConfig implements RequestModel
     public function toArray(): array
     {
         $data = [];
-        if ($this->walCapacityMb) {
+        if ($this->walCapacityMb)
+        {
             $data['wal_capacity_mb'] = $this->walCapacityMb;
         }
-        if ($this->walSegmentsAhead) {
+        if ($this->walSegmentsAhead)
+        {
             $data['wal_segments_ahead'] = $this->walSegmentsAhead;
         }
 

@@ -1,8 +1,10 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
+
 namespace Qdrant\Tests\Integration\Endpoints\Collections;
 
 use Qdrant\Endpoints\Collections;
@@ -40,17 +42,17 @@ class PointsTest extends AbstractIntegration
                 [
                     [
                         'id' => 1,
-                        'vector' => new VectorStruct([1, 3, 400], 'image')
+                        'vector' => new VectorStruct([1, 3, 400], 'image'),
                     ],
                     [
                         'id' => 2,
                         'vector' => new VectorStruct([1, 3, 300], 'image'),
                         'payload' => [
-                            'image' => 'sample image'
-                        ]
+                            'image' => 'sample image',
+                        ],
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
@@ -79,9 +81,9 @@ class PointsTest extends AbstractIntegration
                 'id' => 2,
                 'vector' => new VectorStruct([500, 1, 3, 300, 400], 'image'),
                 'payload' => [
-                    'image' => 'sample image'
-                ]
-            ]
+                    'image' => 'sample image',
+                ],
+            ],
         ];
         $this->getCollections('sample-collection')->points()
             ->upsert(PointsStruct::createFromArray($points), ['wait' => 'true']);
@@ -178,22 +180,22 @@ class PointsTest extends AbstractIntegration
         $batch->addPoint(PointStruct::createFromArray([
             'id' => 1,
             'vector' => new VectorStruct([1, 2, 3], 'image'),
-            'payload' => ['color' => 'red']
+            'payload' => ['color' => 'red'],
         ]));
         $batch->addPoint(PointStruct::createFromArray([
             'id' => 2,
             'vector' => new VectorStruct([3, 4, 5], 'image'),
-            'payload' => ['color' => 'red']
+            'payload' => ['color' => 'red'],
         ]));
         $batch->addPoint(PointStruct::createFromArray([
             'id' => 3,
             'vector' => new VectorStruct([6, 7, 8], 'image'),
-            'payload' => ['color' => 'red']
+            'payload' => ['color' => 'red'],
         ]));
         $batch->addPoint(PointStruct::createFromArray([
             'id' => 4,
             'vector' => new VectorStruct([7, 8, 9], 'image'),
-            'payload' => ['color' => 'red']
+            'payload' => ['color' => 'red'],
         ]));
 
         $this->getCollections('sample-collection')->points()->batch($batch, ['wait' => 'true']);
@@ -201,7 +203,6 @@ class PointsTest extends AbstractIntegration
         $response = $this->getCollections('sample-collection')->points()->count();
         $this->assertEquals(4, $response['result']['count']);
     }
-
 
     public function testBatchUploadPointsWithoutName(): void
     {
@@ -215,22 +216,22 @@ class PointsTest extends AbstractIntegration
         $batch->addPoint(PointStruct::createFromArray([
             'id' => 1,
             'vector' => new VectorStruct([1, 2, 3]),
-            'payload' => ['color' => 'red']
+            'payload' => ['color' => 'red'],
         ]));
         $batch->addPoint(PointStruct::createFromArray([
             'id' => 2,
             'vector' => new VectorStruct([3, 4, 5]),
-            'payload' => ['color' => 'red']
+            'payload' => ['color' => 'red'],
         ]));
         $batch->addPoint(PointStruct::createFromArray([
             'id' => 3,
             'vector' => new VectorStruct([6, 7, 8]),
-            'payload' => ['color' => 'red']
+            'payload' => ['color' => 'red'],
         ]));
         $batch->addPoint(PointStruct::createFromArray([
             'id' => 4,
             'vector' => new VectorStruct([7, 8, 9]),
-            'payload' => ['color' => 'red']
+            'payload' => ['color' => 'red'],
         ]));
 
         $this->getCollections('sample-collection')->points()->batch($batch, ['wait' => 'true']);

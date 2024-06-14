@@ -3,8 +3,10 @@
  * AbstractEndpoint
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
+
 namespace Qdrant\Endpoints;
 
 use Qdrant\ClientInterface;
@@ -28,14 +30,15 @@ abstract class AbstractEndpoint
     }
 
     /**
-     * @return string
      * @throws InvalidArgumentException
      */
     public function getCollectionName(): string
     {
-        if ($this->collectionName === null) {
+        if ($this->collectionName === null)
+        {
             throw new InvalidArgumentException('You need to specify the collection name');
         }
+
         return $this->collectionName;
     }
 }

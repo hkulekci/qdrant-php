@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -21,7 +22,7 @@ class PointTest extends TestCase
 
         $this->assertEquals([
             'id' => '1',
-            'vector' => [1, 2, 3]
+            'vector' => [1, 2, 3],
         ], $point->toArray());
     }
 
@@ -34,7 +35,7 @@ class PointTest extends TestCase
 
         $this->assertEquals([
             'id' => '1',
-            'vector' => [1, 2, 3]
+            'vector' => [1, 2, 3],
         ], $point->toArray());
     }
 
@@ -49,7 +50,7 @@ class PointTest extends TestCase
         $this->assertEquals([
             'id' => '1',
             'vector' => [1, 2, 3],
-            'payload' => ['foo' => 'bar']
+            'payload' => ['foo' => 'bar'],
         ], $point->toArray());
     }
 }

@@ -3,6 +3,7 @@
  * Payload
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -23,7 +24,7 @@ class Payload extends AbstractEndpoint
         return $this->client->execute(
             $this->createRequest(
                 'POST',
-                '/collections/' . $this->getCollectionName() . '/points/payload/clear',
+                '/collections/'.$this->getCollectionName().'/points/payload/clear',
                 [
                     'points' => $points,
                 ]
@@ -34,26 +35,23 @@ class Payload extends AbstractEndpoint
     /**
      * Delete specified key payload for points
      *
-     * @param array $points
-     * @param array $keys
-     * @param Filter|null $filter
-     * @return Response
      * @throws InvalidArgumentException
      */
-    public function delete(array $points, array $keys, Filter $filter = null, array $queryParams = []): Response
+    public function delete(array $points, array $keys, ?Filter $filter = null, array $queryParams = []): Response
     {
         $data = [
             'points' => $points,
-            'keys' => $keys
+            'keys' => $keys,
         ];
-        if ($filter) {
+        if ($filter)
+        {
             $data['filters'] = $filter->toArray();
         }
 
         return $this->client->execute(
             $this->createRequest(
                 'POST',
-                '/collections/' . $this->getCollectionName() . '/points/payload/delete' . $this->queryBuild($queryParams),
+                '/collections/'.$this->getCollectionName().'/points/payload/delete'.$this->queryBuild($queryParams),
                 $data
             )
         );
@@ -67,7 +65,7 @@ class Payload extends AbstractEndpoint
         return $this->client->execute(
             $this->createRequest(
                 'POST',
-                '/collections/' . $this->getCollectionName() . '/points/payload' . $this->queryBuild($queryParams),
+                '/collections/'.$this->getCollectionName().'/points/payload'.$this->queryBuild($queryParams),
                 [
                     'payload' => $payload,
                     'points' => $points,

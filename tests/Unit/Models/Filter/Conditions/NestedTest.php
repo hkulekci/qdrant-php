@@ -1,13 +1,13 @@
 <?php
 /**
  * @since     Jun 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
 namespace Qdrant\Tests\Unit\Models\Filter\Conditions;
 
 use PHPUnit\Framework\TestCase;
-use Qdrant\Models\Filter\Condition\HasId;
 use Qdrant\Models\Filter\Condition\MatchString;
 use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\Filter\Nested;
@@ -22,8 +22,8 @@ class NestedTest extends TestCase
             [
                 'nested' => [
                     'key' => 'diet',
-                    'filter' => []
-                ]
+                    'filter' => [],
+                ],
             ],
             $filter->toArray()
         );
@@ -42,12 +42,12 @@ class NestedTest extends TestCase
                             [
                                 'key' => 'food',
                                 'match' => [
-                                    'value' => 'meat'
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
+                                    'value' => 'meat',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
             ],
             $filter->toArray()
         );

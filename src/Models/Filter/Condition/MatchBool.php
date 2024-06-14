@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Apr 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -18,8 +19,8 @@ class MatchBool extends AbstractCondition implements ConditionInterface
         return [
             'key' => $this->key,
             'match' => [
-                'value' => $this->value
-            ]
+                'value' => $this->value,
+            ],
         ];
     }
 }

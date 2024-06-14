@@ -3,6 +3,7 @@
  * OptimizersConfig
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -49,7 +50,6 @@ class OptimizersConfig implements RequestModel
      * @var int|null Maximum available threads for optimization workers
      */
     protected ?int $maxOptimizationThreads = null;
-
 
     public function setDeletedThreshold(?float $deletedThreshold): OptimizersConfig
     {
@@ -110,28 +110,36 @@ class OptimizersConfig implements RequestModel
     public function toArray(): array
     {
         $data = [];
-        if ($this->deletedThreshold !== null) {
+        if ($this->deletedThreshold !== null)
+        {
             $data['deleted_threshold'] = $this->deletedThreshold;
         }
-        if ($this->vacuumMinVectorNumber !== null) {
+        if ($this->vacuumMinVectorNumber !== null)
+        {
             $data['vacuum_min_vector_number'] = $this->vacuumMinVectorNumber;
         }
-        if ($this->defaultSegmentNumber !== null) {
+        if ($this->defaultSegmentNumber !== null)
+        {
             $data['default_segment_number'] = $this->defaultSegmentNumber;
         }
-        if ($this->maxSegmentSize !== null) {
+        if ($this->maxSegmentSize !== null)
+        {
             $data['max_segment_size'] = $this->maxSegmentSize;
         }
-        if ($this->memmapThreshold !== null) {
+        if ($this->memmapThreshold !== null)
+        {
             $data['memmap_threshold'] = $this->memmapThreshold;
         }
-        if ($this->indexingThreshold !== null) {
+        if ($this->indexingThreshold !== null)
+        {
             $data['indexing_threshold'] = $this->indexingThreshold;
         }
-        if ($this->flushIntervalSec !== null) {
+        if ($this->flushIntervalSec !== null)
+        {
             $data['flush_interval_sec'] = $this->flushIntervalSec;
         }
-        if ($this->maxOptimizationThreads !== null) {
+        if ($this->maxOptimizationThreads !== null)
+        {
             $data['max_optimization_threads'] = $this->maxOptimizationThreads;
         }
 

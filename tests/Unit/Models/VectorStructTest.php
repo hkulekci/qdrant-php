@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Aug 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -20,7 +21,6 @@ class VectorStructTest extends TestCase
             $vector->toArray()
         );
 
-
         $this->assertEquals(
             [1, 2, 3],
             $vector->toSearchArray()
@@ -33,7 +33,7 @@ class VectorStructTest extends TestCase
 
         $this->assertEquals(
             [
-                'foo' => [1, 2, 3]
+                'foo' => [1, 2, 3],
             ],
             $vector->toArray()
         );
@@ -41,7 +41,7 @@ class VectorStructTest extends TestCase
         $this->assertEquals(
             [
                 'name' => 'foo',
-                'vector' => [1, 2, 3]
+                'vector' => [1, 2, 3],
             ],
             $vector->toSearchArray()
         );

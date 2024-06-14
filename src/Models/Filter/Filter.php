@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Apr 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -11,9 +12,13 @@ use Qdrant\Models\Filter\Condition\ConditionInterface;
 class Filter implements ConditionInterface
 {
     protected array $must = [];
+
     protected array $must_not = [];
+
     protected array $should = [];
+
     protected array $minShould = [];
+
     protected ?int $minShouldCount;
 
     public function addMust(ConditionInterface $condition): Filter
@@ -54,33 +59,41 @@ class Filter implements ConditionInterface
     public function toArray(): array
     {
         $filter = [];
-        if ($this->must) {
+        if ($this->must)
+        {
             $filter['must'] = [];
-            foreach ($this->must as $must) {
+            foreach ($this->must as $must)
+            {
                 /** ConditionInterface $must */
                 $filter['must'][] = $must->toArray();
             }
         }
-        if ($this->must_not) {
+        if ($this->must_not)
+        {
             $filter['must_not'] = [];
-            foreach ($this->must_not as $must_not) {
+            foreach ($this->must_not as $must_not)
+            {
                 /** ConditionInterface $must */
                 $filter['must_not'][] = $must_not->toArray();
             }
         }
-        if ($this->should) {
+        if ($this->should)
+        {
             $filter['should'] = [];
-            foreach ($this->should as $should) {
+            foreach ($this->should as $should)
+            {
                 /** ConditionInterface $must */
                 $filter['should'][] = $should->toArray();
             }
         }
-        if ($this->minShould && $this->minShouldCount) {
+        if ($this->minShould && $this->minShouldCount)
+        {
             $filter['min_should'] = [
                 'conditions' => [],
-                'min_count' => $this->minShouldCount
+                'min_count' => $this->minShouldCount,
             ];
-            foreach ($this->minShould as $should) {
+            foreach ($this->minShould as $should)
+            {
                 /** ConditionInterface $must */
                 $filter['min_should']['conditions'][] = $should->toArray();
             }

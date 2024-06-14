@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Apr 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -30,7 +31,7 @@ class GeoBoundingBox extends AbstractCondition implements ConditionInterface
     {
         return [
             'key' => $this->key,
-            'geo_bounding_box' => $this->boundingBox
+            'geo_bounding_box' => $this->boundingBox,
         ];
     }
 }

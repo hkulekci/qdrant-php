@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Oct 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -17,7 +18,7 @@ class CreateShardingKeyOperationTest extends TestCase
         $config = new CreateShardingKeyOperation('foo');
 
         $this->assertEquals([
-            'shard_key' => 'foo'
+            'shard_key' => 'foo',
         ], $config->toArray());
     }
 
@@ -35,7 +36,7 @@ class CreateShardingKeyOperationTest extends TestCase
                 'shards_number' => 1,
                 'replication_factor' => 1,
                 'placement' => 0,
-            ]
+            ],
         ], $config->toArray());
     }
 }

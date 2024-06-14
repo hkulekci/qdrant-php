@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Oct 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -35,7 +36,7 @@ class MoveShardOperationTest extends TestCase
                 'shard_id' => 0,
                 'to_peer_id' => 2,
                 'from_peer_id' => 1,
-            ]
+            ],
         ], $config->toArray());
     }
 
@@ -48,7 +49,7 @@ class MoveShardOperationTest extends TestCase
             'shard_id' => 0,
             'to_peer_id' => 2,
             'from_peer_id' => 1,
-            'method' => 'snapshot'
+            'method' => 'snapshot',
         ], $config->toArray());
     }
 

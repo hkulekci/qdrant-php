@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Oct 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -24,8 +25,8 @@ class BinaryQuantizationTest extends TestCase
 
         $this->assertEquals([
             'binary' => [
-                'always_ram' => true
-            ]
+                'always_ram' => true,
+            ],
         ], $config->toArray());
     }
 
@@ -35,8 +36,8 @@ class BinaryQuantizationTest extends TestCase
 
         $this->assertEquals([
             'binary' => [
-                'always_ram' => false
-            ]
+                'always_ram' => false,
+            ],
         ], $config->toArray());
     }
 }

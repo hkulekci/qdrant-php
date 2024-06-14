@@ -1,15 +1,14 @@
 <?php
 /**
  * @since     Apr 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
 namespace Qdrant\Tests\Integration\Endpoints;
 
-use Qdrant\Endpoints\Service;
 use Qdrant\Endpoints\Snapshots;
 use Qdrant\Exception\InvalidArgumentException;
-use Qdrant\Models\Request\ServiceLock;
 use Qdrant\Tests\Integration\AbstractIntegration;
 
 class SnapshotsTest extends AbstractIntegration

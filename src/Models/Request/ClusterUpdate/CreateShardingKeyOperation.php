@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Dec 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -9,8 +10,11 @@ namespace Qdrant\Models\Request\ClusterUpdate;
 class CreateShardingKeyOperation implements Operation
 {
     protected string $shardKey;
+
     protected ?int $shardsNumber = null;
+
     protected ?int $replicationFactor = null;
+
     protected ?int $placement = null;
 
     public function __construct(string $shardKey)
@@ -30,7 +34,9 @@ class CreateShardingKeyOperation implements Operation
             'shards_number' => $this->shardsNumber,
             'replication_factor' => $this->replicationFactor,
             'placement' => $this->placement,
-        ], static function($v) { return $v !== null; });
+        ], static function ($v) {
+            return $v !== null;
+        });
     }
 
     public function setShardsNumber(int $shardsNumber): CreateShardingKeyOperation

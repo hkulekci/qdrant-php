@@ -15,23 +15,29 @@ trait ProtectedPropertyAccessor
     /**
      * Magic method to implement generic getter functionality for protected properties.
      *
-     * @param string $method The name of the method being called.
-     * @param array $arguments The arguments used to invoke the method.
+     * @param  string  $method  The name of the method being called.
+     * @param  array  $arguments  The arguments used to invoke the method.
      * @return mixed The value of the property.
+     *
      * @throws InvalidArgumentException if the property doesn't exist or is not protected.
      */
     public function __call(string $method, array $arguments)
     {
         $prefix = 'get';
 
-        if (str_starts_with($method, $prefix)) {
+        if (str_starts_with($method, $prefix))
+        {
             $property = lcfirst(substr($method, strlen($prefix)));
 
-            if (property_exists($this, $property)) {
+            if (property_exists($this, $property))
+            {
                 $reflection = new ReflectionProperty($this, $property);
-                if ($reflection->isProtected()) {
+                if ($reflection->isProtected())
+                {
                     return $this->$property;
-                } else {
+                }
+                else
+                {
                     throw new InvalidArgumentException("Access to property '$property' is not allowed");
                 }
             }

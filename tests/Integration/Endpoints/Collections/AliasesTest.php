@@ -3,6 +3,7 @@
  * AliasesTest
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -63,7 +64,7 @@ class AliasesTest extends AbstractIntegration
     {
         $collections = (new Collections($this->client));
         $collections->setCollectionName('sample-collection');
-        $response = $collections->create( self::sampleCollectionOption());
+        $response = $collections->create(self::sampleCollectionOption());
         $this->assertEquals('ok', $response['status']);
 
         $collections->setCollectionName('sample-collection');

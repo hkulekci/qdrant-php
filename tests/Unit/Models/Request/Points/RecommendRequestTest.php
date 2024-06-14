@@ -1,6 +1,7 @@
 <?php
 /**
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 
@@ -39,11 +40,11 @@ class RecommendRequestTest extends TestCase
                     [
                         'key' => 'foo',
                         'match' => [
-                            'except' => ['bar']
-                        ]
-                    ]
-                ]
-            ]
+                            'except' => ['bar'],
+                        ],
+                    ],
+                ],
+            ],
         ], $request->toArray());
     }
 
@@ -58,17 +59,17 @@ class RecommendRequestTest extends TestCase
         $this->assertEquals([
             'positive' => [100, 101],
             'negative' => [110],
-            'score_threshold'=> 1.0,
+            'score_threshold' => 1.0,
             'filter' => [
                 'must' => [
                     [
                         'key' => 'foo',
                         'match' => [
-                            'except' => ['bar']
-                        ]
-                    ]
-                ]
-            ]
+                            'except' => ['bar'],
+                        ],
+                    ],
+                ],
+            ],
         ], $request->toArray());
     }
 
@@ -80,7 +81,7 @@ class RecommendRequestTest extends TestCase
         $this->assertEquals([
             'positive' => [100, 101],
             'negative' => [110],
-            'offset'=> 1,
+            'offset' => 1,
         ], $request->toArray());
     }
 
@@ -92,7 +93,7 @@ class RecommendRequestTest extends TestCase
         $this->assertEquals([
             'positive' => [100, 101],
             'negative' => [110],
-            'using'=> 'foo',
+            'using' => 'foo',
         ], $request->toArray());
     }
 
@@ -107,7 +108,7 @@ class RecommendRequestTest extends TestCase
         $this->assertEquals([
             'positive' => [100, 101],
             'negative' => [110],
-            'using'=> 'foo',
+            'using' => 'foo',
         ], $request->toArray());
     }
 
@@ -121,9 +122,9 @@ class RecommendRequestTest extends TestCase
         $this->assertEquals([
             'positive' => [100, 101],
             'negative' => [110],
-            'limit'=> 10,
-            'offset'=> 1,
-            'shard_key' => 'shard_key'
+            'limit' => 10,
+            'offset' => 1,
+            'shard_key' => 'shard_key',
         ], $request->toArray());
     }
 
@@ -137,9 +138,9 @@ class RecommendRequestTest extends TestCase
         $this->assertEquals([
             'positive' => [100, 101],
             'negative' => [110],
-            'limit'=> 10,
-            'offset'=> 1,
-            'strategy' => RecommendRequest::STRATEGY_AVERAGE_VECTOR
+            'limit' => 10,
+            'offset' => 1,
+            'strategy' => RecommendRequest::STRATEGY_AVERAGE_VECTOR,
         ], $request->toArray());
     }
 }

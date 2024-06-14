@@ -3,8 +3,10 @@
  * SearchParams
  *
  * @since     Mar 2023
+ *
  * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
+
 namespace Qdrant\Models\Request;
 
 use Qdrant\Models\Filter\Filter;
@@ -97,29 +99,35 @@ class SearchRequest
             'vector' => $this->vector->toSearchArray($this->name ?? $this->vector->getName()),
         ];
 
-        if ($this->filter !== null && $this->filter->toArray()) {
+        if ($this->filter !== null && $this->filter->toArray())
+        {
             $body['filter'] = $this->filter->toArray();
         }
-        if($this->scoreThreshold) {
+        if ($this->scoreThreshold)
+        {
             $body['score_threshold'] = $this->scoreThreshold;
         }
-        if ($this->params) {
+        if ($this->params)
+        {
             $body['params'] = $this->params;
         }
-        if ($this->limit) {
+        if ($this->limit)
+        {
             $body['limit'] = $this->limit;
         }
-        if ($this->offset) {
+        if ($this->offset)
+        {
             $body['offset'] = $this->offset;
         }
-        if ($this->withVector) {
+        if ($this->withVector)
+        {
             $body['with_vector'] = $this->withVector;
         }
-        if ($this->withPayload) {
+        if ($this->withPayload)
+        {
             $body['with_payload'] = $this->withPayload;
         }
 
         return $body;
     }
-
 }
