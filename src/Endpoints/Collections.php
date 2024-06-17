@@ -64,6 +64,19 @@ class Collections extends AbstractEndpoint
         );
     }
 
+     /**
+     * # Collection exists
+     * Checks whether the specified collection exists.
+     *
+     * @throws InvalidArgumentException
+     */
+    public function exists(): Response
+    {
+        return $this->client->execute(
+            $this->createRequest('GET', '/collections/' . $this->getCollectionName(). '/exists')
+        );
+    }
+    
     /**
      * # Delete collection
      * Drop collection and all associated data
