@@ -54,6 +54,24 @@ class CollectionsTest extends AbstractIntegration
         $this->assertEquals('ok', $response['status']);
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function testCollectionExits(): void
+    {
+        $collections = new Collections($this->client);
+        $collections->setCollectionName('sample-collection');
+
+        $response = $collections->create(self::sampleCollectionOption());
+        $this->assertEquals('ok', $response['status']);
+
+        $response = $collections->exists();
+        $this->assertEquals(true, $response['result']['exists']);
+
+        $response = $collections->setCollectionName('sample-collection-that-not-exists')->exists();
+        $this->assertEquals(false, $response['result']['exists']);
+    }
+
     public function testCollectionsCluster(): void
     {
         $collections = new Collections($this->client);
