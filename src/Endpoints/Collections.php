@@ -13,6 +13,7 @@ use Qdrant\Endpoints\Collections\Aliases;
 use Qdrant\Endpoints\Collections\Cluster;
 use Qdrant\Endpoints\Collections\Index;
 use Qdrant\Endpoints\Collections\Points;
+use Qdrant\Endpoints\Collections\Shards;
 use Qdrant\Endpoints\Collections\Snapshots;
 use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\Request\CreateCollection;
@@ -133,5 +134,10 @@ class Collections extends AbstractEndpoint
     public function cluster(): Cluster
     {
         return (new Cluster($this->client))->setCollectionName($this->collectionName);
+    }
+
+    public function shards(): Shards
+    {
+        return (new Shards($this->client))->setCollectionName($this->collectionName);
     }
 }
