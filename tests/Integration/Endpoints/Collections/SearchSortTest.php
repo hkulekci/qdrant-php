@@ -34,17 +34,25 @@ class SearchSortTest extends AbstractIntegration
                 'range' => true,
                 'lookup' => false,
                 'is_principal' => true
-            ]))
+            ])),
+            [
+                'wait' => 'true'
+            ]
         );
 
         $this->assertEquals('ok', $response['status']);
-        $this->assertEquals('acknowledged', $response['result']['status']);
+        $this->assertEquals('completed', $response['result']['status']);
 
         $response = $this->getCollections('sample-collection')->points()
-            ->upsert(PointsStruct::createFromArray(self::basicPointDataProvider()[0][0]));
+            ->upsert(
+                PointsStruct::createFromArray(self::basicPointDataProvider()[0][0]),
+                [
+                    'wait' => 'true'
+                ]
+            );
 
         $this->assertEquals('ok', $response['status']);
-        $this->assertEquals('acknowledged', $response['result']['status']);
+        $this->assertEquals('completed', $response['result']['status']);
     }
 
     public static function basicPointDataProvider(): array
@@ -65,7 +73,7 @@ class SearchSortTest extends AbstractIntegration
                         'vector' => new VectorStruct([1, 3, 300], 'image'),
                         'payload' => [
                             'sort' => 2,
-                            'image' => 'red'
+                            'color' => 'red'
                         ]
                     ],
                     [
@@ -73,7 +81,7 @@ class SearchSortTest extends AbstractIntegration
                         'vector' => new VectorStruct([1, 3, 300], 'image'),
                         'payload' => [
                             'sort' => 3,
-                            'image' => 'green'
+                            'color' => 'green'
                         ]
                     ],
                 ]
@@ -81,7 +89,7 @@ class SearchSortTest extends AbstractIntegration
         ];
     }
 
-    public function testSearchPoint(): void
+    public function testScrollAscPoint(): void
     {
         $filter = (new Filter())->addMust(
             new MatchString('color', 'red')
@@ -92,8 +100,25 @@ class SearchSortTest extends AbstractIntegration
 
         $this->assertEquals('ok', $response['status']);
         $this->assertCount(2, $response['result']);
+        $this->assertEquals(1, $response['result']['points'][0]['id']);
     }
 
+    public function testScrollDescPoint(): void
+    {
+        $filter = (new Filter())->addMust(
+            new MatchString('color', 'red')
+        );
+
+        $scroll = (new ScrollRequest())->setFilter($filter)->setOrderBy([
+            'key' => 'sort',
+            'direction' => 'desc'
+        ]);
+        $response = $this->getCollections('sample-collection')->points()->scroll($scroll);
+
+        $this->assertEquals('ok', $response['status']);
+        $this->assertCount(2, $response['result']);
+        $this->assertEquals(2, $response['result']['points'][0]['id']);
+    }
 
     protected function tearDown(): void
     {
