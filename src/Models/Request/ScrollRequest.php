@@ -20,6 +20,8 @@ class ScrollRequest implements RequestModel
 
     protected bool|array|null $withPayload = null;
 
+    protected string|array|null $orderBy = null;
+
     public function setFilter(Filter $filter): static
     {
         $this->filter = $filter;
@@ -37,6 +39,13 @@ class ScrollRequest implements RequestModel
     public function setOffset(int|string $offset): static
     {
         $this->offset = $offset;
+
+        return $this;
+    }
+
+    public function setOrderBy(array|string $orderBy): static
+    {
+        $this->orderBy = $orderBy;
 
         return $this;
     }
@@ -73,6 +82,9 @@ class ScrollRequest implements RequestModel
         }
         if ($this->withPayload) {
             $body['with_payload'] = $this->withPayload;
+        }
+        if ($this->orderBy) {
+            $body['order_by'] = $this->orderBy;
         }
 
         return $body;

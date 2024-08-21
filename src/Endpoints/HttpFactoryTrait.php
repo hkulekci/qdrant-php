@@ -52,6 +52,7 @@ trait HttpFactoryTrait
 
     protected function queryBuild(array $params): string
     {
-        return '?' . http_build_query($params);
+        $paramStr = http_build_query($params);
+        return $paramStr ? '?' . $paramStr : '';
     }
 }
