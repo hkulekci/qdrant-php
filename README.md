@@ -22,6 +22,7 @@ composer require hkulekci/qdrant
 include __DIR__ . "/../vendor/autoload.php";
 include_once 'config.php';
 
+use Qdrant\Qdrant;
 use Qdrant\Config;
 use Qdrant\Http\Builder;
 
