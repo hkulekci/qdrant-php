@@ -15,6 +15,7 @@ use Qdrant\Models\Request\Points\BatchRecommendRequest;
 use Qdrant\Models\Request\Points\RecommendRequest;
 use Qdrant\Models\VectorStruct;
 use Qdrant\Tests\Integration\AbstractIntegration;
+use function var_dump;
 
 class RecommendTest extends AbstractIntegration
 {
@@ -92,6 +93,50 @@ class RecommendTest extends AbstractIntegration
         $response = $this->getCollections('sample-collection')->points()->recommend()->recommend($recommendRequest);
 
         $this->assertEquals('ok', $response['status']);
+    }
+
+    /**
+     * @dataProvider recommendQueryProvider
+     */
+    public function testRecommendPointWithPayload(array $positive, array $negative): void
+    {
+        $recommendRequest = (new RecommendRequest($positive, $negative))
+            ->setLimit(3)
+            ->setUsing('image')
+            ->setFilter(
+                (new Filter())->addMust(
+                    new MatchString('image', 'sample image')
+                )
+            )
+            ->setWithPayload(true);
+
+        $response = $this->getCollections('sample-collection')->points()->recommend()->recommend($recommendRequest);
+
+        $this->assertEquals('ok', $response['status']);
+        $this->assertCount(2, $response['result']);
+        $this->assertArrayHasKey('payload', $response['result'][0]);
+    }
+
+    /**
+     * @dataProvider recommendQueryProvider
+     */
+    public function testRecommendPointWithVector(array $positive, array $negative): void
+    {
+        $recommendRequest = (new RecommendRequest($positive, $negative))
+            ->setLimit(3)
+            ->setUsing('image')
+            ->setFilter(
+                (new Filter())->addMust(
+                    new MatchString('image', 'sample image')
+                )
+            )
+            ->setWithVector(true);
+
+        $response = $this->getCollections('sample-collection')->points()->recommend()->recommend($recommendRequest);
+
+        $this->assertEquals('ok', $response['status']);
+        $this->assertCount(2, $response['result']);
+        $this->assertArrayHasKey('vector', $response['result'][0]);
     }
 
     public function testRecommendWithThreshold(): void
