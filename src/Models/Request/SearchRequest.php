@@ -112,10 +112,10 @@ class SearchRequest
         if ($this->offset) {
             $body['offset'] = $this->offset;
         }
-        if ($this->withVector) {
+        if ($this->withVector !== null) {
             $body['with_vector'] = $this->withVector;
         }
-        if ($this->withPayload) {
+        if ($this->withPayload !== null) {
             $body['with_payload'] = $this->withPayload;
         }
 
