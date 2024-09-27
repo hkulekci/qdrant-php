@@ -35,6 +35,8 @@ class RecommendRequest
     protected ?int $limit = null;
     protected ?int $offset = null;
     protected ?float $scoreThreshold = null;
+    protected bool|array|null $withVector = null;
+    protected bool|array|null $withPayload = null;
 
     public function __construct(protected array $positive, protected array $negative = [])
     {
@@ -96,6 +98,20 @@ class RecommendRequest
         return $this;
     }
 
+    public function setWithPayload($withPayload): static
+    {
+        $this->withPayload = $withPayload;
+
+        return $this;
+    }
+
+    public function setWithVector($withVector): static
+    {
+        $this->withVector = $withVector;
+
+        return $this;
+    }
+
     public function toArray(): array
     {
         $body = [
@@ -123,6 +139,12 @@ class RecommendRequest
         }
         if ($this->offset !== null) {
             $body['offset'] = $this->offset;
+        }
+        if ($this->withVector !== null) {
+            $body['with_vector'] = $this->withVector;
+        }
+        if ($this->withPayload !== null) {
+            $body['with_payload'] = $this->withPayload;
         }
 
         return $body;
