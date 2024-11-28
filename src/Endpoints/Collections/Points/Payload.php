@@ -37,10 +37,11 @@ class Payload extends AbstractEndpoint
      * @param array $points
      * @param array $keys
      * @param Filter|null $filter
+     * @param array $queryParams
      * @return Response
      * @throws InvalidArgumentException
      */
-    public function delete(array $points, array $keys, Filter $filter = null, array $queryParams = []): Response
+    public function delete(array $points, array $keys, ?Filter $filter = null, array $queryParams = []): Response
     {
         $data = [
             'points' => $points,

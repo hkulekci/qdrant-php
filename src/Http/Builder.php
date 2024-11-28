@@ -15,7 +15,7 @@ use Qdrant\Config;
 class Builder
 {
     protected ?ClientInterface $client;
-    public function __construct(ClientInterface $client = null) {
+    public function __construct(?ClientInterface $client = null) {
         $this->client = $client ?: Psr18ClientDiscovery::find();
     }
 

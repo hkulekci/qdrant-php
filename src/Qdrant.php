@@ -20,7 +20,7 @@ class Qdrant implements ClientInterface
     {
     }
 
-    public function collections(string $collectionName = null): Collections
+    public function collections(?string $collectionName = null): Collections
     {
         return (new Collections($this))->setCollectionName($collectionName);
     }

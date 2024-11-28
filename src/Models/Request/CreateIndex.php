@@ -11,7 +11,7 @@ class CreateIndex implements RequestModel
     protected string $fieldName;
     protected ?array $fieldSchema;
 
-    public function __construct(string $fieldName, array|string $fieldSchema = null)
+    public function __construct(string $fieldName, array|string|null $fieldSchema = null)
     {
         if (is_string($fieldSchema)) {
             $this->fieldSchema = [

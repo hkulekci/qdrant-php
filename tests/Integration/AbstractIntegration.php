@@ -40,7 +40,7 @@ abstract class AbstractIntegration extends TestCase
             ->addVector(new VectorParams(3, VectorParams::DISTANCE_COSINE), 'text');
     }
 
-    protected function createCollections($name, CreateCollection $withConfiguration = null): void
+    protected function createCollections($name, ?CreateCollection $withConfiguration = null): void
     {
         $this->collections = new Collections($this->client);
         $response = $this->collections->setCollectionName($name)

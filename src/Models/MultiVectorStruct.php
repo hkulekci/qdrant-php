@@ -29,7 +29,7 @@ class MultiVectorStruct implements VectorStructInterface
         return array_key_first($this->vectors);
     }
 
-    public function toSearchArray(string $name = null): array
+    public function toSearchArray(?string $name = null): array
     {
         // Throw an error if no name is given
         if ($name === null) {

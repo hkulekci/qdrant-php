@@ -37,7 +37,7 @@ class CreateCollection implements RequestModel
 
     protected ?QuantizationConfig $quantizationConfig = null;
 
-    public function addVector(VectorParams $vectorParams, string $name = null): CreateCollection
+    public function addVector(VectorParams $vectorParams, ?string $name = null): CreateCollection
     {
         if ($name !== null) {
             $this->vectors[$name] = $vectorParams->toArray();
