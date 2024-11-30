@@ -68,7 +68,7 @@ class Snapshots extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function recover(bool $wait = null): Response
+    public function recover(?bool $wait = null): Response
     {
         return $this->client->execute(
             $this->createRequest(

@@ -50,7 +50,7 @@ class Points extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function scroll(Filter|ScrollRequest $scrollParams = null, array $queryParams = []): Response
+    public function scroll(Filter|ScrollRequest|null $scrollParams = null, array $queryParams = []): Response
     {
         $body = [];
         if ($scrollParams instanceof Filter) {
@@ -133,7 +133,7 @@ class Points extends AbstractEndpoint
     /**
      * @throws InvalidArgumentException
      */
-    public function count(Filter $filter = null, $exact = false): Response
+    public function count(?Filter $filter = null, $exact = false): Response
     {
         $body = [
             'exact' => $exact,
