@@ -27,7 +27,7 @@ jobs:
 
     steps:
       -   name: Checkout project
-          uses: actions/checkout@v2
+          uses: actions/checkout@v4
 
       -   name: Install and configure PHP
           uses: shivammathur/setup-php@v2
@@ -37,10 +37,10 @@ jobs:
 
       -   name: Get composer cache directory
           id: composer-cache-dir
-          run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+          run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       -   name: Cache dependencies
-          uses: actions/cache@v2
+          uses: actions/cache@v4
           id: composer-cache
           with:
             path: ${{ steps.composer-cache-dir.outputs.dir }}
@@ -55,7 +55,7 @@ jobs:
           run: vendor/bin/phpunit --coverage-clover=coverage.xml
 
       -   name: Upload coverage to Codecov
-          uses: codecov/codecov-action@v3
+          uses: codecov/codecov-action@v4
           with:
             token: ${{ secrets.CODECOV_TOKEN }}
             files: ./coverage.xml
