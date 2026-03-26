@@ -16,17 +16,28 @@ class RecommendRequestTest extends TestCase
 {
     public function testBasicRecommendRequest(): void
     {
-        $request = new RecommendRequest([100, 101], [110]);
+        $request = (new RecommendRequest([100, 101], [110]))
+            ->setLimit(10);
 
         $this->assertEquals([
             'positive' => [100, 101],
             'negative' => [110],
+            'limit' => 10,
         ], $request->toArray());
+    }
+
+    public function testRecommendRequestWithoutLimitThrowsException(): void
+    {
+        $request = new RecommendRequest([100, 101], [110]);
+
+        $this->expectException(InvalidArgumentException::class);
+        $request->toArray();
     }
 
     public function testRecommendRequestWithFilter(): void
     {
         $request = (new RecommendRequest([100, 101], [110]))
+            ->setLimit(10)
             ->setFilter(
                 (new Filter())->addMust((new MatchExcept('foo', ['bar'])))
             );
@@ -43,13 +54,15 @@ class RecommendRequestTest extends TestCase
                         ]
                     ]
                 ]
-            ]
+            ],
+            'limit' => 10,
         ], $request->toArray());
     }
 
     public function testRecommendRequestWithScoreThreshold(): void
     {
         $request = (new RecommendRequest([100, 101], [110]))
+            ->setLimit(10)
             ->setFilter(
                 (new Filter())->addMust((new MatchExcept('foo', ['bar'])))
             )
@@ -68,18 +81,21 @@ class RecommendRequestTest extends TestCase
                         ]
                     ]
                 ]
-            ]
+            ],
+            'limit' => 10,
         ], $request->toArray());
     }
 
     public function testRecommendRequestWithOffset(): void
     {
         $request = (new RecommendRequest([100, 101], [110]))
+            ->setLimit(10)
             ->setOffset(1);
 
         $this->assertEquals([
             'positive' => [100, 101],
             'negative' => [110],
+            'limit' => 10,
             'offset'=> 1,
         ], $request->toArray());
     }
@@ -87,12 +103,14 @@ class RecommendRequestTest extends TestCase
     public function testRecommendRequestWithUsing(): void
     {
         $request = (new RecommendRequest([100, 101], [110]))
+            ->setLimit(10)
             ->setUsing('foo');
 
         $this->assertEquals([
             'positive' => [100, 101],
             'negative' => [110],
             'using'=> 'foo',
+            'limit' => 10,
         ], $request->toArray());
     }
 

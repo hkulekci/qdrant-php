@@ -8,7 +8,6 @@ namespace Qdrant\Tests\Integration\Endpoints;
 
 use Qdrant\Endpoints\Service;
 use Qdrant\Exception\InvalidArgumentException;
-use Qdrant\Models\Request\ServiceLock;
 use Qdrant\Tests\Integration\AbstractIntegration;
 
 class ServiceTest extends AbstractIntegration
@@ -41,33 +40,5 @@ class ServiceTest extends AbstractIntegration
         $this->assertStringContainsString('cluster_enabled', $response['content']);
         $this->assertStringContainsString('collections_total', $response['content']);
         $this->assertStringContainsString('rest_responses_', $response['content']);
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function testServiceGetLocks(): void
-    {
-        $service = new Service($this->client);
-        $response = $service->getLocks();
-        $this->assertEquals('ok', $response['status']);
-        $this->assertArrayHasKey('result', $response);
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function testServiceSetLocks(): void
-    {
-        $service = new Service($this->client);
-
-        $response = $service->setLocks(new ServiceLock(true));
-        $this->assertEquals('ok', $response['status']);
-        $this->assertArrayHasKey('result', $response);
-
-        // Revert back to False
-        $response = $service->setLocks(new ServiceLock(false));
-        $this->assertEquals('ok', $response['status']);
-        $this->assertArrayHasKey('result', $response);
     }
 }

@@ -17,8 +17,8 @@ class BatchRecommendRequestTest extends TestCase
     public function testBasicRecommendRequest(): void
     {
         $request = new BatchRecommendRequest([
-            new RecommendRequest([100, 101], [110]),
-            new RecommendRequest([101, 102], [112]),
+            (new RecommendRequest([100, 101], [110]))->setLimit(10),
+            (new RecommendRequest([101, 102], [112]))->setLimit(10),
         ]);
 
         $this->assertEquals([
@@ -26,10 +26,12 @@ class BatchRecommendRequestTest extends TestCase
                 [
                     'positive' => [100, 101],
                     'negative' => [110],
+                    'limit' => 10,
                 ],
                 [
                     'positive' => [101, 102],
                     'negative' => [112],
+                    'limit' => 10,
                 ]
             ]
         ], $request->toArray());
