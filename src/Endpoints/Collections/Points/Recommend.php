@@ -15,11 +15,15 @@ use Qdrant\Models\Request\Points\GroupRecommendRequest;
 use Qdrant\Models\Request\Points\RecommendRequest;
 use Qdrant\Response;
 
+/**
+ * @deprecated Use Query endpoint instead. The recommend endpoints are deprecated in Qdrant API.
+ */
 class Recommend extends AbstractEndpoint
 {
     /**
      * Retrieves points that are closer to stored positive examples and further from negative examples.
      *
+     * @deprecated Use Query::query() instead.
      * @throws InvalidArgumentException
      */
     public function recommend(RecommendRequest $request, array $queryParams = []): Response
@@ -36,6 +40,7 @@ class Recommend extends AbstractEndpoint
     /**
      * Retrieves points in batches that are closer to stored positive examples and further from negative examples.
      *
+     * @deprecated Use Query::batch() instead.
      * @param BatchRecommendRequest $request
      * @param array $queryParams
      * @return Response
@@ -53,7 +58,8 @@ class Recommend extends AbstractEndpoint
     }
 
     /**
-     * @throws InvalidArgumentException
+     * @deprecated Use Query::groups() instead.
+     * @throws \RuntimeException
      */
     public function groups($request, array $queryParams = []): Response
     {

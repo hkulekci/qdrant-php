@@ -7,13 +7,19 @@
  */
 namespace Qdrant\Models\Request;
 
+use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\Traits\ProtectedPropertyAccessor;
 use Qdrant\Models\VectorStructInterface;
 
+/**
+ * @deprecated Use Qdrant\Models\Request\Points\QueryRequest instead. The search endpoint is deprecated in Qdrant API.
+ */
 class SearchRequest
 {
     use ProtectedPropertyAccessor;
+
+    protected string|array|null $shardKey = null;
 
     protected ?Filter $filter = null;
 
@@ -38,6 +44,13 @@ class SearchRequest
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function setShardKey(string|array $shardKey): static
+    {
+        $this->shardKey = $shardKey;
 
         return $this;
     }
@@ -97,17 +110,22 @@ class SearchRequest
             'vector' => $this->vector->toSearchArray($this->name ?? $this->vector->getName()),
         ];
 
+        if ($this->shardKey !== null) {
+            $body['shard_key'] = $this->shardKey;
+        }
         if ($this->filter !== null && $this->filter->toArray()) {
             $body['filter'] = $this->filter->toArray();
         }
-        if($this->scoreThreshold) {
+        if($this->scoreThreshold !== null) {
             $body['score_threshold'] = $this->scoreThreshold;
         }
         if ($this->params) {
             $body['params'] = $this->params;
         }
-        if ($this->limit) {
+        if ($this->limit !== null) {
             $body['limit'] = $this->limit;
+        } else {
+            throw new InvalidArgumentException('limit is required for search endpoint!');
         }
         if ($this->offset) {
             $body['offset'] = $this->offset;

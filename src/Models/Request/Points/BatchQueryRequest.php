@@ -1,28 +1,23 @@
 <?php
 /**
- * RecommendRequest
+ * BatchQueryRequest
  *
- * @since     Jun 2023
- * @author    Greg Priday <greg@siteorigin.com>
+ * @since     Mar 2026
+ * @author    Haydar KULEKCI <haydarkulekci@gmail.com>
  */
 namespace Qdrant\Models\Request\Points;
 
-use Qdrant\Exception\InvalidArgumentException;
-use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\Traits\ProtectedPropertyAccessor;
 
-/**
- * @deprecated Use Qdrant\Models\Request\Points\BatchQueryRequest instead. The recommend endpoint is deprecated in Qdrant API.
- */
-class BatchRecommendRequest
+class BatchQueryRequest
 {
     use ProtectedPropertyAccessor;
 
-    /** @var RecommendRequest[] $searches */
+    /** @var QueryRequest[] $searches */
     protected array $searches = [];
 
     /**
-     * @param RecommendRequest[] $searches
+     * @param QueryRequest[] $searches
      */
     public function __construct(array $searches)
     {
@@ -31,7 +26,7 @@ class BatchRecommendRequest
         }
     }
 
-    public function addSearch(RecommendRequest $request): static
+    public function addSearch(QueryRequest $request): static
     {
         $this->searches[] = $request;
 

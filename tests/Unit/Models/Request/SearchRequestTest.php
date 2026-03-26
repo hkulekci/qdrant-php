@@ -6,6 +6,7 @@
 namespace Qdrant\Tests\Unit\Models\Request;
 
 use PHPUnit\Framework\TestCase;
+use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\Filter\Condition\MatchString;
 use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\Request\SearchRequest;
@@ -17,17 +18,28 @@ class SearchRequestTest extends TestCase
     {
         $vector = new VectorStruct([0, 300, 1], 'image');
 
-        $searchRequest = new SearchRequest($vector);
+        $searchRequest = (new SearchRequest($vector))->setLimit(10);
 
         $this->assertEquals(
             [
                 'vector' => [
                     'name' => 'image',
                     'vector' => [0, 300, 1]
-                ]
+                ],
+                'limit' => 10
             ],
             $searchRequest->toArray()
         );
+    }
+
+    public function testSearchRequestWithoutLimitThrowsException(): void
+    {
+        $vector = new VectorStruct([0, 300, 1], 'image');
+
+        $searchRequest = new SearchRequest($vector);
+
+        $this->expectException(InvalidArgumentException::class);
+        $searchRequest->toArray();
     }
 
     public function testSearchRequestWithVectorAndLimit(): void
@@ -71,7 +83,7 @@ class SearchRequestTest extends TestCase
     {
         $vector = new VectorStruct([0, 300, 1], 'image');
 
-        $searchRequest = (new SearchRequest($vector))->setWithPayload(true);
+        $searchRequest = (new SearchRequest($vector))->setLimit(10)->setWithPayload(true);
 
         $this->assertEquals(
             [
@@ -79,6 +91,7 @@ class SearchRequestTest extends TestCase
                     'name' => 'image',
                     'vector' => [0, 300, 1]
                 ],
+                'limit' => 10,
                 'with_payload' => true
             ],
             $searchRequest->toArray()
@@ -89,7 +102,7 @@ class SearchRequestTest extends TestCase
     {
         $vector = new VectorStruct([0, 300, 1], 'image');
 
-        $searchRequest = (new SearchRequest($vector))->setWithVector(true);
+        $searchRequest = (new SearchRequest($vector))->setLimit(10)->setWithVector(true);
 
         $this->assertEquals(
             [
@@ -97,6 +110,7 @@ class SearchRequestTest extends TestCase
                     'name' => 'image',
                     'vector' => [0, 300, 1]
                 ],
+                'limit' => 10,
                 'with_vector' => true
             ],
             $searchRequest->toArray()
@@ -107,7 +121,7 @@ class SearchRequestTest extends TestCase
     {
         $vector = new VectorStruct([0, 300, 1], 'image');
 
-        $searchRequest = (new SearchRequest($vector))->setParams([
+        $searchRequest = (new SearchRequest($vector))->setLimit(10)->setParams([
             'test1' => 'param1',
             'test2' => 'param2'
         ]);
@@ -121,7 +135,8 @@ class SearchRequestTest extends TestCase
                 'params' => [
                     'test1' => 'param1',
                     'test2' => 'param2'
-                ]
+                ],
+                'limit' => 10
             ],
             $searchRequest->toArray()
         );
@@ -131,7 +146,7 @@ class SearchRequestTest extends TestCase
     {
         $vector = new VectorStruct([0, 300, 1], 'image');
 
-        $searchRequest = (new SearchRequest($vector))->setFilter(
+        $searchRequest = (new SearchRequest($vector))->setLimit(10)->setFilter(
             (new Filter())->addMust(
                 new MatchString('image', 'sample image')
             )
@@ -147,7 +162,46 @@ class SearchRequestTest extends TestCase
                     'must' => [
                         ['key' => 'image', 'match' => ['value' => 'sample image']]
                     ]
-                ]
+                ],
+                'limit' => 10
+            ],
+            $searchRequest->toArray()
+        );
+    }
+
+    public function testSearchRequestWithShardKey(): void
+    {
+        $vector = new VectorStruct([0, 300, 1], 'image');
+
+        $searchRequest = (new SearchRequest($vector))->setLimit(10)->setShardKey('shard_1');
+
+        $this->assertEquals(
+            [
+                'vector' => [
+                    'name' => 'image',
+                    'vector' => [0, 300, 1]
+                ],
+                'shard_key' => 'shard_1',
+                'limit' => 10
+            ],
+            $searchRequest->toArray()
+        );
+    }
+
+    public function testSearchRequestWithShardKeyArray(): void
+    {
+        $vector = new VectorStruct([0, 300, 1], 'image');
+
+        $searchRequest = (new SearchRequest($vector))->setLimit(10)->setShardKey(['shard_1', 'shard_2']);
+
+        $this->assertEquals(
+            [
+                'vector' => [
+                    'name' => 'image',
+                    'vector' => [0, 300, 1]
+                ],
+                'shard_key' => ['shard_1', 'shard_2'],
+                'limit' => 10
             ],
             $searchRequest->toArray()
         );
