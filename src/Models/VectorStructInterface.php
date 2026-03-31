@@ -7,7 +7,7 @@ interface VectorStructInterface
     /**
      * Get the name of the vector
      *
-     * @return string
+     * @return string|null
      */
     public function getName(): ?string;
 
@@ -17,7 +17,7 @@ interface VectorStructInterface
      * @param string|null $name
      * @return array
      */
-    public function toSearchArray(string $name = null): array;
+    public function toSearchArray(?string $name = null): array;
 
     /**
      * Convert this vector an array for Point and PointsBatch.

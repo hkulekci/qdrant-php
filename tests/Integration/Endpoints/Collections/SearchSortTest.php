@@ -43,6 +43,12 @@ class SearchSortTest extends AbstractIntegration
         $this->assertEquals('ok', $response['status']);
         $this->assertEquals('completed', $response['result']['status']);
 
+        $response = $this->getCollections('sample-collection')->index()->create(
+            new CreateIndex('color', 'keyword'),
+            ['wait' => 'true']
+        );
+        $this->assertEquals('ok', $response['status']);
+
         $response = $this->getCollections('sample-collection')->points()
             ->upsert(
                 PointsStruct::createFromArray(self::basicPointDataProvider()[0][0]),

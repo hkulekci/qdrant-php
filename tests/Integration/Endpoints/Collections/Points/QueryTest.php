@@ -11,6 +11,7 @@ use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\Filter\Condition\MatchString;
 use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\PointsStruct;
+use Qdrant\Models\Request\CreateIndex;
 use Qdrant\Models\Request\Points\BatchQueryRequest;
 use Qdrant\Models\Request\Points\QueryGroupsRequest;
 use Qdrant\Models\Request\Points\QueryRequest;
@@ -31,6 +32,14 @@ class QueryTest extends AbstractIntegration
             ->upsert(PointsStruct::createFromArray(self::basicPointDataProvider()));
         $this->assertEquals('ok', $response['status']);
         $this->assertEquals('acknowledged', $response['result']['status']);
+
+        $indexResponse = $this->getCollections('sample-collection')
+            ->index()->create(new CreateIndex('image', 'keyword'));
+        $this->assertEquals('ok', $indexResponse['status']);
+
+        $indexResponse = $this->getCollections('sample-collection')
+            ->index()->create(new CreateIndex('category', 'keyword'));
+        $this->assertEquals('ok', $indexResponse['status']);
     }
 
     public static function basicPointDataProvider(): array
@@ -74,7 +83,8 @@ class QueryTest extends AbstractIntegration
     public function testQueryWithNearestVector(): void
     {
         $queryRequest = (new QueryRequest())
-            ->setQuery(['nearest' => ['name' => 'image', 'vector' => [1, 2, 300]]])
+            ->setQuery(['nearest' => [1, 2, 300]])
+            ->setUsing('image')
             ->setLimit(3);
 
         $response = $this->getCollections('sample-collection')
@@ -87,7 +97,8 @@ class QueryTest extends AbstractIntegration
     public function testQueryWithFilter(): void
     {
         $queryRequest = (new QueryRequest())
-            ->setQuery(['nearest' => ['name' => 'image', 'vector' => [1, 2, 300]]])
+            ->setQuery(['nearest' => [1, 2, 300]])
+            ->setUsing('image')
             ->setFilter(
                 (new Filter())->addMust(
                     new MatchString('image', 'sample image')
@@ -106,7 +117,8 @@ class QueryTest extends AbstractIntegration
     public function testQueryWithPayload(): void
     {
         $queryRequest = (new QueryRequest())
-            ->setQuery(['nearest' => ['name' => 'image', 'vector' => [1, 2, 300]]])
+            ->setQuery(['nearest' => [1, 2, 300]])
+            ->setUsing('image')
             ->setWithPayload(true)
             ->setLimit(3);
 
@@ -121,7 +133,8 @@ class QueryTest extends AbstractIntegration
     public function testQueryWithVector(): void
     {
         $queryRequest = (new QueryRequest())
-            ->setQuery(['nearest' => ['name' => 'image', 'vector' => [1, 2, 300]]])
+            ->setQuery(['nearest' => [1, 2, 300]])
+            ->setUsing('image')
             ->setWithVector(true)
             ->setLimit(3);
 
@@ -136,7 +149,8 @@ class QueryTest extends AbstractIntegration
     public function testQueryWithScoreThreshold(): void
     {
         $queryRequest = (new QueryRequest())
-            ->setQuery(['nearest' => ['name' => 'image', 'vector' => [1, 2, 300]]])
+            ->setQuery(['nearest' => [1, 2, 300]])
+            ->setUsing('image')
             ->setScoreThreshold(0.99)
             ->setLimit(10);
 
@@ -146,7 +160,8 @@ class QueryTest extends AbstractIntegration
         $this->assertEquals('ok', $response['status']);
 
         $queryRequestNoThreshold = (new QueryRequest())
-            ->setQuery(['nearest' => ['name' => 'image', 'vector' => [1, 2, 300]]])
+            ->setQuery(['nearest' => [1, 2, 300]])
+            ->setUsing('image')
             ->setLimit(10);
 
         $responseNoThreshold = $this->getCollections('sample-collection')
@@ -161,7 +176,8 @@ class QueryTest extends AbstractIntegration
     public function testQueryWithOffset(): void
     {
         $queryRequest = (new QueryRequest())
-            ->setQuery(['nearest' => ['name' => 'image', 'vector' => [1, 2, 300]]])
+            ->setQuery(['nearest' => [1, 2, 300]])
+            ->setUsing('image')
             ->setLimit(2)
             ->setOffset(0);
 
@@ -171,7 +187,8 @@ class QueryTest extends AbstractIntegration
         $this->assertEquals('ok', $response['status']);
 
         $queryRequestOffset = (new QueryRequest())
-            ->setQuery(['nearest' => ['name' => 'image', 'vector' => [1, 2, 300]]])
+            ->setQuery(['nearest' => [1, 2, 300]])
+            ->setUsing('image')
             ->setLimit(2)
             ->setOffset(2);
 
@@ -184,7 +201,8 @@ class QueryTest extends AbstractIntegration
     public function testQueryWithParams(): void
     {
         $queryRequest = (new QueryRequest())
-            ->setQuery(['nearest' => ['name' => 'image', 'vector' => [1, 2, 300]]])
+            ->setQuery(['nearest' => [1, 2, 300]])
+            ->setUsing('image')
             ->setParams([
                 'hnsw_ef' => 128,
                 'exact' => false,
@@ -237,7 +255,8 @@ class QueryTest extends AbstractIntegration
     public function testQueryWithQueryParams(): void
     {
         $queryRequest = (new QueryRequest())
-            ->setQuery(['nearest' => ['name' => 'image', 'vector' => [1, 2, 300]]])
+            ->setQuery(['nearest' => [1, 2, 300]])
+            ->setUsing('image')
             ->setLimit(3);
 
         $response = $this->getCollections('sample-collection')
@@ -249,11 +268,13 @@ class QueryTest extends AbstractIntegration
     public function testBatchQuery(): void
     {
         $request1 = (new QueryRequest())
-            ->setQuery(['nearest' => ['name' => 'image', 'vector' => [1, 2, 300]]])
+            ->setQuery(['nearest' => [1, 2, 300]])
+            ->setUsing('image')
             ->setLimit(3);
 
         $request2 = (new QueryRequest())
-            ->setQuery(['nearest' => ['name' => 'image', 'vector' => [1, 3, 400]]])
+            ->setQuery(['nearest' => [1, 3, 400]])
+            ->setUsing('image')
             ->setLimit(2);
 
         $batchRequest = new BatchQueryRequest([$request1, $request2]);
@@ -268,7 +289,8 @@ class QueryTest extends AbstractIntegration
     public function testBatchQueryWithQueryParams(): void
     {
         $request1 = (new QueryRequest())
-            ->setQuery(['nearest' => ['name' => 'image', 'vector' => [1, 2, 300]]])
+            ->setQuery(['nearest' => [1, 2, 300]])
+            ->setUsing('image')
             ->setLimit(3);
 
         $batchRequest = new BatchQueryRequest([$request1]);
@@ -282,7 +304,8 @@ class QueryTest extends AbstractIntegration
     public function testQueryGroups(): void
     {
         $groupsRequest = (new QueryGroupsRequest('category'))
-            ->setQuery(['nearest' => ['name' => 'image', 'vector' => [1, 2, 300]]])
+            ->setQuery(['nearest' => [1, 2, 300]])
+            ->setUsing('image')
             ->setGroupSize(2)
             ->setLimit(5);
 
@@ -296,7 +319,8 @@ class QueryTest extends AbstractIntegration
     public function testQueryGroupsWithPayload(): void
     {
         $groupsRequest = (new QueryGroupsRequest('category'))
-            ->setQuery(['nearest' => ['name' => 'image', 'vector' => [1, 2, 300]]])
+            ->setQuery(['nearest' => [1, 2, 300]])
+            ->setUsing('image')
             ->setGroupSize(2)
             ->setLimit(5)
             ->setWithPayload(true);
@@ -312,7 +336,8 @@ class QueryTest extends AbstractIntegration
     public function testQueryGroupsWithFilter(): void
     {
         $groupsRequest = (new QueryGroupsRequest('category'))
-            ->setQuery(['nearest' => ['name' => 'image', 'vector' => [1, 2, 300]]])
+            ->setQuery(['nearest' => [1, 2, 300]])
+            ->setUsing('image')
             ->setFilter(
                 (new Filter())->addMust(
                     new MatchString('image', 'sample image')
@@ -331,7 +356,8 @@ class QueryTest extends AbstractIntegration
     public function testQueryGroupsWithQueryParams(): void
     {
         $groupsRequest = (new QueryGroupsRequest('category'))
-            ->setQuery(['nearest' => ['name' => 'image', 'vector' => [1, 2, 300]]])
+            ->setQuery(['nearest' => [1, 2, 300]])
+            ->setUsing('image')
             ->setGroupSize(2)
             ->setLimit(5);
 

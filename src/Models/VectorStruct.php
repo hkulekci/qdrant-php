@@ -26,7 +26,7 @@ class VectorStruct implements VectorStructInterface
         return $this->name;
     }
 
-    public function toSearchArray(string $name = null): array
+    public function toSearchArray(?string $name = null): array
     {
         if ($this->isNamed()) {
             return [

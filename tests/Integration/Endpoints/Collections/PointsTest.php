@@ -12,6 +12,7 @@ use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\PointsStruct;
 use Qdrant\Models\PointStruct;
 use Qdrant\Models\Request\CreateCollection;
+use Qdrant\Models\Request\CreateIndex;
 use Qdrant\Models\Request\PointsBatch;
 use Qdrant\Models\Request\ScrollRequest;
 use Qdrant\Models\Request\VectorParams;
@@ -130,6 +131,8 @@ class PointsTest extends AbstractIntegration
     public function testScrollPoint(array $points): void
     {
         $this->createCollections('sample-collection');
+        $this->getCollections('sample-collection')
+            ->index()->create(new CreateIndex('image', 'keyword'));
         $response = $this->getCollections('sample-collection')->points()
             ->upsert(PointsStruct::createFromArray($points));
         $this->assertEquals('ok', $response['status']);
@@ -158,6 +161,8 @@ class PointsTest extends AbstractIntegration
     public function testDeleteByFilterPoint(array $points): void
     {
         $this->createCollections('sample-collection');
+        $this->getCollections('sample-collection')
+            ->index()->create(new CreateIndex('image', 'keyword'));
         $response = $this->getCollections('sample-collection')->points()
             ->upsert(PointsStruct::createFromArray($points));
         $this->assertEquals('ok', $response['status']);

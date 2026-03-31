@@ -11,11 +11,11 @@ use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\Filter\Condition\MatchString;
 use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\PointsStruct;
+use Qdrant\Models\Request\CreateIndex;
 use Qdrant\Models\Request\Points\BatchRecommendRequest;
 use Qdrant\Models\Request\Points\RecommendRequest;
 use Qdrant\Models\VectorStruct;
 use Qdrant\Tests\Integration\AbstractIntegration;
-use function var_dump;
 
 class RecommendTest extends AbstractIntegration
 {
@@ -31,6 +31,10 @@ class RecommendTest extends AbstractIntegration
             ->upsert(PointsStruct::createFromArray(self::basicPointDataProvider()[0][0]));
         $this->assertEquals('ok', $response['status']);
         $this->assertEquals('acknowledged', $response['result']['status']);
+
+        $indexResponse = $this->getCollections('sample-collection')
+            ->index()->create(new CreateIndex('image', 'keyword'));
+        $this->assertEquals('ok', $indexResponse['status']);
     }
 
     public static function basicPointDataProvider(): array

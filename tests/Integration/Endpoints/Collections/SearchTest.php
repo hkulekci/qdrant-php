@@ -11,6 +11,7 @@ use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\Filter\Condition\MatchString;
 use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\PointsStruct;
+use Qdrant\Models\Request\CreateIndex;
 use Qdrant\Models\Request\SearchRequest;
 use Qdrant\Models\VectorStruct;
 use Qdrant\Tests\Integration\AbstractIntegration;
@@ -29,6 +30,10 @@ class SearchTest extends AbstractIntegration
             ->upsert(PointsStruct::createFromArray(self::basicPointDataProvider()[0][0]));
         $this->assertEquals('ok', $response['status']);
         $this->assertEquals('acknowledged', $response['result']['status']);
+
+        $indexResponse = $this->getCollections('sample-collection')
+            ->index()->create(new CreateIndex('image', 'keyword'));
+        $this->assertEquals('ok', $indexResponse['status']);
     }
 
     public static function basicPointDataProvider(): array

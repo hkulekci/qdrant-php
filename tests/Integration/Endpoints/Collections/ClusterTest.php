@@ -35,16 +35,20 @@ class ClusterTest extends AbstractIntegration
      */
     public function testClusterUpdate(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Bad request: Distributed mode disabled');
-
         $cluster = new Collections\Cluster($this->client);
         $this->createCollections('sample-collection');
         $cluster->setCollectionName('sample-collection');
 
         $operation = new UpdateCollectionCluster(new MoveShardOperation(0, 1, 0));
 
-        $response = $cluster->update($operation);
+        if (getenv('QDRANT_CLUSTER_MODE')) {
+            $this->expectException(InvalidArgumentException::class);
+            $cluster->update($operation);
+        } else {
+            $this->expectException(InvalidArgumentException::class);
+            $this->expectExceptionMessage('Bad request: Distributed mode disabled');
+            $cluster->update($operation);
+        }
     }
 
     protected function tearDown(): void

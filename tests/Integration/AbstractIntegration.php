@@ -25,7 +25,15 @@ abstract class AbstractIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $config = (new Config('127.0.0.1'));
+
+        $qdrantUrl = getenv('QDRANT_URL') ?: '127.0.0.1';
+        $qdrantApiKey = getenv('QDRANT_API_KEY') ?: '';
+
+        $config = new Config($qdrantUrl);
+        if ($qdrantApiKey) {
+            $config->setApiKey($qdrantApiKey);
+        }
+
         $transform = (new Builder())->build($config);
         $this->client = new Qdrant($transform);
     }
@@ -40,7 +48,7 @@ abstract class AbstractIntegration extends TestCase
             ->addVector(new VectorParams(3, VectorParams::DISTANCE_COSINE), 'text');
     }
 
-    protected function createCollections($name, CreateCollection $withConfiguration = null): void
+    protected function createCollections($name, ?CreateCollection $withConfiguration = null): void
     {
         $this->collections = new Collections($this->client);
         $response = $this->collections->setCollectionName($name)

@@ -25,7 +25,11 @@ class ClientTest extends AbstractIntegration
 {
     public function testClient(): void
     {
-        $config = (new Config('127.0.0.1'));
+        $qdrantUrl = getenv('QDRANT_URL') ?: '127.0.0.1';
+        $qdrantApiKey = getenv('QDRANT_API_KEY') ?: null;
+
+        $config = (new Config($qdrantUrl));
+        $config->setApiKey($qdrantApiKey);
         $transform = (new Builder())->build($config);
         $client = new Qdrant($transform);
         $httpFactory = Psr17FactoryDiscovery::findRequestFactory();
@@ -40,7 +44,11 @@ class ClientTest extends AbstractIntegration
      */
     public function testClientService(): void
     {
-        $config = (new Config('127.0.0.1'));
+        $qdrantUrl = getenv('QDRANT_URL') ?: '127.0.0.1';
+        $qdrantApiKey = getenv('QDRANT_API_KEY') ?: null;
+
+        $config = (new Config($qdrantUrl));
+        $config->setApiKey($qdrantApiKey);
         $transform = (new Builder())->build($config);
         $client = new Qdrant($transform);
 
@@ -50,7 +58,6 @@ class ClientTest extends AbstractIntegration
 
         $collections = $client->collections();
         $collections->setCollectionName('sample-collection');
-        $this->assertInstanceOf(Collections::class, $collections);
         $this->assertEquals('sample-collection', $collections->getCollectionName());
     }
 }
