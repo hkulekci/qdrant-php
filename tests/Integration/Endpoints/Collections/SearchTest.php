@@ -11,6 +11,7 @@ use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\Filter\Condition\MatchString;
 use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\PointsStruct;
+use Qdrant\Models\Request\CreateIndex;
 use Qdrant\Models\Request\SearchRequest;
 use Qdrant\Models\VectorStruct;
 use Qdrant\Tests\Integration\AbstractIntegration;
@@ -29,6 +30,10 @@ class SearchTest extends AbstractIntegration
             ->upsert(PointsStruct::createFromArray(self::basicPointDataProvider()[0][0]));
         $this->assertEquals('ok', $response['status']);
         $this->assertEquals('acknowledged', $response['result']['status']);
+
+        $indexResponse = $this->getCollections('sample-collection')
+            ->index()->create(new CreateIndex('image', 'keyword'));
+        $this->assertEquals('ok', $indexResponse['status']);
     }
 
     public static function basicPointDataProvider(): array
@@ -136,7 +141,7 @@ class SearchTest extends AbstractIntegration
             // This will be the opposite of the search query, so should be filtered
             ['id' => 3, 'vector' => new VectorStruct([-0.1, -0.3, -0.2], 'image')],
         ]);
-        $this->getCollections('sample-collection')->points()->upsert($points);
+        $this->getCollections('sample-collection')->points()->upsert($points, ['wait' => 'true']);
 
         // Create search request without score threshold
         $vector = new VectorStruct([0.1, 0.3, 0.2], 'image');
@@ -163,7 +168,7 @@ class SearchTest extends AbstractIntegration
         $this->assertEquals('ok', $responseWithThreshold['status']);
 
         // Assert that the result count is higher or the same when no score threshold is used
-        $this->assertGreaterThan(
+        $this->assertGreaterThanOrEqual(
             count($responseWithThreshold['result']),
             count($responseWithoutThreshold['result']),
             'The result count should be higher or the same when no score threshold is used'

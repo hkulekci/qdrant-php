@@ -11,6 +11,9 @@ use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\Traits\ProtectedPropertyAccessor;
 
+/**
+ * @deprecated Use Qdrant\Models\Request\Points\QueryRequest instead. The recommend endpoint is deprecated in Qdrant API.
+ */
 class RecommendRequest
 {
     use ProtectedPropertyAccessor;
@@ -133,6 +136,9 @@ class RecommendRequest
         }
         if ($this->limit !== null) {
             $body['limit'] = $this->limit;
+        } else {
+            // TODO: move this to constructor
+            throw new InvalidArgumentException('limit is required for recommend endpoint!');
         }
         if ($this->strategy !== null) {
             $body['strategy'] = $this->strategy;

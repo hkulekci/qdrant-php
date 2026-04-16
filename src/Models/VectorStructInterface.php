@@ -7,7 +7,7 @@ interface VectorStructInterface
     /**
      * Get the name of the vector
      *
-     * @return string
+     * @return string|null
      */
     public function getName(): ?string;
 

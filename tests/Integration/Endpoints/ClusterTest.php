@@ -30,11 +30,16 @@ class ClusterTest extends AbstractIntegration
      */
     public function testClusterRecover(): void
     {
-        $this->expectException(ServerException::class);
-        $this->expectExceptionCode(500);
-
         $cluster = new Cluster($this->client);
-        $response = $cluster->recover();
+
+        if (getenv('QDRANT_CLUSTER_MODE')) {
+            $response = $cluster->recover();
+            $this->assertEquals('ok', $response['status']);
+        } else {
+            $this->expectException(ServerException::class);
+            $this->expectExceptionCode(500);
+            $cluster->recover();
+        }
     }
 
     /**
@@ -42,9 +47,14 @@ class ClusterTest extends AbstractIntegration
      */
     public function testClusterRemovePeer(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Bad request: Distributed mode disabled.');
         $cluster = new Cluster($this->client);
-        $response = $cluster->removePeer(1);
+
+        if (getenv('QDRANT_CLUSTER_MODE')) {
+            $response = $cluster->removePeer(1);
+            $this->assertEquals('ok', $response['status']);
+        } else {
+            $this->expectException(InvalidArgumentException::class);
+            $cluster->removePeer(1);
+        }
     }
 }

@@ -41,9 +41,10 @@ class Service extends AbstractEndpoint
     }
 
     /**
-     * # Delete storage snapshot
-     * Delete snapshot of the whole storage
+     * # Set lock options
+     * Set lock options for the storage
      *
+     * @deprecated This endpoint has been removed from the Qdrant API.
      * @throws InvalidArgumentException
      */
     public function setLocks(ServiceLock $body): Response
@@ -54,9 +55,10 @@ class Service extends AbstractEndpoint
     }
 
     /**
-     * # Download storage snapshot
-     * Download specified snapshot of the whole storage as a file
+     * # Get lock options
+     * Get lock options for the storage
      *
+     * @deprecated This endpoint has been removed from the Qdrant API.
      * @throws InvalidArgumentException
      */
     public function getLocks(): Response

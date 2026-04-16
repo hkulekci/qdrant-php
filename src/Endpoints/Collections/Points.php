@@ -12,6 +12,7 @@ namespace Qdrant\Endpoints\Collections;
 
 use Qdrant\Endpoints\AbstractEndpoint;
 use Qdrant\Endpoints\Collections\Points\Payload;
+use Qdrant\Endpoints\Collections\Points\Query;
 use Qdrant\Endpoints\Collections\Points\Recommend;
 use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\Filter\Filter;
@@ -28,12 +29,22 @@ class Points extends AbstractEndpoint
         return (new Payload($this->client))->setCollectionName($this->collectionName);
     }
 
+    /**
+     * @deprecated Use query() endpoint instead. The recommend endpoint is deprecated in Qdrant API.
+     */
     public function recommend(): Recommend
     {
         return (new Recommend($this->client))->setCollectionName($this->collectionName);
     }
 
+    public function query(): Query
+    {
+        return (new Query($this->client))->setCollectionName($this->collectionName);
+    }
+
     /**
+     * @deprecated Use query() endpoint instead. The search endpoint is deprecated in Qdrant API.
+     *
      * @throws InvalidArgumentException
      */
     public function search(SearchRequest $searchParams, array $queryParams = []): Response

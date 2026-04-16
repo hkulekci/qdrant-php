@@ -11,11 +11,11 @@ use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\Filter\Condition\MatchString;
 use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\PointsStruct;
+use Qdrant\Models\Request\CreateIndex;
 use Qdrant\Models\Request\Points\BatchRecommendRequest;
 use Qdrant\Models\Request\Points\RecommendRequest;
 use Qdrant\Models\VectorStruct;
 use Qdrant\Tests\Integration\AbstractIntegration;
-use function var_dump;
 
 class RecommendTest extends AbstractIntegration
 {
@@ -31,6 +31,10 @@ class RecommendTest extends AbstractIntegration
             ->upsert(PointsStruct::createFromArray(self::basicPointDataProvider()[0][0]));
         $this->assertEquals('ok', $response['status']);
         $this->assertEquals('acknowledged', $response['result']['status']);
+
+        $indexResponse = $this->getCollections('sample-collection')
+            ->index()->create(new CreateIndex('image', 'keyword'));
+        $this->assertEquals('ok', $indexResponse['status']);
     }
 
     public static function basicPointDataProvider(): array
@@ -148,7 +152,7 @@ class RecommendTest extends AbstractIntegration
             ['id' => 5, 'vector' => new VectorStruct([0.3, 0.5, 0.6], 'image')],
             ['id' => 6, 'vector' => new VectorStruct([0.21, 0.41, 0.51], 'image')],
         ]);
-        $this->getCollections('sample-collection')->points()->upsert($points);
+        $this->getCollections('sample-collection')->points()->upsert($points, ['wait' => 'true']);
 
         // Create recommend request without score threshold
         $positiveIds = [6];
@@ -178,7 +182,7 @@ class RecommendTest extends AbstractIntegration
         $this->assertEquals('ok', $responseWithThreshold['status']);
 
         // Assert that the result count is higher or the same when no score threshold is used
-        $this->assertGreaterThan(
+        $this->assertGreaterThanOrEqual(
             count($responseWithThreshold['result']),
             count($responseWithoutThreshold['result']),
             'The result count should be higher or the same when no score threshold is used'

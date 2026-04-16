@@ -14,6 +14,7 @@ use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\Filter\Nested;
 use Qdrant\Models\PointsStruct;
 use Qdrant\Models\Request\CreateCollection;
+use Qdrant\Models\Request\CreateIndex;
 use Qdrant\Models\Request\VectorParams;
 use Qdrant\Models\VectorStruct;
 use Qdrant\Tests\Integration\AbstractIntegration;
@@ -226,6 +227,11 @@ class PayloadTest extends AbstractIntegration
         $this->assertEquals('ok', $response['status'], 'Collection Could Not Created!');
         $points = $collections->setCollectionName('sample-collection')->points();
         $points->upsert(PointsStruct::createFromArray($pointsArray));
+
+        $collections->setCollectionName('sample-collection')
+            ->index()->create(new CreateIndex('diet[].food', 'keyword'));
+        $collections->setCollectionName('sample-collection')
+            ->index()->create(new CreateIndex('diet[].likes', 'bool'));
 
         $response = $points->scroll(
             (new Filter())->addMust(

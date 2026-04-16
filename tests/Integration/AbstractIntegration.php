@@ -25,7 +25,15 @@ abstract class AbstractIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $config = (new Config('127.0.0.1'));
+
+        $qdrantUrl = getenv('QDRANT_URL') ?: '127.0.0.1';
+        $qdrantApiKey = getenv('QDRANT_API_KEY') ?: '';
+
+        $config = new Config($qdrantUrl);
+        if ($qdrantApiKey) {
+            $config->setApiKey($qdrantApiKey);
+        }
+
         $transform = (new Builder())->build($config);
         $this->client = new Qdrant($transform);
     }
