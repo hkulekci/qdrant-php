@@ -373,4 +373,48 @@ class QueryGroupsRequestTest extends TestCase
         $this->assertEquals(['nearest' => [1, 2, 3]], $request->getQuery());
         $this->assertEquals(5, $request->getGroupSize());
     }
+
+    public function testSetWithVectorFalse(): void
+    {
+        $request = (new QueryGroupsRequest('category'))
+            ->setWithVector(false);
+
+        $result = $request->toArray();
+
+        $this->assertArrayHasKey('with_vector', $result);
+        $this->assertFalse($result['with_vector']);
+    }
+
+    public function testPropertyAccessorForAllProperties(): void
+    {
+        $filter = (new Filter())->addMust(new MatchString('city', 'Berlin'));
+        $request = (new QueryGroupsRequest('category'))
+            ->setShardKey('shard_1')
+            ->setPrefetch([['query' => ['nearest' => [1, 2, 3]], 'limit' => 100]])
+            ->setQuery(['nearest' => [0.1, 0.2, 0.3]])
+            ->setUsing('image')
+            ->setFilter($filter)
+            ->setParams(['hnsw_ef' => 128])
+            ->setScoreThreshold(0.5)
+            ->setGroupSize(5)
+            ->setLimit(10)
+            ->setWithPayload(true)
+            ->setWithVector(true)
+            ->setLookupFrom(['collection' => 'other', 'vector' => 'name'])
+            ->setWithLookup('lookup_collection');
+
+        $this->assertEquals('shard_1', $request->getShardKey());
+        $this->assertCount(1, $request->getPrefetch());
+        $this->assertEquals(['nearest' => [0.1, 0.2, 0.3]], $request->getQuery());
+        $this->assertEquals('image', $request->getUsing());
+        $this->assertSame($filter, $request->getFilter());
+        $this->assertEquals(['hnsw_ef' => 128], $request->getParams());
+        $this->assertEquals(0.5, $request->getScoreThreshold());
+        $this->assertEquals(5, $request->getGroupSize());
+        $this->assertEquals(10, $request->getLimit());
+        $this->assertTrue($request->getWithPayload());
+        $this->assertTrue($request->getWithVector());
+        $this->assertEquals(['collection' => 'other', 'vector' => 'name'], $request->getLookupFrom());
+        $this->assertEquals('lookup_collection', $request->getWithLookup());
+    }
 }
