@@ -152,7 +152,7 @@ class RecommendTest extends AbstractIntegration
             ['id' => 5, 'vector' => new VectorStruct([0.3, 0.5, 0.6], 'image')],
             ['id' => 6, 'vector' => new VectorStruct([0.21, 0.41, 0.51], 'image')],
         ]);
-        $this->getCollections('sample-collection')->points()->upsert($points);
+        $this->getCollections('sample-collection')->points()->upsert($points, ['wait' => 'true']);
 
         // Create recommend request without score threshold
         $positiveIds = [6];
@@ -182,7 +182,7 @@ class RecommendTest extends AbstractIntegration
         $this->assertEquals('ok', $responseWithThreshold['status']);
 
         // Assert that the result count is higher or the same when no score threshold is used
-        $this->assertGreaterThan(
+        $this->assertGreaterThanOrEqual(
             count($responseWithThreshold['result']),
             count($responseWithoutThreshold['result']),
             'The result count should be higher or the same when no score threshold is used'

@@ -141,7 +141,7 @@ class SearchTest extends AbstractIntegration
             // This will be the opposite of the search query, so should be filtered
             ['id' => 3, 'vector' => new VectorStruct([-0.1, -0.3, -0.2], 'image')],
         ]);
-        $this->getCollections('sample-collection')->points()->upsert($points);
+        $this->getCollections('sample-collection')->points()->upsert($points, ['wait' => 'true']);
 
         // Create search request without score threshold
         $vector = new VectorStruct([0.1, 0.3, 0.2], 'image');
@@ -168,7 +168,7 @@ class SearchTest extends AbstractIntegration
         $this->assertEquals('ok', $responseWithThreshold['status']);
 
         // Assert that the result count is higher or the same when no score threshold is used
-        $this->assertGreaterThan(
+        $this->assertGreaterThanOrEqual(
             count($responseWithThreshold['result']),
             count($responseWithoutThreshold['result']),
             'The result count should be higher or the same when no score threshold is used'

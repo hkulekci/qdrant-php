@@ -134,7 +134,7 @@ class PointsTest extends AbstractIntegration
         $this->getCollections('sample-collection')
             ->index()->create(new CreateIndex('image', 'keyword'));
         $response = $this->getCollections('sample-collection')->points()
-            ->upsert(PointsStruct::createFromArray($points));
+            ->upsert(PointsStruct::createFromArray($points), ['wait' => 'true']);
         $this->assertEquals('ok', $response['status']);
 
         $filter = (new Filter())->addMust(new MatchString('image', 'sample image'));
@@ -164,7 +164,7 @@ class PointsTest extends AbstractIntegration
         $this->getCollections('sample-collection')
             ->index()->create(new CreateIndex('image', 'keyword'));
         $response = $this->getCollections('sample-collection')->points()
-            ->upsert(PointsStruct::createFromArray($points));
+            ->upsert(PointsStruct::createFromArray($points), ['wait' => 'true']);
         $this->assertEquals('ok', $response['status']);
 
         $filter = (new Filter())->addMust(new MatchString('image', 'sample image'));
