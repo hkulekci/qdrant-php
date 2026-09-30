@@ -87,53 +87,140 @@ You can check for more parameters : https://qdrant.github.io/qdrant/redoc/index.
 
 ### Search on Points
 
-Search with a filter :
+Use the universal Query API (`points()->query()`). The legacy `search()` and `recommend()` endpoints are
+deprecated and have been removed from the Qdrant OpenAPI specification since Qdrant 1.19.
 
 ```php
 use Qdrant\Models\Filter\Condition\MatchString;
 use Qdrant\Models\Filter\Filter;
-use Qdrant\Models\Request\SearchRequest;
-use Qdrant\Models\VectorStruct;
+use Qdrant\Models\Request\Points\QueryRequest;
 
-$searchRequest = (new SearchRequest(new VectorStruct($embedding, 'elev_pitch')))
-    ->setFilter(
-        (new Filter())->addMust(
-            new MatchString('name', 'Palm')
-        )
-    )
+$request = (new QueryRequest())
+    ->setQuery(['nearest' => $embedding])
+    ->setUsing('content')
+    ->setFilter((new Filter())->addMust(new MatchString('name', 'Palm')))
     ->setLimit(10)
-    ->setParams([
-        'hnsw_ef' => 128,
-        'exact' => false,
-    ])
+    ->setParams(['hnsw_ef' => 128, 'exact' => false])
     ->setWithPayload(true);
 
-$response = $client->collections('contents')->points()->search($searchRequest);
+$response = $client->collections('contents')->points()->query()->query($request);
+
+foreach ($response['result']['points'] as $item) {
+    echo $item['score'] . ';' . $item['payload']['id'] . PHP_EOL;
+}
 ```
 
-### Search on Points with OpenAI Embeddings
+Hybrid search with prefetch and fusion (weighted RRF, MMR, formula and relevance feedback queries are passed the same way):
 
 ```php
-$openai = OpenAI::client(OPENAI_API_KEY);
-
-$query = 'lorem ipsum dolor sit amed';
-$response = $openai->embeddings()->create([
-    'model' => 'text-embedding-ada-002',
-    'input' => $query,
-]);
-$embedding = array_values($response->embeddings[0]->embedding);
-
-$searchRequest = (new SearchRequest(new VectorStruct($embedding, 'content')))
-    ->setLimit(10)
-    ->setParams([
-        'hnsw_ef' => 128,
-        'exact' => false,
+$request = (new QueryRequest())
+    ->setPrefetch([
+        ['query' => $denseEmbedding, 'using' => 'dense', 'limit' => 50],
+        ['query' => ['indices' => [1, 42], 'values' => [0.3, 0.7]], 'using' => 'keywords', 'limit' => 50],
     ])
-    ->setWithPayload(true);
+    ->setQuery(['rrf' => ['k' => 60, 'weights' => [1.0, 0.5]]])
+    ->setLimit(10);
+```
 
-$response = $client->collections('contents')->points()->search($searchRequest);
+### Quantization (TurboQuant, Scalar, Product, Binary)
 
-foreach ($response['result'] as $item) {
-    echo $item['score'] . ';' . $item['payload']['id'] . ';' . $item['payload']['meta_data'] . PHP_EOL;
-}
+TurboQuant (Qdrant 1.18+) gives up to 8x vector compression with high recall:
+
+```php
+use Qdrant\Models\Request\CollectionConfig\Memory;
+use Qdrant\Models\Request\CollectionConfig\TurboQuantization;
+
+$createCollection = (new CreateCollection())
+    ->addVector(new VectorParams(1536, VectorParams::DISTANCE_COSINE), 'content')
+    ->setQuantizationConfig(new TurboQuantization(TurboQuantization::BITS_4, Memory::PINNED));
+```
+
+Since Qdrant 1.19 vectors can be stored only as TurboQuant 4-bit, without keeping the original vectors:
+
+```php
+$createCollection->addVector(
+    (new VectorParams(1536, VectorParams::DISTANCE_COSINE))->setDatatype(VectorParams::DATATYPE_TURBO4),
+    'content'
+);
+```
+
+Other quantization methods are available as `ScalarQuantization`, `ProductQuantization` and `BinaryQuantization`
+(with `encoding` / `query_encoding` for 1.5-bit, 2-bit and asymmetric binary quantization). Use
+`DisabledQuantization` with `UpdateCollection` to turn quantization off.
+
+### Memory Tiers
+
+Since Qdrant 1.19 the `memory` option (`cold`, `cached`, `pinned`) replaces the `on_disk` and `always_ram` flags
+for each collection component:
+
+```php
+use Qdrant\Models\Request\CollectionConfig\HnswConfig;
+
+$createCollection = (new CreateCollection())
+    ->addVector((new VectorParams(1536, VectorParams::DISTANCE_COSINE))->setMemory(Memory::COLD), 'content')
+    ->setHnswConfig((new HnswConfig())->setMemory(Memory::CACHED))
+    ->setQuantizationConfig(new TurboQuantization(memory: Memory::PINNED))
+    ->setPayloadMemory(Memory::COLD);
+```
+
+### Sparse Vectors and Named Vectors
+
+```php
+use Qdrant\Models\Request\CreateVector;
+use Qdrant\Models\Request\SparseVectorParams;
+
+$createCollection->addSparseVector('keywords', (new SparseVectorParams())->setModifier(SparseVectorParams::MODIFIER_IDF));
+
+// Add or remove named vectors on an existing collection (Qdrant 1.18+)
+$client->collections('contents')->vectors()->create('summary', CreateVector::dense(384, VectorParams::DISTANCE_COSINE));
+$client->collections('contents')->vectors()->create('bm25', CreateVector::sparse(SparseVectorParams::MODIFIER_IDF));
+$client->collections('contents')->vectors()->delete('summary');
+```
+
+### Update Modes and Conditional Updates
+
+```php
+use Qdrant\Models\Filter\Condition\MatchInt;
+use Qdrant\Models\Request\UpdateMode;
+
+// Only insert points that do not exist yet (Qdrant 1.17+)
+$client->collections('contents')->points()->upsert($points, ['wait' => 'true'], UpdateMode::INSERT_ONLY);
+
+// Only update existing points that match the filter (Qdrant 1.16+)
+$client->collections('contents')->points()->upsert(
+    $points,
+    updateFilter: (new Filter())->addMust(new MatchInt('version', 1))
+);
+```
+
+### Filters
+
+Besides the classic conditions (`MatchString`, `MatchInt`, `MatchAny`, `Range`, `GeoRadius`, ...) the client supports
+`MatchPrefix` (1.19, requires a keyword index created with `prefix: true`), `MatchTextAny`, `MatchPhrase`, `IsNull`,
+`HasVector` and `Slice` (1.19, deterministic partitioning for parallel scroll or sampling):
+
+```php
+use Qdrant\Models\Filter\Condition\MatchPrefix;
+use Qdrant\Models\Filter\Condition\Slice;
+use Qdrant\Models\Request\CreateIndex;
+
+$client->collections('contents')->index()->create(new CreateIndex('category', ['type' => 'keyword', 'prefix' => true]));
+
+$filter = (new Filter())
+    ->addMust(new MatchPrefix('category', 'elec'))
+    ->addMust(new Slice(0, 4)); // first of 4 slices
+```
+
+### Operations
+
+```php
+use Qdrant\Models\Request\QuotaConfig;
+
+$client->collections('contents')->optimizations(['with' => 'queued,completed']); // optimization progress (1.17+)
+$client->collections('contents')->shards()->list();                                // shard keys (1.17+)
+$client->cluster()->telemetry();                                                   // cluster-wide telemetry (1.17+)
+
+// Global resource quotas (1.19+)
+$client->quotas()->get();
+$client->quotas()->update((new QuotaConfig())->setMaxDiskUsagePercent(90));
 ```
