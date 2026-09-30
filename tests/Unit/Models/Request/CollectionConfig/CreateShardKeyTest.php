@@ -25,7 +25,7 @@ class CreateShardKeyTest extends TestCase
 
         $this->assertEquals([
             'shard_key' => 1,
-            'shard_number' => 1,
+            'shards_number' => 1,
             'replication_factor' => 0
         ], $config->toArray());
     }
@@ -36,7 +36,7 @@ class CreateShardKeyTest extends TestCase
 
         $this->assertEquals([
             'shard_key' => 1,
-            'shard_number' => 1,
+            'shards_number' => 1,
             'replication_factor' => 0,
             'placement' => [1, 2, 3]
         ], $config->toArray());
@@ -48,9 +48,19 @@ class CreateShardKeyTest extends TestCase
 
         $this->assertEquals([
             'shard_key' => 1,
-            'shard_number' => 1,
+            'shards_number' => 1,
             'replication_factor' => 0,
             'placement' => []
+        ], $config->toArray());
+    }
+
+    public function testWithInitialState(): void
+    {
+        $config = new CreateShardKey('tenant-a', initialState: 'Partial');
+
+        $this->assertEquals([
+            'shard_key' => 'tenant-a',
+            'initial_state' => 'Partial',
         ], $config->toArray());
     }
 }

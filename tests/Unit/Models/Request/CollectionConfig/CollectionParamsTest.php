@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\Request\CollectionConfig\CollectionParams;
 use Qdrant\Models\Request\CollectionConfig\HnswConfig;
+use Qdrant\Models\Request\CollectionConfig\Memory;
 
 class CollectionParamsTest extends TestCase
 {
@@ -53,6 +54,29 @@ class CollectionParamsTest extends TestCase
 
         $this->assertEquals([
             'on_disk_payload' => true
+        ], $config->toArray());
+    }
+
+    public function testWithReadFanOutDelayAndPayloadMemory(): void
+    {
+        $config = (new CollectionParams())
+            ->setReadFanOutDelayMs(50)
+            ->setPayloadMemory(Memory::COLD)
+            ->setOnDiskPayload(false);
+
+        $this->assertEquals([
+            'read_fan_out_delay_ms' => 50,
+            'on_disk_payload' => false,
+            'payload' => ['memory' => 'cold'],
+        ], $config->toArray());
+    }
+
+    public function testWithOnDiskPayloadFalse(): void
+    {
+        $config = (new CollectionParams())->setOnDiskPayload(false);
+
+        $this->assertEquals([
+            'on_disk_payload' => false,
         ], $config->toArray());
     }
 }

@@ -15,6 +15,7 @@ use Qdrant\Endpoints\Collections\Index;
 use Qdrant\Endpoints\Collections\Points;
 use Qdrant\Endpoints\Collections\Shards;
 use Qdrant\Endpoints\Collections\Snapshots;
+use Qdrant\Endpoints\Collections\Vectors;
 use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\Request\CreateCollection;
 use Qdrant\Models\Request\UpdateCollection;
@@ -111,6 +112,24 @@ class Collections extends AbstractEndpoint
         );
     }
 
+    /**
+     * # Get optimizations
+     * Get progress of the running, queued and completed optimizations of the collection.
+     * Available since Qdrant 1.17.
+     *
+     * @param array $queryParams e.g. ['with' => 'queued,completed,idle_segments', 'completed_limit' => 16]
+     * @throws InvalidArgumentException
+     */
+    public function optimizations(array $queryParams = []): Response
+    {
+        return $this->client->execute(
+            $this->createRequest(
+                'GET',
+                '/collections/' . $this->getCollectionName() . '/optimizations' . $this->queryBuild($queryParams)
+            )
+        );
+    }
+
     public function aliases(): Aliases
     {
         return (new Aliases($this->client))->setCollectionName($this->collectionName);
@@ -139,5 +158,10 @@ class Collections extends AbstractEndpoint
     public function shards(): Shards
     {
         return (new Shards($this->client))->setCollectionName($this->collectionName);
+    }
+
+    public function vectors(): Vectors
+    {
+        return (new Vectors($this->client))->setCollectionName($this->collectionName);
     }
 }

@@ -43,7 +43,8 @@ class Points extends AbstractEndpoint
     }
 
     /**
-     * @deprecated Use query() endpoint instead. The search endpoint is deprecated in Qdrant API.
+     * @deprecated Use query() endpoint instead. The search endpoint is deprecated in Qdrant API
+     *             and removed from the OpenAPI specification since Qdrant 1.19.
      *
      * @throws InvalidArgumentException
      */
@@ -164,36 +165,65 @@ class Points extends AbstractEndpoint
     }
 
     /**
+     * @param string|null $updateMode One of the UpdateMode::* constants, available since Qdrant 1.17.
+     * @param Filter|null $updateFilter Only update existing points matching this filter (conditional update),
+     *                                  available since Qdrant 1.16.
+     *
      * @throws InvalidArgumentException
      */
-    public function upsert(PointsStruct $points, array $queryParams = []): Response
-    {
+    public function upsert(
+        PointsStruct $points,
+        array $queryParams = [],
+        ?string $updateMode = null,
+        ?Filter $updateFilter = null
+    ): Response {
         return $this->client->execute(
             $this->createRequest(
                 'PUT',
                 '/collections/' . $this->getCollectionName() . '/points' . $this->queryBuild($queryParams),
                 [
                     'points' => $points->toArray(),
-                ]
+                ] + $this->updateOptions($updateMode, $updateFilter)
             )
         );
     }
 
     /**
-     * https://qdrant.github.io/qdrant/redoc/index.html#tag/points/operation/upsert_points
+     * https://api.qdrant.tech/api-reference/points/upsert-points
+     *
+     * @param string|null $updateMode One of the UpdateMode::* constants, available since Qdrant 1.17.
+     * @param Filter|null $updateFilter Only update existing points matching this filter (conditional update),
+     *                                  available since Qdrant 1.16.
      *
      * @throws InvalidArgumentException
      */
-    public function batch(PointsBatch $points, array $queryParams = []): Response
-    {
+    public function batch(
+        PointsBatch $points,
+        array $queryParams = [],
+        ?string $updateMode = null,
+        ?Filter $updateFilter = null
+    ): Response {
         return $this->client->execute(
             $this->createRequest(
                 'PUT',
                 '/collections/' . $this->getCollectionName() . '/points' . $this->queryBuild($queryParams),
                 [
                     'batch' => $points->toArray(),
-                ]
+                ] + $this->updateOptions($updateMode, $updateFilter)
             )
         );
+    }
+
+    private function updateOptions(?string $updateMode, ?Filter $updateFilter): array
+    {
+        $options = [];
+        if ($updateMode !== null) {
+            $options['update_mode'] = $updateMode;
+        }
+        if ($updateFilter !== null) {
+            $options['update_filter'] = $updateFilter->toArray();
+        }
+
+        return $options;
     }
 }

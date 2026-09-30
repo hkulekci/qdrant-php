@@ -54,4 +54,31 @@ class WalConfigTest extends TestCase
 
         $this->assertEquals([], $config->toArray());
     }
+
+    public function testWithWalRetainClosed(): void
+    {
+        $config = (new WalConfig())->setWalSegmentsAhead(0)->setWalRetainClosed(2);
+
+        $this->assertEquals([
+            'wal_segments_ahead' => 0,
+            'wal_retain_closed' => 2,
+        ], $config->toArray());
+    }
+
+    public function testWithInvalidWalRetainClosed(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('wal_retain_closed should be bigger than 0');
+
+        (new WalConfig())->setWalRetainClosed(-1);
+    }
+
+    public function testWithZeroWalSegmentsAhead(): void
+    {
+        $config = (new WalConfig())->setWalSegmentsAhead(0);
+
+        $this->assertEquals([
+            'wal_segments_ahead' => 0
+        ], $config->toArray());
+    }
 }

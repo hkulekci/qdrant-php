@@ -22,7 +22,7 @@ class ShardsTest extends AbstractIntegration
     {
         //TODO: We need to find a way to enable distributed mode in tests?
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Bad request: Distributed mode disabled');
+        $this->expectExceptionMessage('Qdrant is running in standalone mode');
 
         $collection = new Collections($this->client);
         $this->createCollections('sample-collection');
@@ -41,7 +41,7 @@ class ShardsTest extends AbstractIntegration
     {
         //TODO: We need to find a way to enable distributed mode in tests?
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Bad request: Distributed mode disabled');
+        $this->expectExceptionMessage('Qdrant is running in standalone mode');
 
         $collection = new Collections($this->client);
         $this->createCollections('sample-collection');
@@ -51,6 +51,20 @@ class ShardsTest extends AbstractIntegration
         $this->assertEquals('sample-collection', $shards->getCollectionName());
 
         $shards->delete(new DeleteShardKey(1));
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function testCollectionListShards(): void
+    {
+        $collection = new Collections($this->client);
+        $this->createCollections('sample-collection');
+        $collection->setCollectionName('sample-collection');
+
+        $response = $collection->shards()->list();
+        $this->assertEquals('ok', $response['status']);
+        $this->assertArrayHasKey('result', $response->__toArray());
     }
 
     protected function tearDown(): void
