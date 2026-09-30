@@ -10,8 +10,10 @@ namespace Qdrant\Tests\Integration\Endpoints\Collections;
 use Qdrant\Endpoints\Collections;
 use Qdrant\Models\Request\CollectionConfig\BinaryQuantization;
 use Qdrant\Models\Request\CollectionConfig\DisabledQuantization;
+use Qdrant\Models\Request\CollectionConfig\Memory;
 use Qdrant\Models\Request\CollectionConfig\ProductQuantization;
 use Qdrant\Models\Request\CollectionConfig\ScalarQuantization;
+use Qdrant\Models\Request\CollectionConfig\TurboQuantization;
 use Qdrant\Models\Request\CreateCollection;
 use Qdrant\Models\Request\UpdateCollection;
 use Qdrant\Models\Request\VectorParams;
@@ -68,6 +70,59 @@ class QuantizationConfigTest extends AbstractIntegration
         $this->assertEquals([
             'scalar' => [
                 'type' => 'int8'
+            ]
+        ], $response['result']['config']['quantization_config']);
+    }
+
+    public function testCollectionsTurboQuantization(): void
+    {
+        $request = (new CreateCollection())
+            ->setQuantizationConfig(new TurboQuantization(TurboQuantization::BITS_2, Memory::PINNED))
+            ->addVector(new VectorParams(300, VectorParams::DISTANCE_COSINE), 'image');
+
+        $collections = (new Collections($this->client))->setCollectionName('sample-collection');
+        $this->assertEquals('ok', $collections->create($request)['status']);
+
+        $response = $collections->info();
+        $this->assertEquals('ok', $response['status']);
+        $this->assertEquals([
+            'turbo' => [
+                'bits' => 'bits2',
+                'memory' => 'pinned',
+            ]
+        ], $response['result']['config']['quantization_config']);
+    }
+
+    public function testCollectionsTurboQuantizationWithDefaults(): void
+    {
+        $request = (new CreateCollection())
+            ->setQuantizationConfig(new TurboQuantization())
+            ->addVector(new VectorParams(300, VectorParams::DISTANCE_COSINE), 'image');
+
+        $collections = (new Collections($this->client))->setCollectionName('sample-collection');
+        $this->assertEquals('ok', $collections->create($request)['status']);
+
+        $response = $collections->info();
+        $this->assertArrayHasKey('turbo', $response['result']['config']['quantization_config']);
+    }
+
+    public function testCollectionsBinaryQuantizationWithEncoding(): void
+    {
+        $request = (new CreateCollection())
+            ->setQuantizationConfig(new BinaryQuantization(
+                encoding: BinaryQuantization::ENCODING_TWO_BITS,
+                queryEncoding: BinaryQuantization::QUERY_ENCODING_SCALAR_8BITS
+            ))
+            ->addVector(new VectorParams(300, VectorParams::DISTANCE_COSINE), 'image');
+
+        $collections = (new Collections($this->client))->setCollectionName('sample-collection');
+        $this->assertEquals('ok', $collections->create($request)['status']);
+
+        $response = $collections->info();
+        $this->assertEquals([
+            'binary' => [
+                'encoding' => 'two_bits',
+                'query_encoding' => 'scalar8bits',
             ]
         ], $response['result']['config']['quantization_config']);
     }
