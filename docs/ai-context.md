@@ -13,6 +13,12 @@ Requires a PSR-18 HTTP client and PSR-17 HTTP factory implementation. Example:
 composer require symfony/http-client nyholm/psr7
 ```
 
+## Versioning
+
+Since `v1.19.0` the client version follows the Qdrant server version: client `1.19.x` targets and is tested against
+Qdrant `1.19`. Features are annotated below with the Qdrant version that introduced them (e.g. `1.18+`); they require
+a server of at least that version.
+
 ## Bootstrapping
 
 ```php
@@ -43,7 +49,37 @@ $createCollection->addVector(new VectorParams(768, VectorParams::DISTANCE_DOT), 
 $response = $client->collections('my-collection')->create($createCollection);
 ```
 
-**VectorParams distance options:** `DISTANCE_COSINE`, `DISTANCE_EUCLID`, `DISTANCE_DOT`
+**VectorParams distance options:** `DISTANCE_COSINE`, `DISTANCE_EUCLID`, `DISTANCE_DOT`, `DISTANCE_MANHATTAN`
+
+```php
+(new VectorParams(1536, VectorParams::DISTANCE_COSINE))
+    ->setDatatype(VectorParams::DATATYPE_FLOAT16)   // float32, float16, uint8, turbo4 (1.19+, stores only TurboQuant 4-bit)
+    ->setMemory(Memory::COLD)                       // per-vector memory tier (replaces setOnDisk)
+    ->setHnswConfig((new HnswConfig())->setM(32))   // per-vector HNSW override
+    ->setQuantizationConfig(new TurboQuantization()) // per-vector quantization override
+    ->setMultivectorConfig();                       // multivector (ColBERT) with max_sim comparator
+```
+
+### Sparse Vectors
+
+```php
+use Qdrant\Models\Request\SparseVectorParams;
+
+$createCollection->addSparseVector('keywords', (new SparseVectorParams())
+    ->setModifier(SparseVectorParams::MODIFIER_IDF)  // 'none' or 'idf'
+    ->setMemory(Memory::CACHED));
+$createCollection->addSparseVector('splade');         // default params
+```
+
+### Add / Remove Named Vectors on Existing Collection (1.18+)
+
+```php
+use Qdrant\Models\Request\CreateVector;
+
+$client->collections('name')->vectors()->create('summary', CreateVector::dense(384, VectorParams::DISTANCE_COSINE, VectorParams::DATATYPE_FLOAT16));
+$client->collections('name')->vectors()->create('bm25', CreateVector::sparse(SparseVectorParams::MODIFIER_IDF));
+$client->collections('name')->vectors()->delete('summary', ['wait' => 'true']);
+```
 
 ### Other Collection Operations
 
@@ -53,6 +89,24 @@ $client->collections('name')->info();              // Collection details
 $client->collections('name')->exists();            // Check existence
 $client->collections('name')->delete();            // Delete collection
 $client->collections('name')->update($updateReq);  // Update config
+$client->collections('name')->optimizations(['with' => 'queued,completed', 'completed_limit' => 16]); // 1.17+
+```
+
+### Update Collection
+
+```php
+use Qdrant\Models\Request\UpdateCollection;
+use Qdrant\Models\Request\CollectionConfig\VectorParamsDiff;
+use Qdrant\Models\Request\CollectionConfig\CollectionParams;
+use Qdrant\Models\Request\CollectionConfig\DisabledQuantization;
+
+$update = (new UpdateCollection())
+    ->addVector((new VectorParamsDiff())->setMemory(Memory::PINNED)->setQuantizationConfig(new TurboQuantization()), 'content') // '' = default vector
+    ->addSparseVector('keywords', (new SparseVectorParams())->setMemory(Memory::COLD))
+    ->setCollectionParams((new CollectionParams())->setReplicationFactor(2)->setReadFanOutDelayMs(50)->setPayloadMemory(Memory::COLD))
+    ->setQuantizationConfig(new DisabledQuantization())
+    ->setStrictModeConfig(['enabled' => true, 'max_query_limit' => 100])
+    ->setMetadata(['version' => 2]);  // merged into existing metadata
 ```
 
 ### Collection Config Options
@@ -62,15 +116,44 @@ use Qdrant\Models\Request\CollectionConfig\HnswConfig;
 use Qdrant\Models\Request\CollectionConfig\OptimizersConfig;
 use Qdrant\Models\Request\CollectionConfig\WalConfig;
 use Qdrant\Models\Request\CollectionConfig\ScalarQuantization;
+use Qdrant\Models\Request\CollectionConfig\Memory;
 
 $createCollection
     ->setShardNumber(2)
+    ->setShardingMethod(CreateCollection::SHARDING_METHOD_CUSTOM)  // 'auto' or 'custom'
     ->setReplicationFactor(2)
-    ->setOnDiskPayload(true)
-    ->setHnswConfig((new HnswConfig())->setM(16)->setEfConstruct(100))
-    ->setOptimizersConfig((new OptimizersConfig())->setIndexingThreshold(20000))
-    ->setWalConfig((new WalConfig())->setWalCapacityMb(64))
-    ->setQuantizationConfig(new ScalarQuantization('int8', 0.99, true));
+    ->setPayloadMemory(Memory::COLD)   // replaces deprecated setOnDiskPayload()
+    ->setHnswConfig((new HnswConfig())->setM(16)->setEfConstruct(100)->setMemory(Memory::CACHED)->setInlineStorage(true))
+    ->setOptimizersConfig((new OptimizersConfig())->setIndexingThreshold(20000)->setMaxOptimizationThreads('auto')->setPreventUnoptimized(true))
+    ->setWalConfig((new WalConfig())->setWalCapacityMb(64)->setWalRetainClosed(1))
+    ->setQuantizationConfig(new ScalarQuantization(ScalarQuantization::TYPE_INT8, 0.99, memory: Memory::PINNED))
+    ->setStrictModeConfig(['enabled' => true, 'max_query_limit' => 100])
+    ->setMetadata(['owner' => 'search-team']);  // 1.16+
+```
+
+### Memory Tiers (1.19+)
+
+`Memory::COLD` (on disk, no warm-up), `Memory::CACHED` (on disk, pre-loaded into page cache), `Memory::PINNED`
+(locked in RAM). Available on `VectorParams`, `SparseVectorParams`, `HnswConfig`, all quantization configs,
+payload storage (`setPayloadMemory`) and payload indexes (`['memory' => 'cold']` in the index schema).
+Replaces the deprecated `on_disk` / `always_ram` flags.
+
+### Quantization
+
+```php
+use Qdrant\Models\Request\CollectionConfig\TurboQuantization;
+use Qdrant\Models\Request\CollectionConfig\BinaryQuantization;
+use Qdrant\Models\Request\CollectionConfig\ProductQuantization;
+
+new TurboQuantization();                                          // 1.18+, server default bits
+new TurboQuantization(TurboQuantization::BITS_4, Memory::PINNED); // BITS_1, BITS_1_5, BITS_2, BITS_4
+new ScalarQuantization(ScalarQuantization::TYPE_INT8, quantile: 0.99, memory: Memory::PINNED);
+new ProductQuantization(ProductQuantization::COMPRESSION_X16);    // x4, x8, x16, x32, x64
+new BinaryQuantization(
+    encoding: BinaryQuantization::ENCODING_TWO_BITS,              // one_bit, two_bits, one_and_half_bits
+    queryEncoding: BinaryQuantization::QUERY_ENCODING_SCALAR_8BITS // default, binary, scalar4bits, scalar8bits
+);
+new DisabledQuantization();                                       // only for UpdateCollection / VectorParamsDiff
 ```
 
 ## Point Operations
@@ -94,7 +177,16 @@ $client->collections('my-collection')->points()->upsert($points);
 
 // Wait for indexing (important for immediate reads after write)
 $client->collections('my-collection')->points()->upsert($points, ['wait' => 'true']);
+
+// Update mode (1.17+): UpdateMode::UPSERT (default), UpdateMode::INSERT_ONLY, UpdateMode::UPDATE_ONLY
+use Qdrant\Models\Request\UpdateMode;
+$client->collections('my-collection')->points()->upsert($points, ['wait' => 'true'], UpdateMode::INSERT_ONLY);
+
+// Conditional update (1.16+): existing points are only overwritten if they match the filter
+$client->collections('my-collection')->points()->upsert($points, updateFilter: $filter);
 ```
+
+`points()->batch($batch, $queryParams, $updateMode, $updateFilter)` accepts the same options.
 
 ### Create from Array
 
@@ -220,6 +312,21 @@ $request->setQuery(['order_by' => 'price']);
 
 // Sample random points
 $request->setQuery(['sample' => 'random']);
+
+// Parametrized / weighted RRF (1.16+ / 1.17+)
+$request->setQuery(['rrf' => ['k' => 60, 'weights' => [1.0, 0.5]]]);
+
+// Maximal Marginal Relevance (1.15+)
+$request->setQuery(['nearest' => [0.1, 0.2, 0.3], 'mmr' => ['diversity' => 0.5, 'candidates_limit' => 100]]);
+
+// Score boosting formula (re-scores the prefetch results, so combine it with setPrefetch())
+$request->setQuery(['formula' => ['sum' => ['$score', ['mult' => [0.5, 'popularity']]]], 'defaults' => ['popularity' => 0]]);
+
+// Relevance feedback (1.17+)
+$request->setQuery(['relevance_feedback' => ['target' => [0.1, 0.2, 0.3], 'feedback' => [...], 'strategy' => [...]]]);
+
+// Search params: ACORN filtered search (1.16+), quantization rescoring
+$request->setParams(['acorn' => ['enable' => true, 'max_selectivity' => 0.4], 'quantization' => ['rescore' => true, 'oversampling' => 2.0]]);
 ```
 
 ### Multi-Stage / Hybrid Query (Prefetch)
@@ -302,6 +409,12 @@ use Qdrant\Models\Filter\Condition\GeoRadius;
 use Qdrant\Models\Filter\Condition\GeoBoundingBox;
 use Qdrant\Models\Filter\Condition\GeoPolygon;
 use Qdrant\Models\Filter\Condition\ValueCount;
+use Qdrant\Models\Filter\Condition\MatchPrefix;
+use Qdrant\Models\Filter\Condition\MatchTextAny;
+use Qdrant\Models\Filter\Condition\MatchPhrase;
+use Qdrant\Models\Filter\Condition\IsNull;
+use Qdrant\Models\Filter\Condition\HasVector;
+use Qdrant\Models\Filter\Condition\Slice;
 use Qdrant\Models\Filter\Nested;
 
 // Must (AND)
@@ -366,6 +479,20 @@ new GeoPolygon('location', $exteriorRing, $interiorRings);
 // Value count (nested array length)
 new ValueCount('tags', ['gte' => 2]);
 
+// Keyword prefix (1.19+, keyword index must be created with 'prefix' => true)
+new MatchPrefix('category', 'elec');
+
+// Full text: any term (1.16+) / exact phrase (1.15+, text index needs 'phrase_matching' => true)
+new MatchTextAny('description', 'vector database');
+new MatchPhrase('description', 'vector database');
+
+// Field exists with NULL value / point has a named vector
+new IsNull('deleted_at');
+new HasVector('image');
+
+// Deterministic slice N of M (1.19+), for parallel scroll or sampling
+new Slice(0, 4);
+
 // Nested filter
 new Nested('address', (new Filter())->addMust(new MatchString('city', 'Berlin')));
 ```
@@ -378,8 +505,13 @@ use Qdrant\Models\Request\CreateIndex;
 // Simple keyword index
 $client->collections('name')->index()->create(new CreateIndex('city', 'keyword'));
 
-// Other field types: 'keyword', 'integer', 'float', 'bool', 'geo', 'text'
+// Other field types: 'keyword', 'integer', 'float', 'bool', 'geo', 'text', 'datetime', 'uuid'
 $client->collections('name')->index()->create(new CreateIndex('price', 'float'));
+
+// Parametrized index schemas (array)
+new CreateIndex('category', ['type' => 'keyword', 'prefix' => true, 'is_tenant' => true, 'memory' => 'cold']);
+new CreateIndex('description', ['type' => 'text', 'tokenizer' => 'multilingual', 'phrase_matching' => true, 'ascii_folding' => true, 'stemmer' => ['type' => 'snowball', 'language' => 'english']]);
+new CreateIndex('price', ['type' => 'float', 'enable_hnsw' => false]);
 
 // Delete index
 $client->collections('name')->index()->delete('field_name');
@@ -432,8 +564,30 @@ $client->collections('name')->cluster()->info();
 use Qdrant\Models\Request\CollectionConfig\CreateShardKey;
 use Qdrant\Models\Request\CollectionConfig\DeleteShardKey;
 
-$client->collections('name')->shards()->create(new CreateShardKey('shard_key_value'));
+$client->collections('name')->shards()->create(new CreateShardKey('shard_key_value', initialState: 'Partial'));
 $client->collections('name')->shards()->delete(new DeleteShardKey('shard_key_value'));
+$client->collections('name')->shards()->list();   // 1.17+
+
+// Cluster-wide telemetry (1.17+)
+$client->cluster()->telemetry(['details_level' => 2]);
+```
+
+Since Qdrant 1.19 cluster endpoints return HTTP 405 (`InvalidArgumentException`, "Qdrant is running in standalone mode")
+when Qdrant runs without distributed mode.
+
+## Global Quotas (1.19+)
+
+```php
+use Qdrant\Models\Request\QuotaConfig;
+
+$client->quotas()->get();   // ['config' => [...], 'usage' => ['resident_memory_percent' => .., 'disk_usage_percent' => ..]]
+$client->quotas()->update(
+    (new QuotaConfig(enabled: true))
+        ->setMaxResidentMemoryPercent(90)
+        ->setMaxDiskUsagePercent(95)
+        ->setReleaseMarginPercent(5),
+    ['wait' => 'true']
+);
 ```
 
 ## Payload Management
@@ -463,11 +617,12 @@ All endpoints return a `Response` object with ArrayAccess:
 $response = $client->collections('name')->points()->query()->query($request);
 
 $response['status'];              // 'ok'
-$response['result'];              // array of results
-$response['result']['points'];    // for grouped queries
+$response['result'];              // endpoint specific result
+$response['result']['points'];    // query() results
+$response['result']['groups'];    // query()->groups() results
 
 // Query results structure
-foreach ($response['result'] as $point) {
+foreach ($response['result']['points'] as $point) {
     $point['id'];       // point ID
     $point['score'];    // similarity score
     $point['payload'];  // payload data (if requested)
@@ -497,10 +652,15 @@ try {
 The following are deprecated in favor of the universal `query()` endpoint:
 
 ```php
-// DEPRECATED: Use query() instead
+// DEPRECATED: Use query() instead (removed from the OpenAPI spec since Qdrant 1.19)
 $client->collections('name')->points()->search($searchRequest);
 $client->collections('name')->points()->recommend()->recommend($recommendRequest);
 $client->collections('name')->points()->recommend()->batch($batchRecommendRequest);
+
+// REMOVED on the server side, kept only for backwards compatibility
+new InitFrom('other-collection');          // `init_from` removed in Qdrant 1.16
+$client->service()->setLocks($lock);       // lock API removed in Qdrant 1.16
+(new OptimizersConfig())->setMemmapThreshold(1000); // deprecated since 1.15, use memory tiers
 ```
 
 ## Query Parameters

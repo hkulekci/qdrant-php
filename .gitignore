@@ -6,3 +6,4 @@ coverage
 /.idea
 .env.test
 .claude/docs/
+.claude/settings.local.json
