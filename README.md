@@ -16,6 +16,25 @@ You can install the client in your PHP project using composer:
 composer require hkulekci/qdrant
 ```
 
+## Versioning & Compatibility
+
+Starting with `v1.19.0`, the version of this client follows the Qdrant server version: `1.19.x` releases target and
+are tested against Qdrant `1.19`, and new client releases are published together with new Qdrant minor versions.
+Patch releases (`1.19.1`, `1.19.2`, ...) contain client-side fixes only.
+
+> [!IMPORTANT]
+> The jump from `v1.0.0` to `v1.19.0` only aligns the version numbers with Qdrant, it does not remove or rename any
+> public API. Still, please review the following before upgrading:
+>
+> - Features such as TurboQuant, memory tiers, named vector management or quotas require a Qdrant server that
+>   supports them. Older servers may reject or silently ignore the new fields.
+> - `false` and `0` values set on `HnswConfig`, `WalConfig` and `CollectionParams` (for example `on_disk: false`)
+>   were previously dropped and are now sent to the server.
+> - `CreateShardKey` now sends `shards_number`; the shard number was previously ignored by the server.
+> - `on_disk`, `always_ram`, `on_disk_payload`, `memmap_threshold` and `init_from` are deprecated in Qdrant and marked
+>   `@deprecated` in the client. Prefer the `memory` options and snapshots.
+> - The legacy `search()` and `recommend()` endpoints are deprecated; use the Query API.
+
 ### Connecting to Qdrant 
 
 ```php
