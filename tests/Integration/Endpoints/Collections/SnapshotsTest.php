@@ -25,4 +25,11 @@ class SnapshotsTest extends AbstractIntegration
         $snapshots = $collection->snapshots();
         $this->assertEquals('sample-collection', $snapshots->getCollectionName());
     }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->getCollections('sample-collection')->delete();
+    }
 }
