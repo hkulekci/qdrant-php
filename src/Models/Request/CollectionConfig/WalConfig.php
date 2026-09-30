@@ -38,14 +38,9 @@ class WalConfig implements RequestModel
 
     public function toArray(): array
     {
-        $data = [];
-        if ($this->walCapacityMb) {
-            $data['wal_capacity_mb'] = $this->walCapacityMb;
-        }
-        if ($this->walSegmentsAhead) {
-            $data['wal_segments_ahead'] = $this->walSegmentsAhead;
-        }
-
-        return $data;
+        return array_filter([
+            'wal_capacity_mb' => $this->walCapacityMb,
+            'wal_segments_ahead' => $this->walSegmentsAhead,
+        ], static fn($value) => $value !== null);
     }
 }

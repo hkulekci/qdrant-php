@@ -55,4 +55,13 @@ class CollectionParamsTest extends TestCase
             'on_disk_payload' => true
         ], $config->toArray());
     }
+
+    public function testWithOnDiskPayloadFalse(): void
+    {
+        $config = (new CollectionParams())->setOnDiskPayload(false);
+
+        $this->assertEquals([
+            'on_disk_payload' => false,
+        ], $config->toArray());
+    }
 }

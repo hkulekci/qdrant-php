@@ -24,7 +24,7 @@ class CreateShardKey implements RequestModel
     {
         return array_filter([
             'shard_key' => $this->shardKey,
-            'shard_number' => $this->shardNumber,
+            'shards_number' => $this->shardNumber,
             'replication_factor' => $this->replicationFactor,
             'placement' => $this->placement,
         ], function($val) {

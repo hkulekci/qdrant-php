@@ -79,26 +79,13 @@ class HnswConfig implements RequestModel
 
     public function toArray(): array
     {
-        $data = [];
-        if ($this->m !== null) {
-            $data['m'] = $this->m;
-        }
-        if ($this->efConstruct) {
-            $data['ef_construct'] = $this->efConstruct;
-        }
-        if ($this->fullScanThreshold) {
-            $data['full_scan_threshold'] = $this->fullScanThreshold;
-        }
-        if ($this->maxIndexingThreads) {
-            $data['max_indexing_threads'] = $this->maxIndexingThreads;
-        }
-        if ($this->onDisk) {
-            $data['on_disk'] = $this->onDisk;
-        }
-        if ($this->payloadM) {
-            $data['payload_m'] = $this->payloadM;
-        }
-
-        return $data;
+        return array_filter([
+            'm' => $this->m,
+            'ef_construct' => $this->efConstruct,
+            'full_scan_threshold' => $this->fullScanThreshold,
+            'max_indexing_threads' => $this->maxIndexingThreads,
+            'on_disk' => $this->onDisk,
+            'payload_m' => $this->payloadM,
+        ], static fn($value) => $value !== null);
     }
 }

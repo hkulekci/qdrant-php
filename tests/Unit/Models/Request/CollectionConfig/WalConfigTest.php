@@ -54,4 +54,13 @@ class WalConfigTest extends TestCase
 
         $this->assertEquals([], $config->toArray());
     }
+
+    public function testWithZeroWalSegmentsAhead(): void
+    {
+        $config = (new WalConfig())->setWalSegmentsAhead(0);
+
+        $this->assertEquals([
+            'wal_segments_ahead' => 0
+        ], $config->toArray());
+    }
 }

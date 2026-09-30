@@ -12,10 +12,10 @@ use Qdrant\Models\Request\RequestModel;
 
 class CollectionParams implements RequestModel
 {
-    protected ?int $replicationFactor;
-    protected ?int $writeConsistencyFactor;
-    protected ?int $readFanOutFactor;
-    protected ?bool $onDiskPayload;
+    protected ?int $replicationFactor = null;
+    protected ?int $writeConsistencyFactor = null;
+    protected ?int $readFanOutFactor = null;
+    protected ?bool $onDiskPayload = null;
 
     public function setReplicationFactor(?int $replicationFactor): CollectionParams
     {
@@ -48,10 +48,10 @@ class CollectionParams implements RequestModel
     public function toArray(): array
     {
         return array_filter([
-            'replication_factor' => $this->replicationFactor ?? null,
-            'write_consistency_factor' => $this->writeConsistencyFactor ?? null,
-            'read_fan_out_factor' => $this->readFanOutFactor ?? null,
-            'on_disk_payload' => $this->onDiskPayload ?? null,
-        ]);
+            'replication_factor' => $this->replicationFactor,
+            'write_consistency_factor' => $this->writeConsistencyFactor,
+            'read_fan_out_factor' => $this->readFanOutFactor,
+            'on_disk_payload' => $this->onDiskPayload,
+        ], static fn($value) => $value !== null);
     }
 }

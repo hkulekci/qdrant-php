@@ -136,4 +136,15 @@ class HnswConfigTest extends TestCase
             'payload_m' => 10,
         ], $config->toArray());
     }
+
+    public function testFalseAndZeroValuesAreKept(): void
+    {
+        $config = (new HnswConfig())->setOnDisk(false)->setMaxIndexingThreads(0)->setPayloadM(0);
+
+        $this->assertEquals([
+            'max_indexing_threads' => 0,
+            'on_disk' => false,
+            'payload_m' => 0,
+        ], $config->toArray());
+    }
 }
