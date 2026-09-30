@@ -53,6 +53,20 @@ class ShardsTest extends AbstractIntegration
         $shards->delete(new DeleteShardKey(1));
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function testCollectionListShards(): void
+    {
+        $collection = new Collections($this->client);
+        $this->createCollections('sample-collection');
+        $collection->setCollectionName('sample-collection');
+
+        $response = $collection->shards()->list();
+        $this->assertEquals('ok', $response['status']);
+        $this->assertArrayHasKey('result', $response->__toArray());
+    }
+
     protected function tearDown(): void
     {
         parent::tearDown();

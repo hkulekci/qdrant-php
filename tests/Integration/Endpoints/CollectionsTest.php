@@ -237,6 +237,21 @@ class CollectionsTest extends AbstractIntegration
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function testCollectionOptimizations(): void
+    {
+        $collections = (new Collections($this->client))->setCollectionName('sample-collection');
+        $collections->create(self::sampleCollectionOption());
+
+        $response = $collections->optimizations(['with' => 'queued,completed']);
+        $this->assertEquals('ok', $response['status']);
+        $this->assertArrayHasKey('summary', $response['result']);
+        $this->assertArrayHasKey('running', $response['result']);
+        $this->assertArrayHasKey('queued', $response['result']);
+    }
+
     protected function tearDown(): void
     {
         parent::tearDown();

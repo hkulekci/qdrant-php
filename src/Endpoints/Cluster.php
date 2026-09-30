@@ -28,6 +28,20 @@ class Cluster extends AbstractEndpoint
     }
 
     /**
+     * # Get cluster telemetry
+     * Aggregated telemetry of all peers in the cluster. Available since Qdrant 1.17.
+     *
+     * @param array $queryParams e.g. ['details_level' => 2, 'timeout' => 10]
+     * @throws InvalidArgumentException
+     */
+    public function telemetry(array $queryParams = []): Response
+    {
+        return $this->client->execute(
+            $this->createRequest('GET', '/cluster/telemetry' . $this->queryBuild($queryParams))
+        );
+    }
+
+    /**
      * # Tries to recover current peer Raft state.
      *
      * @throws InvalidArgumentException
