@@ -243,3 +243,14 @@ $client->cluster()->telemetry();                                                
 $client->quotas()->get();
 $client->quotas()->update((new QuotaConfig())->setMaxDiskUsagePercent(90));
 ```
+
+### AI-Assisted Development
+
+This library ships with an AI context file that helps AI assistants (Claude Code, etc.) understand the full API surface. To enable it in your project:
+
+```shell
+mkdir -p .claude/docs
+cp vendor/hkulekci/qdrant/docs/ai-context.md .claude/docs/qdrant-php.md
+```
+
+This gives AI tools a complete reference of all endpoints, request models, filters, and usage examples.
