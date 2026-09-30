@@ -8,7 +8,6 @@ namespace Qdrant\Tests\Integration\Endpoints;
 
 use Qdrant\Endpoints\Cluster;
 use Qdrant\Exception\InvalidArgumentException;
-use Qdrant\Exception\ServerException;
 use Qdrant\Tests\Integration\AbstractIntegration;
 
 class ClusterTest extends AbstractIntegration
@@ -36,8 +35,9 @@ class ClusterTest extends AbstractIntegration
             $response = $cluster->recover();
             $this->assertEquals('ok', $response['status']);
         } else {
-            $this->expectException(ServerException::class);
-            $this->expectExceptionCode(500);
+            // Since Qdrant 1.19 cluster endpoints respond with 405 in standalone mode
+            $this->expectException(InvalidArgumentException::class);
+            $this->expectExceptionCode(405);
             $cluster->recover();
         }
     }

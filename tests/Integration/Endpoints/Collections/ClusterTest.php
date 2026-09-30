@@ -46,7 +46,7 @@ class ClusterTest extends AbstractIntegration
             $cluster->update($operation);
         } else {
             $this->expectException(InvalidArgumentException::class);
-            $this->expectExceptionMessage('Bad request: Distributed mode disabled');
+            $this->expectExceptionMessage('Qdrant is running in standalone mode');
             $cluster->update($operation);
         }
     }
