@@ -32,6 +32,7 @@ class OptimizersConfig implements RequestModel
 
     /**
      * @var int|null Maximum size (in KiloBytes) of vectors to store in-memory per segment. Segments larger than this threshold will be stored as read-only memmaped file. To enable memmap storage, lower the threshold Note: 1Kb = 1 vector of size 256
+     * @deprecated Since Qdrant 1.15, all vector storages use memory maps. Use the vector `memory` option instead.
      */
     protected ?int $memmapThreshold = null;
 
@@ -46,9 +47,14 @@ class OptimizersConfig implements RequestModel
     protected ?int $flushIntervalSec = null;
 
     /**
-     * @var int|null Maximum available threads for optimization workers
+     * @var int|string|null Maximum available threads for optimization workers, or "auto"
      */
-    protected ?int $maxOptimizationThreads = null;
+    protected int|string|null $maxOptimizationThreads = null;
+
+    /**
+     * @var bool|null Throttle updates to keep search results served only from optimized segments
+     */
+    protected ?bool $preventUnoptimized = null;
 
 
     public function setDeletedThreshold(?float $deletedThreshold): OptimizersConfig
@@ -86,6 +92,9 @@ class OptimizersConfig implements RequestModel
         return $this;
     }
 
+    /**
+     * @deprecated Since Qdrant 1.15, all vector storages use memory maps. Use the vector `memory` option instead.
+     */
     public function setMemmapThreshold(?int $memmapThreshold): OptimizersConfig
     {
         $this->memmapThreshold = $memmapThreshold;
@@ -100,9 +109,22 @@ class OptimizersConfig implements RequestModel
         return $this;
     }
 
-    public function setMaxOptimizationThreads(?int $maxOptimizationThreads): OptimizersConfig
+    /**
+     * @param int|string|null $maxOptimizationThreads Number of threads, or "auto" to pick it based on available CPUs
+     */
+    public function setMaxOptimizationThreads(int|string|null $maxOptimizationThreads): OptimizersConfig
     {
         $this->maxOptimizationThreads = $maxOptimizationThreads;
+
+        return $this;
+    }
+
+    /**
+     * If true, updates are throttled so that searches never hit unoptimized segments, available since Qdrant 1.17.
+     */
+    public function setPreventUnoptimized(?bool $preventUnoptimized): OptimizersConfig
+    {
+        $this->preventUnoptimized = $preventUnoptimized;
 
         return $this;
     }
@@ -133,6 +155,9 @@ class OptimizersConfig implements RequestModel
         }
         if ($this->maxOptimizationThreads !== null) {
             $data['max_optimization_threads'] = $this->maxOptimizationThreads;
+        }
+        if ($this->preventUnoptimized !== null) {
+            $data['prevent_unoptimized'] = $this->preventUnoptimized;
         }
 
         return $data;

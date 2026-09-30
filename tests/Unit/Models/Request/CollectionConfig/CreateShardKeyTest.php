@@ -53,4 +53,14 @@ class CreateShardKeyTest extends TestCase
             'placement' => []
         ], $config->toArray());
     }
+
+    public function testWithInitialState(): void
+    {
+        $config = new CreateShardKey('tenant-a', initialState: 'Partial');
+
+        $this->assertEquals([
+            'shard_key' => 'tenant-a',
+            'initial_state' => 'Partial',
+        ], $config->toArray());
+    }
 }

@@ -15,6 +15,7 @@ class WalConfig implements RequestModel
 {
     protected ?int $walCapacityMb = null;
     protected ?int $walSegmentsAhead = null;
+    protected ?int $walRetainClosed = null;
 
     public function setWalCapacityMb(?int $walCapacityMb): WalConfig
     {
@@ -36,11 +37,25 @@ class WalConfig implements RequestModel
         return $this;
     }
 
+    /**
+     * Number of closed WAL segments to keep, available since Qdrant 1.17.
+     */
+    public function setWalRetainClosed(?int $walRetainClosed): WalConfig
+    {
+        if ($walRetainClosed < 0) {
+            throw new InvalidArgumentException('wal_retain_closed should be bigger than 0');
+        }
+        $this->walRetainClosed = $walRetainClosed;
+
+        return $this;
+    }
+
     public function toArray(): array
     {
         return array_filter([
             'wal_capacity_mb' => $this->walCapacityMb,
             'wal_segments_ahead' => $this->walSegmentsAhead,
+            'wal_retain_closed' => $this->walRetainClosed,
         ], static fn($value) => $value !== null);
     }
 }

@@ -18,7 +18,9 @@ class HnswConfig implements RequestModel
     protected ?int $fullScanThreshold = null;
     protected ?int $maxIndexingThreads = null;
     protected ?bool $onDisk = null;
+    protected ?string $memory = null;
     protected ?int $payloadM = null;
+    protected ?bool $inlineStorage = null;
 
     public function setM(?int $m): HnswConfig
     {
@@ -60,9 +62,36 @@ class HnswConfig implements RequestModel
         return $this;
     }
 
+    /**
+     * @deprecated Since Qdrant 1.19, use setMemory() instead.
+     */
     public function setOnDisk(?bool $onDisk): HnswConfig
     {
         $this->onDisk = $onDisk;
+
+        return $this;
+    }
+
+    /**
+     * Memory usage strategy for the HNSW index, one of the Memory::* constants.
+     *
+     * @throws InvalidArgumentException
+     */
+    public function setMemory(?string $memory): HnswConfig
+    {
+        Memory::assertValid($memory);
+        $this->memory = $memory;
+
+        return $this;
+    }
+
+    /**
+     * Store copies of the original and quantized vectors within the HNSW index file, available since Qdrant 1.16.
+     * Requires quantization to be enabled.
+     */
+    public function setInlineStorage(?bool $inlineStorage): HnswConfig
+    {
+        $this->inlineStorage = $inlineStorage;
 
         return $this;
     }
@@ -85,7 +114,9 @@ class HnswConfig implements RequestModel
             'full_scan_threshold' => $this->fullScanThreshold,
             'max_indexing_threads' => $this->maxIndexingThreads,
             'on_disk' => $this->onDisk,
+            'memory' => $this->memory,
             'payload_m' => $this->payloadM,
+            'inline_storage' => $this->inlineStorage,
         ], static fn($value) => $value !== null);
     }
 }

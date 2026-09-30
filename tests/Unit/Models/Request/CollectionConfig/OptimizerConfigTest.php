@@ -113,4 +113,16 @@ class OptimizerConfigTest extends TestCase
             'vacuum_min_vector_number' => 10
         ], $config->toArray());
     }
+
+    public function testWithPreventUnoptimizedAndAutoThreads(): void
+    {
+        $config = (new OptimizersConfig())
+            ->setPreventUnoptimized(true)
+            ->setMaxOptimizationThreads('auto');
+
+        $this->assertEquals([
+            'max_optimization_threads' => 'auto',
+            'prevent_unoptimized' => true,
+        ], $config->toArray());
+    }
 }

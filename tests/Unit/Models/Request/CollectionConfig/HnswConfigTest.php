@@ -9,6 +9,7 @@ namespace Qdrant\Tests\Unit\Models\Request\CollectionConfig;
 use PHPUnit\Framework\TestCase;
 use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\Request\CollectionConfig\HnswConfig;
+use Qdrant\Models\Request\CollectionConfig\Memory;
 
 class HnswConfigTest extends TestCase
 {
@@ -137,6 +138,16 @@ class HnswConfigTest extends TestCase
         ], $config->toArray());
     }
 
+    public function testWithMemoryAndInlineStorage(): void
+    {
+        $config = (new HnswConfig())->setMemory(Memory::CACHED)->setInlineStorage(true);
+
+        $this->assertEquals([
+            'memory' => 'cached',
+            'inline_storage' => true,
+        ], $config->toArray());
+    }
+
     public function testFalseAndZeroValuesAreKept(): void
     {
         $config = (new HnswConfig())->setOnDisk(false)->setMaxIndexingThreads(0)->setPayloadM(0);
@@ -146,5 +157,12 @@ class HnswConfigTest extends TestCase
             'on_disk' => false,
             'payload_m' => 0,
         ], $config->toArray());
+    }
+
+    public function testWithInvalidMemory(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        (new HnswConfig())->setMemory('ram');
     }
 }

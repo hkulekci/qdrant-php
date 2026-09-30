@@ -8,6 +8,7 @@
 
 namespace Qdrant\Models\Request\CollectionConfig;
 
+use Qdrant\Exception\InvalidArgumentException;
 use Qdrant\Models\Request\RequestModel;
 
 class CollectionParams implements RequestModel
@@ -15,7 +16,9 @@ class CollectionParams implements RequestModel
     protected ?int $replicationFactor = null;
     protected ?int $writeConsistencyFactor = null;
     protected ?int $readFanOutFactor = null;
+    protected ?int $readFanOutDelayMs = null;
     protected ?bool $onDiskPayload = null;
+    protected ?string $payloadMemory = null;
 
     public function setReplicationFactor(?int $replicationFactor): CollectionParams
     {
@@ -38,9 +41,35 @@ class CollectionParams implements RequestModel
         return $this;
     }
 
+    /**
+     * Delay in milliseconds before sending read requests to additional replicas, available since Qdrant 1.17.
+     */
+    public function setReadFanOutDelayMs(?int $readFanOutDelayMs): CollectionParams
+    {
+        $this->readFanOutDelayMs = $readFanOutDelayMs;
+
+        return $this;
+    }
+
+    /**
+     * @deprecated Since Qdrant 1.19, use setPayloadMemory() instead.
+     */
     public function setOnDiskPayload(?bool $onDiskPayload): CollectionParams
     {
         $this->onDiskPayload = $onDiskPayload;
+
+        return $this;
+    }
+
+    /**
+     * Memory usage strategy for the payload storage, one of the Memory::* constants.
+     *
+     * @throws InvalidArgumentException
+     */
+    public function setPayloadMemory(?string $payloadMemory): CollectionParams
+    {
+        Memory::assertValid($payloadMemory);
+        $this->payloadMemory = $payloadMemory;
 
         return $this;
     }
@@ -51,7 +80,9 @@ class CollectionParams implements RequestModel
             'replication_factor' => $this->replicationFactor,
             'write_consistency_factor' => $this->writeConsistencyFactor,
             'read_fan_out_factor' => $this->readFanOutFactor,
+            'read_fan_out_delay_ms' => $this->readFanOutDelayMs,
             'on_disk_payload' => $this->onDiskPayload,
+            'payload' => $this->payloadMemory !== null ? ['memory' => $this->payloadMemory] : null,
         ], static fn($value) => $value !== null);
     }
 }
