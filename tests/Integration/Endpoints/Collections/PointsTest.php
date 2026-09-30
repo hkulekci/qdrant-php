@@ -7,6 +7,7 @@ namespace Qdrant\Tests\Integration\Endpoints\Collections;
 
 use Qdrant\Endpoints\Collections;
 use Qdrant\Exception\InvalidArgumentException;
+use Qdrant\Models\Filter\Condition\MatchInt;
 use Qdrant\Models\Filter\Condition\MatchString;
 use Qdrant\Models\Filter\Filter;
 use Qdrant\Models\PointsStruct;
@@ -15,6 +16,7 @@ use Qdrant\Models\Request\CreateCollection;
 use Qdrant\Models\Request\CreateIndex;
 use Qdrant\Models\Request\PointsBatch;
 use Qdrant\Models\Request\ScrollRequest;
+use Qdrant\Models\Request\UpdateMode;
 use Qdrant\Models\Request\VectorParams;
 use Qdrant\Models\VectorStruct;
 use Qdrant\Tests\Integration\AbstractIntegration;
@@ -69,6 +71,41 @@ class PointsTest extends AbstractIntegration
 
         $response = $this->getCollections('sample-collection')->points()->count();
         $this->assertEquals(2, $response['result']['count']);
+    }
+
+    public function testUpsertWithUpdateModes(): void
+    {
+        $this->createCollections('sample-collection');
+        $points = $this->getCollections('sample-collection')->points();
+
+        $points->upsert(PointsStruct::createFromArray([
+            ['id' => 1, 'vector' => new VectorStruct([1, 2, 3], 'image'), 'payload' => ['version' => 1]],
+        ]), ['wait' => 'true']);
+
+        // insert_only must not overwrite the existing point, but inserts the new one
+        $response = $points->upsert(PointsStruct::createFromArray([
+            ['id' => 1, 'vector' => new VectorStruct([1, 2, 3], 'image'), 'payload' => ['version' => 2]],
+            ['id' => 2, 'vector' => new VectorStruct([3, 2, 1], 'image'), 'payload' => ['version' => 2]],
+        ]), ['wait' => 'true'], UpdateMode::INSERT_ONLY);
+        $this->assertEquals('ok', $response['status']);
+        $this->assertEquals(1, $points->id(1)['result']['payload']['version']);
+        $this->assertEquals(2, $points->count()['result']['count']);
+
+        // update_only must not insert new points
+        $points->upsert(PointsStruct::createFromArray([
+            ['id' => 2, 'vector' => new VectorStruct([3, 2, 1], 'image'), 'payload' => ['version' => 3]],
+            ['id' => 3, 'vector' => new VectorStruct([3, 3, 3], 'image'), 'payload' => ['version' => 3]],
+        ]), ['wait' => 'true'], UpdateMode::UPDATE_ONLY);
+        $this->assertEquals(3, $points->id(2)['result']['payload']['version']);
+        $this->assertEquals(2, $points->count()['result']['count']);
+
+        // update_filter only updates points matching the condition
+        $points->upsert(PointsStruct::createFromArray([
+            ['id' => 1, 'vector' => new VectorStruct([1, 2, 3], 'image'), 'payload' => ['version' => 4]],
+            ['id' => 2, 'vector' => new VectorStruct([3, 2, 1], 'image'), 'payload' => ['version' => 4]],
+        ]), ['wait' => 'true'], updateFilter: (new Filter())->addMust(new MatchInt('version', 1)));
+        $this->assertEquals(4, $points->id(1)['result']['payload']['version']);
+        $this->assertEquals(3, $points->id(2)['result']['payload']['version']);
     }
 
     public function testUpsertPointWithWrongSize(): void

@@ -7,6 +7,7 @@
 namespace Qdrant\Tests\Unit\Models\Request\CollectionConfig;
 
 use PHPUnit\Framework\TestCase;
+use Qdrant\Models\Request\CollectionConfig\Memory;
 use Qdrant\Models\Request\CollectionConfig\ProductQuantization;
 
 class ProductQuantizationTest extends TestCase
@@ -26,6 +27,18 @@ class ProductQuantizationTest extends TestCase
             'product' => [
                 'compression' => 'x4',
                 'always_ram' => true,
+            ]
+        ], $config->toArray());
+    }
+
+    public function testWithMemory(): void
+    {
+        $config = new ProductQuantization(ProductQuantization::COMPRESSION_X16, memory: Memory::COLD);
+
+        $this->assertEquals([
+            'product' => [
+                'compression' => 'x16',
+                'memory' => 'cold',
             ]
         ], $config->toArray());
     }

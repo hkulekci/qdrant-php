@@ -8,6 +8,7 @@ namespace Qdrant;
 use Psr\Http\Message\RequestInterface;
 use Qdrant\Endpoints\Cluster;
 use Qdrant\Endpoints\Collections;
+use Qdrant\Endpoints\Quotas;
 use Qdrant\Endpoints\Service;
 use Qdrant\Endpoints\Snapshots;
 use Qdrant\Exception\InvalidArgumentException;
@@ -38,6 +39,11 @@ class Qdrant implements ClientInterface
     public function service(): Service
     {
         return new Service($this);
+    }
+
+    public function quotas(): Quotas
+    {
+        return new Quotas($this);
     }
 
     public function execute(RequestInterface $request): Response

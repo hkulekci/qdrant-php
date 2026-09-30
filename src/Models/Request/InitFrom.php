@@ -8,6 +8,9 @@
 
 namespace Qdrant\Models\Request;
 
+/**
+ * @deprecated `init_from` was removed in Qdrant 1.16. Use snapshots or the migration tool instead.
+ */
 class InitFrom implements RequestModel
 {
     public function __construct(protected string $collection)
