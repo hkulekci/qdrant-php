@@ -9,9 +9,13 @@ use PHPUnit\Framework\TestCase;
 use Qdrant\Models\Request\CollectionConfig\BinaryQuantization;
 use Qdrant\Models\Request\CollectionConfig\CollectionParams;
 use Qdrant\Models\Request\CollectionConfig\HnswConfig;
+use Qdrant\Models\Request\CollectionConfig\Memory;
 use Qdrant\Models\Request\CollectionConfig\OptimizersConfig;
+use Qdrant\Models\Request\CollectionConfig\TurboQuantization;
+use Qdrant\Models\Request\CollectionConfig\VectorParamsDiff;
 use Qdrant\Models\Request\CollectionConfig\WalConfig;
 use Qdrant\Models\Request\CreateCollection;
+use Qdrant\Models\Request\SparseVectorParams;
 use Qdrant\Models\Request\UpdateCollection;
 use Qdrant\Models\Request\VectorParams;
 
@@ -108,5 +112,37 @@ class UpdateCollectionTest extends TestCase
             ],
             $collection->toArray()
         );
+    }
+
+    public function testUpdateCollectionWithVectorsAndMetadata(): void
+    {
+        $collection = (new UpdateCollection())
+            ->addVector((new VectorParamsDiff())->setMemory(Memory::PINNED), 'image')
+            ->addVector(new VectorParamsDiff())
+            ->addSparseVector('bm25', (new SparseVectorParams())->setMemory(Memory::CACHED))
+            ->setStrictModeConfig(['enabled' => false])
+            ->setMetadata(['version' => 2]);
+
+        $this->assertEquals(
+            [
+                'vectors' => [
+                    'image' => ['memory' => 'pinned'],
+                    '' => new \stdClass(),
+                ],
+                'sparse_vectors' => [
+                    'bm25' => ['index' => ['memory' => 'cached']],
+                ],
+                'strict_mode_config' => ['enabled' => false],
+                'metadata' => ['version' => 2],
+            ],
+            $collection->toArray()
+        );
+    }
+
+    public function testUpdateCollectionWithTurboQuantization(): void
+    {
+        $collection = (new UpdateCollection())->setQuantizationConfig(new TurboQuantization());
+
+        $this->assertEquals('{"quantization_config":{"turbo":{}}}', json_encode($collection->toArray()));
     }
 }

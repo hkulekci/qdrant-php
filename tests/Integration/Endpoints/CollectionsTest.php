@@ -9,9 +9,12 @@ namespace Qdrant\Tests\Integration\Endpoints;
 
 use Qdrant\Endpoints\Collections;
 use Qdrant\Exception\InvalidArgumentException;
+use Qdrant\Models\Request\CollectionConfig\HnswConfig;
+use Qdrant\Models\Request\CollectionConfig\Memory;
 use Qdrant\Models\Request\CollectionConfig\OptimizersConfig;
 use Qdrant\Models\Request\CreateCollection;
 use Qdrant\Models\Request\InitFrom;
+use Qdrant\Models\Request\SparseVectorParams;
 use Qdrant\Models\Request\UpdateCollection;
 use Qdrant\Models\Request\VectorParams;
 use Qdrant\Tests\Integration\AbstractIntegration;
@@ -194,6 +197,44 @@ class CollectionsTest extends AbstractIntegration
         $collections->setCollectionName('other-collection');
         $response = $collections->create(self::otherCollectionOption());
         $this->assertEquals('ok', $response['status']);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function testCreateCollectionWithSparseVectorsMetadataAndMemoryTiers(): void
+    {
+        $request = (new CreateCollection())
+            ->addVector(
+                (new VectorParams(3, VectorParams::DISTANCE_MANHATTAN))->setMemory(Memory::COLD),
+                'image'
+            )
+            ->addSparseVector('keywords', (new SparseVectorParams())->setModifier(SparseVectorParams::MODIFIER_IDF))
+            ->setHnswConfig((new HnswConfig())->setMemory(Memory::CACHED))
+            ->setOptimizersConfig((new OptimizersConfig())->setPreventUnoptimized(true))
+            ->setPayloadMemory(Memory::COLD)
+            ->setStrictModeConfig(['enabled' => true, 'max_query_limit' => 50])
+            ->setMetadata(['team' => 'search']);
+
+        $collections = (new Collections($this->client))->setCollectionName('sample-collection');
+        $this->assertEquals('ok', $collections->create($request)['status']);
+
+        $config = $collections->info()['result']['config'];
+        $this->assertEquals('Manhattan', $config['params']['vectors']['image']['distance']);
+        $this->assertEquals('cold', $config['params']['vectors']['image']['memory']);
+        $this->assertEquals(['modifier' => 'idf'], $config['params']['sparse_vectors']['keywords']);
+        $this->assertEquals(['memory' => 'cold'], $config['params']['payload']);
+        $this->assertEquals('cached', $config['hnsw_config']['memory']);
+        $this->assertTrue($config['optimizer_config']['prevent_unoptimized']);
+        $this->assertEquals(50, $config['strict_mode_config']['max_query_limit']);
+        $this->assertEquals(['team' => 'search'], $config['metadata']);
+
+        $response = $collections->update((new UpdateCollection())->setMetadata(['version' => 2]));
+        $this->assertEquals('ok', $response['status']);
+        $this->assertEquals(
+            ['team' => 'search', 'version' => 2],
+            $collections->info()['result']['config']['metadata']
+        );
     }
 
     protected function tearDown(): void

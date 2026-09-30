@@ -7,9 +7,12 @@ namespace Qdrant\Tests\Unit\Models\Request;
 
 use PHPUnit\Framework\TestCase;
 use Qdrant\Models\Request\CollectionConfig\HnswConfig;
+use Qdrant\Models\Request\CollectionConfig\Memory;
 use Qdrant\Models\Request\CollectionConfig\OptimizersConfig;
+use Qdrant\Models\Request\CollectionConfig\TurboQuantization;
 use Qdrant\Models\Request\CollectionConfig\WalConfig;
 use Qdrant\Models\Request\CreateCollection;
+use Qdrant\Models\Request\SparseVectorParams;
 use Qdrant\Models\Request\VectorParams;
 
 class CreateCollectionTest extends TestCase
@@ -241,5 +244,55 @@ class CreateCollectionTest extends TestCase
             ],
             $collection->toArray()
         );
+    }
+
+    public function testCreateCollectionWithTurboQuantization(): void
+    {
+        $collection = (new CreateCollection())
+            ->addVector(new VectorParams(1536, VectorParams::DISTANCE_COSINE))
+            ->setQuantizationConfig(new TurboQuantization(TurboQuantization::BITS_2, Memory::PINNED));
+
+        $this->assertEquals(
+            [
+                'vectors' => ['size' => 1536, 'distance' => 'Cosine'],
+                'quantization_config' => ['turbo' => ['bits' => 'bits2', 'memory' => 'pinned']],
+            ],
+            $collection->toArray()
+        );
+    }
+
+    public function testCreateCollectionWithNewOptions(): void
+    {
+        $collection = (new CreateCollection())
+            ->addVector(new VectorParams(3, VectorParams::DISTANCE_COSINE), 'dense')
+            ->addSparseVector('bm25', (new SparseVectorParams())->setModifier(SparseVectorParams::MODIFIER_IDF))
+            ->addSparseVector('splade')
+            ->setShardingMethod(CreateCollection::SHARDING_METHOD_CUSTOM)
+            ->setPayloadMemory(Memory::COLD)
+            ->setStrictModeConfig(['enabled' => true, 'max_query_limit' => 100])
+            ->setMetadata(['owner' => 'search-team']);
+
+        $this->assertEquals(
+            [
+                'vectors' => ['dense' => ['size' => 3, 'distance' => 'Cosine']],
+                'sparse_vectors' => [
+                    'bm25' => ['modifier' => 'idf'],
+                    'splade' => new \stdClass(),
+                ],
+                'sharding_method' => 'custom',
+                'payload' => ['memory' => 'cold'],
+                'strict_mode_config' => ['enabled' => true, 'max_query_limit' => 100],
+                'metadata' => ['owner' => 'search-team'],
+            ],
+            $collection->toArray()
+        );
+        $this->assertStringContainsString('"splade":{}', json_encode($collection->toArray()));
+    }
+
+    public function testCreateCollectionWithOnlySparseVectors(): void
+    {
+        $collection = (new CreateCollection())->addSparseVector('text');
+
+        $this->assertEquals(['sparse_vectors' => ['text' => new \stdClass()]], $collection->toArray());
     }
 }
